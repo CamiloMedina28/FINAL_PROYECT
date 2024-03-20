@@ -1,0 +1,5 @@
+Url : "egresados-db.cpa0q4ka073a.sa-east-1.rds.amazonaws.com"
+Schema name: "Egresados_db"
+User: "admin"
+Password: "admin123"
+ConnectionPort: 3306
