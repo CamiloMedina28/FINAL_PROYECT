@@ -1,11 +1,43 @@
+// DECLARACIÓN DE VARIABLES Y FUENTES
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+$color_texto: black;
+
 .flexcontainer{
     display: flex;
 }
 
 .barra-navegacion{
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.barra-navegacion nav{
+nav ul{
     display: flex;
+    list-style-type: none;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
+nav ul li{
+    text-decoration: none;
+    padding: 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: $color_texto;
+    font-family: Roboto;
+    font-weight: 600;
+}
+
+h1{
+    font-family: Roboto;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.imagen img{
+    width: 15vw;
 }
