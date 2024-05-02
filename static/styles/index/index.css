@@ -3,13 +3,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 3%;
+  animation: change 14s infinite ease-in-out;
+}
+@keyframes change {
+  0% { background-image: url("/static/img/un1.jpg"); }
+  12% { background-image: url("/static/img/un2.jpg"); }
+  24% { background-image: url("/static/img/un3.jpg"); }
+  37% { background-image: url("/static/img/un4.jpeg"); }
+  49% { background-image: url("/static/img/un5.jpg"); }
+  65% { background-image: url("/static/img/un6.jpg"); }
+  80% { background-image: url("/static/img/un7.jpg"); }
+  100% { background-image: url("/static/img/un1.jpg"); }
 }
 
 #container-intro img {
   width: 50vw;
+
 }
 
 #container-intro h1 {
+  margin-left: 10%;
   text-align: justify;
-  padding: 15px;
+  font-size: 400%;
 }/*# sourceMappingURL=index.css.map */
