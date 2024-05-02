@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIE</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base/base.css') }}" type="text/css">
+    
 </head>
 <body>
     <div class="barra-navegacion">
         <div class="imagen">
-            <img src="{{ url_for('static', filename='img/unal.png') }}" alt="logo unal">
+            <img src="{{ url_for('static', filename='img/unal2.png') }}" alt="logo unal">
         </div>
 
         <nav>
             <ul>
                 <li><a href="/index">Inicio</a></li>
-                <li><a href="">Iniciar sesión</a></li>
-                <li><a href="">Tercera opcion</a></li>
+                <li><a href="/login">Iniciar sesión</a></li>
+                <li><a href="/settings">Ajustes</a></li>
             </ul>
         </nav>
 

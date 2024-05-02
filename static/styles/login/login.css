@@ -1,0 +1,13 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: wheat;
+}
+
+.login {
+    width: 420px;
+    background: grey;
+    color: rgb(124, 26, 189);
+}
