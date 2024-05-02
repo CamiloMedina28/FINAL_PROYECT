@@ -1,43 +1,57 @@
-// DECLARACIÓN DE VARIABLES Y FUENTES
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-$color_texto: black;
-
-.flexcontainer{
-    display: flex;
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+*{
+  margin: 0%;
+  padding: 0%;
 }
 
-.barra-navegacion{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.flexcontainer {
+  display: flex;
 }
 
-nav ul{
-    display: flex;
-    list-style-type: none;
-    justify-content: space-evenly;
-    flex-direction: row;
+.barra-navegacion {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color:#262626;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
 }
 
-nav ul li{
-    text-decoration: none;
-    padding: 15px;
+nav ul {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+nav ul li {
+  float: right;
+  margin: 0 10px;
+  text-decoration: none;
 }
 
 nav ul li a {
-    text-decoration: none;
-    color: $color_texto;
-    font-family: Roboto;
-    font-weight: 600;
+  font-family: Roboto;
+  line-height: 80px;
+  letter-spacing: 3px;
+  font-size: medium;
+  margin: 0 14px;
+  color: #fff;
+  text-decoration: none;
 }
 
-h1{
-    font-family: Roboto;
-    font-size: 3rem;
-    font-weight: 600;
+h1 {
+  font-family: Roboto;
+  font-size: 3rem;
+  font-weight: 600;
 }
 
-.imagen img{
-    width: 15vw;
+.imagen img {
+  width: 40%;
 }
