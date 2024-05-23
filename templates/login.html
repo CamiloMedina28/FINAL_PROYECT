@@ -6,6 +6,9 @@
 <div class="flexcontainer" id="login-form">
     <form action="/login_user" method="post">
         <h1>Inicio de sesión</h1>
+        {% if mensaje_error %}
+        <span>EL INICIO DE SESIÓN HA SIDO INCORRECTO</span>
+        {% endif %}
 
         <img src="{{ url_for('static', filename='img/UNAL-LOGO-2.jpg') }}">
         <hr>
