@@ -32,11 +32,12 @@ def iniciar_sesion_de_usuario(username:str, contrasenia:str, role:str) -> bool:
         datos_usuario = cursor.fetchone()
     if datos_usuario and check_password_hash(datos_usuario['usr_password'], contrasenia):
         user = User(*datos_usuario) # Modelo de datos
-        session['rol_usuario'] = user.role # Guardado el rol del usuario
+        session['rol_usuario'] = datos_usuario['usr_role'] # Guardado el rol del usuario
         login_user(user) # Inicio de sesion
         return True    
     return False
 
-
+def cierre_de_sesion_de_usuario():
+    logout_user()
 
 
