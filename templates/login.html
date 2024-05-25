@@ -6,8 +6,22 @@
 <div class="flexcontainer" id="login-form">
     <form action="/login_user" method="post">
         <h1>Inicio de sesión</h1>
+        {% if mensaje_error %}
+            <span>EL INICIO DE SESIÓN HA SIDO INCORRECTO</span>
+        {% endif %}
 
         <img src="{{ url_for('static', filename='img/UNAL-LOGO-2.jpg') }}">
+        
+        <hr>
+
+        <div>
+            <select name="rol">
+                <option selected disabled value="seleccione un rol">seleccione un rol</option>
+                <option value="administrador">administrador</option>
+                <option value="egresado">egresado</option>
+            </select>
+        </div>
+
         <hr>
 
         <div class="entrada-usuario">
