@@ -1,0 +1,6 @@
+flask 
+flask-login
+PyMySQL
+mysql-connector-python
+werkzeug
+cryptography
