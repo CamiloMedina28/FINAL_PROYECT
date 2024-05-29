@@ -1,0 +1,30 @@
+.flexcontainer {
+  margin-top: 15px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#tarjetita {
+  background-color: #D9D9D9;
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  align-items: center;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+
+#tarjetita img {
+  margin-top: 0;
+  width: 30vw;
+  height: 60vh;
+}
+
+#tarjetita a button {
+  width: 30vw;
+  height: 25px;
+  background-color: rgb(154, 77, 191);
+  border-radius: 180;
+  border-color: rgb(154, 77, 191);
+}/*# sourceMappingURL=tarjetitas.css.map */

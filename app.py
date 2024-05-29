@@ -44,5 +44,11 @@ def logout_user():
 def admin_dash():
     return render_template('admin_dashboard.html')
 
+
+@app.app.route('/Personal_Info')
+def render_personal_info():
+    return render_template('datosEgresadoAdmin.html')
+
+
 if __name__ == '__main__':
     app.app.run(port=5010)
