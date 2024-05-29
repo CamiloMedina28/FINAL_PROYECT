@@ -61,7 +61,7 @@ def render_personal_info():
 
 @app.app.route('/bibliotecario')
 def render_bibliotecario():
-    return render_template('datos_bibliotecario.html')
+    return render_template('baseBibliotecario.html')
 
 
 if __name__ == '__main__':

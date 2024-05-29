@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/baseBibliotecario/baseBibliotecario.css') }}" type="text/css" />
+<script src="{{ url_for('static', filename='js/dropDown.js') }}"></script>
+{% extends 'base.html' %}
+
+{% block nav %}
+<li><div class="dropdown">
+    <button class="dropbtn" onclick="myFunction()">Dropdown
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="myDropdown">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+    </div>
+</div></li> 
+<li><a href="/">Inicio</a></li>
+<li><a >Cerrar Sesión</a></li>
+
+<script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+    }
+    
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(e) {
+    if (!e.target.matches('.dropbtn')) {
+    var myDropdown = document.getElementById("myDropdown");
+        if (myDropdown.classList.contains('show')) {
+        myDropdown.classList.remove('show');
+        }
+    }
+    }
+</script>
+
+{% endblock nav %} 
+
+{% block content %} 
+Parte de prueba 
+{% endblock content %}
