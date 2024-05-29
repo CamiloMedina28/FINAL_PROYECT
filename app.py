@@ -61,7 +61,42 @@ def render_personal_info():
 
 @app.app.route('/bibliotecario')
 def render_bibliotecario():
-    return render_template('baseBibliotecario.html')
+    return render_template('bibliotecarioBase.html')
+
+
+@app.app.route('/bibliotecario/libros')
+def render_libros():
+    return render_template('bibliotecarioLibros.html')
+
+
+@app.app.route('/bibliotecario/prestamo')
+def render_prestamo():
+    return render_template('bibliotecarioPrestamo.html')
+
+
+@app.app.route('/empresa')
+def render_empresa():
+    return render_template('empresaBase.html')
+
+
+@app.app.route('/empresa/convocatorias')
+def render_convocatorias():
+    return render_template('empresaConvocatorias.html')
+
+
+@app.app.route('/empresa/aplicantes')
+def render_aplicantes():
+    return render_template('empresaAplicantes.html')
+
+
+@app.app.route('/pregrado')
+def render_pregrado():
+    return render_template('pregradoBase.html')
+
+
+@app.app.route('/pregrado/asesoria')
+def render_asesoria():
+    return render_template('pregradoAsesoria.html')
 
 
 if __name__ == '__main__':
