@@ -23,7 +23,6 @@ def iniciar_sesion_de_usuario(username:str, contrasenia:str, role:str) -> bool:
     Returns:
         bool: True si el inicio de sesión es válido. De lo contrario False
     """
-    
     session['rol_usuario'] = None # Limpieza de la variable de sesion rol_usuario
     conexion = conectar_db.conexion_base_de_datos()
     with conexion.cursor() as cursor:
