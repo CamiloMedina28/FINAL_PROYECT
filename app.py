@@ -56,7 +56,7 @@ def admin_dash():
 
 @app.app.route('/Personal_Info')
 def render_personal_info():
-    return render_template('datosEgresadoAdmin.html')
+    return render_template('egresadosDatosPerso.html')
 
 
 @app.app.route('/bibliotecario')
