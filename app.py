@@ -1,10 +1,17 @@
+# pip install -r requirements.txt
+# conda install -r requirements.txt
+
 from flask import redirect, render_template, request, url_for
 from flask_login import login_required
 from usuarios import sesiones_usuarios
 import localsettings as app
 from flask import session
+from pymongo import MongoClient
 
 app.instanciate_app(__name__)
+
+client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
+db = client['mongo']
 
 @app.app.route('/')
 def index():
