@@ -1,11 +1,16 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/index/index.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/index/index.css') }}" type="text/css" />
+
 {% extends 'base.html' %}
-{% block content %} 
+{% block nav %}
+<li><a href="/">Inicio</a></li>
+<li><a href="/login">Iniciar sesión</a></li>
+{% endblock nav %}
+{% block content %}
 
 <div class="flexcontainer" id="container-intro">
-    <h1>Sistema de información <br>de egresados</h1>
+    <h1>Sistema de información <br />de egresados</h1>
 
-    <img src="{{ url_for('static', filename='img/egresados.png') }}" alt="imagen vector egresados">
+    <img src="{{ url_for('static', filename='img/egresados.png') }}" alt="imagen vector egresados" />
 </div>
 
 {% endblock %}
