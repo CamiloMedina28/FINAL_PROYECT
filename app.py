@@ -14,10 +14,6 @@ def index():
 def login():
     return render_template('login.html')
 
-@app.app.route('/settings')
-def settings():
-    return render_template('settings.html')
-
 @app.app.route('/login_user', methods = ['POST', 'GET'])
 def login_user():
     if request.method == 'POST':
