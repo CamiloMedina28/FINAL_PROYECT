@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibrosEliminar/biblioLibrosEliminar.css') }}" type="text/css" />
+{% extends 'biblioBase.html' %}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+{% block content %}
+
+<div class="container2">
+  <h1 class="text-center">Transaction Records</h1>
+
+  <table class="table transaction-table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Titulo</th>
+        <th>Biblioteca</th>
+        <th>Autor</th>
+        <th>Estante</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in transactions %}
+      <tr>
+        <td>{{ libro.id }}</td>
+        <td>{{ libro.titulo }}</td>
+        <td>{{ libro.biblioteca }}</td>
+        <td>{{ libro.autor }}</td>
+        <td>{{ libro.estante }}</td>
+        <td class="transaction-actions">
+          <a
+            class="btn btn-sm btn-danger"
+            href=""
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-center">
+    <a class="btn btn-success" href=""
+      >Add Transaction</a
+    >
+  </div>
+</div>
+
+{% endblock content %}

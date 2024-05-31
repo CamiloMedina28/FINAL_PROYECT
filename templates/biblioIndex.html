@@ -1,7 +1,11 @@
-{% extends 'bibliotecarioBase.html' %}
+
+{% extends 'biblioBase.html' %}
+
 {% block nav %}
 {{super()}}
 {% endblock nav %}
+
+{% include 'index.html' %}
 {% block content %}
-estos son los libros
+{{super()}}
 {% endblock content %}
