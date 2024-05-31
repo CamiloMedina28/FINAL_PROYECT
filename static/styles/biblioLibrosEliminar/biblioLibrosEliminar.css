@@ -1,0 +1,17 @@
+body {
+  background: linear-gradient(to right, #26166e, #150026);
+  color: #333;
+}
+
+.container {
+  padding: 20px;
+  margin: 20px auto;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}/*# sourceMappingURL=biblioLibrosEliminar.css.map */

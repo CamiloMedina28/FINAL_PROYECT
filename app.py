@@ -58,20 +58,24 @@ def admin_dash():
 def render_personal_info():
     return render_template('egresadosDatosPerso.html')
 
-
+# ----------------bibliotecario - libros
 @app.app.route('/bibliotecario')
-def render_bibliotecario():
-    return render_template('bibliotecarioBase.html')
+def render_inicioBiblio():
+    return render_template('biblioIndex.html')
 
 
-@app.app.route('/bibliotecario/libros')
-def render_libros():
-    return render_template('bibliotecarioLibros.html')
+# ----------------bibliotecario - libros
+@app.app.route('/bibliotecario/libros/eliminar')
+def render_librosE():
+    return render_template('biblioLibrosEliminar.html')
 
+@app.app.route('/bibliotecario/libros/crear')
+def render_librosC():
+    return render_template('biblioLibrosCrear.html')
 
 @app.app.route('/bibliotecario/prestamo')
 def render_prestamo():
-    return render_template('bibliotecarioPrestamo.html')
+    return render_template('biblioPrestamo.html')
 
 
 @app.app.route('/empresa')
