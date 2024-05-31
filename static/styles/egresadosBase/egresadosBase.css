@@ -1,7 +1,15 @@
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .navbar a {
   float: left;
+  font-size: 16px;
   color: white;
   text-align: center;
+  padding: 14px 16px;
   text-decoration: none;
 }
 
@@ -12,10 +20,13 @@
 
 .dropdown .dropbtn {
   cursor: pointer;
+  font-size: 16px;
   border: none;
   outline: none;
   color: white;
+  padding: 14px 16px;
   background-color: inherit;
+  font-family: inherit;
   margin: 0;
 }
 
@@ -35,6 +46,7 @@
 .dropdown-content a {
   float: none;
   color: black;
+  padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
@@ -44,6 +56,6 @@
   background-color: #ddd;
 }
 
-#return_button {
-  display: none;
-}/*# sourceMappingURL=baseEgresado.css.map */
+.show {
+  display: block;
+}/*# sourceMappingURL=egresadosBase.css.map */
