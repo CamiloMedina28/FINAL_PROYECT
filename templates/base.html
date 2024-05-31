@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIE</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base/base.css') }}" type="text/css">
-    
+
 </head>
+
 <body>
-    <div class="barra-navegacion">
+    <div class="barra-navegacion container">
         <div class="imagen">
             <img src="{{ url_for('static', filename='img/unal2.png') }}" alt="logo unal">
         </div>
 
         <nav>
             <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/login">Iniciar sesión</a></li>
+                {% block nav %}
+
+                {% endblock nav %}
             </ul>
         </nav>
 
     </div>
-    
 
-    {% block content %}
-    
-    {% endblock %}
+    <div class="container">
+        {% block content %}
 
+        {% endblock %}
+    </div>
 
     <footer>
 
     </footer>
 
 </body>
+
 </html>

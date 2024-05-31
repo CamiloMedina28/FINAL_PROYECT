@@ -1,3 +1,4 @@
 __pycache__
 __pycache__/*
 Docker/Docker/mysql_data/mysql.sock
+Docker/Docker/mongo_data/mongo.sock

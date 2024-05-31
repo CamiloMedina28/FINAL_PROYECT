@@ -1,0 +1,67 @@
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/tarjetitas/tarjetitas.css') }}"
+  type="text/css"
+/>
+{% extends 'egresadosBase.html' %} 
+{% block nav %}
+  {{super()}}
+{% endblock nav %} 
+
+{% block content %}
+<div class="flexcontainer">
+  <div class="flexcontainer" id="tarjetita">
+    <img
+      src="{{url_for('static', filename='img/comunicacion-empresarial-diseno-plano_23-2149151732.jpg')}}"
+      alt="Imagen alusiva a la acción"
+    />
+    <h2>Información de contacto</h2>
+    <a href="">
+      <button>Ver más</button>
+    </a>
+  </div>
+  <div class="flexcontainer" id="tarjetita">
+    <img
+      src="{{url_for('static', filename='img/personal.jpg')}}"
+      alt="Imagen alusiva a la acción"
+    />
+    <h2>Información personal</h2>
+    <a href="">
+      <button>Ver más</button>
+    </a>
+  </div>
+  <div class="flexcontainer" id="tarjetita">
+    <img
+      src="{{url_for('static', filename='img/familia.jpg')}}"
+      alt="Imagen alusiva a la acción"
+    />
+    <h2>Información de la familia</h2>
+    <a href="">
+      <button>Ver más</button>
+    </a>
+  </div>
+</div>
+<div class="flexcontainer">
+  <div class="flexcontainer" id="tarjetita">
+    <img
+      src="{{url_for('static', filename='img/hogar.png')}}"
+      alt="Imagen alusiva a la acción"
+    />
+    <h2>Información de residencia</h2>
+    <a href="">
+      <button>Ver más</button>
+    </a>
+  </div>
+  <div class="flexcontainer" id="tarjetita">
+    <img
+      src="{{url_for('static', filename='img/premio.jpg')}}"
+      alt="Imagen alusiva a la acción"
+    />
+    <h2>Información de distinciones</h2>
+    <a href="">
+      <button>Ver más</button>
+    </a>
+  </div>
+</div>
+
+{% endblock %}

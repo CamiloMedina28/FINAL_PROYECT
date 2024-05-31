@@ -4,3 +4,5 @@ PyMySQL
 mysql-connector-python
 werkzeug
 cryptography
+pymongo
+
