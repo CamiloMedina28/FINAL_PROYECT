@@ -1,18 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MainDashboard</title>
-</head>
-<body>
-    <h1>INICIO DE SESIÓN COMO ADMIN HA SIDO VALIDADO</h1>
+<link rel="stylesheet" href="{{url_for('static', filename='tarjetitas/tarjetitas.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='tarjetitas/tarjetitas.css')}}">
+{% extends 'base.html' %}
 
-    <a href="/Personal_Info">
+{% block content %}
+<span class="succes_message">
+    El inicio de sesión como administrador ha sido exitoso.
+</span>
+
+<div class="flexcontainer">
+    <div class="flexcontainer" id="tarjetita">
+      <img
+        src="{{url_for('static', filename='')}}"
+        alt="Imagen alusiva a la acción">
+      <h2>Información personal del egresado</h2>
+      <a href="/Personal_Info">
         <button>
             Información personal del egresado
         </button>
-    </a>
+        </a>
+    </div>
 
-</body>
-</html>
+    <div class="flexcontainer" id="tarjetita">
+        <img
+          src="{{url_for('static', filename='')}}"
+          alt="Imagen alusiva a la acción">
+        <h2>T2</h2>
+        <a href="/Personal_Info">
+          <button>
+              T2
+          </button>
+          </a>
+      </div>
+</div>
+
+
+
+
+{% endblock %}

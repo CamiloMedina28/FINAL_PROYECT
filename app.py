@@ -72,7 +72,7 @@ def render_info_personal_egr(id):
         else: 
             return render_template('informacion_personal_egresados.html',
                                    mensaje = "Los datos solicitados no puedieron ser encontrados.")
-    if session['rol_usuaio'] == "Administrador":
+    if session['rol_usuario'] == "Administrador":
         lista_info = egr.egr_info.ejecutar_pass_info_egr(id=0, nombre_proc='ver_datos_personales')
         if lista_info[0] == 0:
             return render_template('informacion_personal_egresados.html',

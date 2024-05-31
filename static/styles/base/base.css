@@ -58,4 +58,12 @@ h1 {
 
 .imagen img {
   width: 40%;
+}
+
+.error_message {
+  color: red;
+}
+
+.succes_message {
+  color: green;
 }/*# sourceMappingURL=base.css.map */

@@ -1,1 +1,1 @@
-import egr_info
+from . import egr_info
