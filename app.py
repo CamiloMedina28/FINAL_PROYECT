@@ -7,6 +7,7 @@ from usuarios import sesiones_usuarios
 import localsettings as app
 from flask import session
 from pymongo import MongoClient
+import egresados as egr
 
 app.instanciate_app(__name__)
 
@@ -55,10 +56,32 @@ def admin_dash():
 
 
 @app.app.route('/Personal_Info')
+# @login_required
 def render_personal_info():
     return render_template('egresadosDatosPerso.html')
 
-# ----------------bibliotecario - libros
+  
+@app.app.route('/informacion_personal_egresados/<int:id>')
+# @login_required
+def render_info_personal_egr(id):
+    if session['rol_usuario'] == "Egresado":
+        lista_info = egr.egr_info.ejecutar_pass_info_egr(id, 'ver_datos_personales')
+        if lista_info[0] == 0:
+            return render_template('informacion_personal_egresados.html',
+                                   info = lista_info[1])
+        else: 
+            return render_template('informacion_personal_egresados.html',
+                                   mensaje = "Los datos solicitados no puedieron ser encontrados.")
+    if session['rol_usuaio'] == "Administrador":
+        lista_info = egr.egr_info.ejecutar_pass_info_egr(id=0, nombre_proc='ver_datos_personales')
+        if lista_info[0] == 0:
+            return render_template('informacion_personal_egresados.html',
+                                   info = lista_info)
+        else:
+            return render_template('informacion_personal_egresados.html',
+                                   mensaje = "Los datos solicitados no puedieron ser encontrados.")
+
+
 @app.app.route('/bibliotecario')
 def render_inicioBiblio():
     return render_template('biblioIndex.html')
