@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+{% if mensaje %}
+    <span class="error_message">
+        La información solicitada no puedo ser encontrada
+    </span>
+{% endif %}
+
+{% if info %}
+    {% for i in info %}
+        <table id="">
+
+        </table>
+    {% endfor %}
+{% endif %}
+
+{% end block %}
