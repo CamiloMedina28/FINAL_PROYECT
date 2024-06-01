@@ -1,55 +1,56 @@
-{% extends 'biblioBase.html' %}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
-{% block content %}
-estos son los libros<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div class="container">
-      <h1 class="text-center">Transaction Records</h1>
-
-      <table class="table transaction-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Transaction type</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for transaction in transactions %}
-          <tr>
-            <td>{{ transaction.date }}</td>
-            <td>{{ transaction.amount }}</td>
-            <td>{{transaction.transaction_type}}</td>
-            <td class="transaction-actions">
-              <a
-                class="btn btn-sm btn-primary"
-                href="{{ url_for('edit_transaction', transaction_id=transaction.id) }}"
-                >Edit</a
-              >
-              <a
-                class="btn btn-sm btn-danger"
-                href="{{ url_for('delete_transaction', transaction_id=transaction.id) }}"
-                >Delete</a
-              >
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <div class="d-flex justify-content-center">
-        <a class="btn btn-success" href="{{ url_for('add_transaction') }}"
-          >Add Transaction</a
-        >
-      </div>
+<link
+rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+/>
+<link 
+rel="stylesheet" 
+href="{{ url_for('static', filename='styles/biblioLibrosEliminar/biblioLibrosEliminar.css') }}" 
+type="text/css" />
+<div class="container">
+  <h1 class="text-center">Edit Transaction</h1>
+  <form>
+    <div class="form-group">
+      <label for="date">Date:</label>
+      <input
+        type="date"
+        name="date"
+        id="date"
+        class="form-control"
+        value=""
+        required
+      />
     </div>
-  </body>
-</html>{% endblock content %}
+
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input
+        type="number"
+        name="amount"
+        id="amount"
+        class="form-control"
+        value=""
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="transaction_type">Transaction type:</label>
+      <select name="transaction_type" id="transaction_type">
+        <option value="Income">Income</option>
+        <option value="Expense">Expense</option>
+      </select>
+      <script>
+
+      </script>
+    </div>
+    <div class="form-footer">
+      <input
+        class="btn btn-success"
+        type="submit"
+        value="Update Transaction"
+      />
+      <a class="btn btn-info" href=""
+        >Go Back</a
+      >
+    </div>
+  </form>
+</div>
