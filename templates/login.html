@@ -7,17 +7,19 @@
   href="{{ url_for('static', filename='styles/login/login.css') }}"
   type="text/css"
 />
+
 {% extends 'base.html' %} {% block nav %}
 <li><a href="/">Inicio</a></li>
 <li><a href="/login">Iniciar sesión</a></li>
 {% endblock nav %} {% block content %}
 
+
 <div class="flexcontainer" id="login-form">
+  {% if mensaje_error %}
+    <span class="error_message">EL INICIO DE SESIÓN HA SIDO INCORRECTO</span>
+  {% endif %}
   <form action="/login_user" method="post">
     <h1>Inicio de sesión</h1>
-    {% if mensaje_error %}
-    <span>EL INICIO DE SESIÓN HA SIDO INCORRECTO</span>
-    {% endif %}
 
     <img src="{{ url_for('static', filename='img/UNAL-LOGO-2.jpg') }}" />
 
@@ -28,8 +30,8 @@
         <option selected disabled value="seleccione un rol">
           seleccione un rol
         </option>
-        <option value="administrador">administrador</option>
-        <option value="egresado">egresado</option>
+        <option value="Administrador">Administrador</option>
+        <option value="Egresado">Egresado</option>
       </select>
     </div>
 
@@ -76,5 +78,7 @@
     </div>
   </form>
 </div>
+
+
 
 {% endblock %}

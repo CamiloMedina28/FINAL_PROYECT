@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="{{url_for('static', filename='tarjetitas/tarjetitas.css')}}">
-<link rel="stylesheet" href="{{url_for('static', filename='tarjetitas/tarjetitas.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='styles/tarjetitas/tarjetitas.css')}}">
+<!-- <link rel="stylesheet" href="{{url_for('static', filename='tarjetitas/tarjetitas.css')}}"> -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -10,7 +10,7 @@
 <div class="flexcontainer">
     <div class="flexcontainer" id="tarjetita">
       <img
-        src="{{url_for('static', filename='')}}"
+        src="{{url_for('static', filename='img/informacion_personal.jpg')}}"
         alt="Imagen alusiva a la acción">
       <h2>Información personal del egresado</h2>
       <a href="/Personal_Info">

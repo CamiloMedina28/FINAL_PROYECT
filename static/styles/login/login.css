@@ -44,4 +44,8 @@ button {
   justify-content: center;
   align-items: center;
   border-radius: 50px;
+}
+
+.flexcontainer {
+  flex-direction: column;
 }/*# sourceMappingURL=login.css.map */

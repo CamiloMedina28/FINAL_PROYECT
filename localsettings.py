@@ -27,8 +27,12 @@ class User(UserMixin):
     def info(self):
         pass
 
-    def get(self):
-        pass
+    def check_password(self, password):
+        return self.password == password
+
+    @property
+    def is_authenticated(self):
+        return True
 
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=4)
@@ -45,5 +49,6 @@ def load_user(user_id) -> User or None: # type: ignore
         cursor.execute(sql, (user_id,))
         user_data = cursor.fetchone()
     if user_data:
-        return User(*user_data)
+        data = User(*user_data)
+        return data
     return None

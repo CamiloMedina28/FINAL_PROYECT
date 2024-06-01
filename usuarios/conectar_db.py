@@ -13,7 +13,6 @@ def conexion():
       password="root", 
       database = "egresado_db")
     end_time = time.time()
-    print(end_time-start_time)
     return mydb
 
 

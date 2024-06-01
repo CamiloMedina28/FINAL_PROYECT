@@ -18,7 +18,7 @@ def iniciar_sesion_de_usuario(username:str, contrasenia:str, role:str) -> bool:
 
     Args:
         username (str): Usuario que desea iniciar la sesión
-        contrase (str): Contraseña del inicio de sesión
+        contrasenia (str): Contraseña del inicio de sesión
 
     Returns:
         bool: True si el inicio de sesión es válido. De lo contrario False
@@ -29,11 +29,14 @@ def iniciar_sesion_de_usuario(username:str, contrasenia:str, role:str) -> bool:
         sql = 'SELECT * FROM Usuarios WHERE usr_username = %s'
         cursor.execute(sql, (username,))
         datos_usuario = cursor.fetchone()
-    if datos_usuario and check_password_hash(datos_usuario['usr_password'], contrasenia):
-        user = User(*datos_usuario) # Modelo de datos
+    if datos_usuario and check_password_hash(datos_usuario['usr_password'], contrasenia) and datos_usuario['usr_role'] == role:
+        user = User(datos_usuario['usr_documento'],
+                                  datos_usuario['usr_username'],
+                                  datos_usuario['usr_password'],
+                                  datos_usuario['usr_role']) # Modelo de datos
         session['rol_usuario'] = datos_usuario['usr_role'] # Guardado el rol del usuario
         login_user(user) # Inicio de sesion
-        return True    
+        return True
     return False
 
 def cierre_de_sesion_de_usuario():

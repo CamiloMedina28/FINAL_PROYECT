@@ -62,8 +62,20 @@ h1 {
 
 .error_message {
   color: red;
+  font-family: Roboto;
+  font-weight: bolder;
 }
 
 .succes_message {
   color: green;
+  font-family: Roboto;
+  font-weight: bolder;
+}
+
+#return_button {
+  display: none;
+}
+
+#delete_button {
+  background-color: red;
 }/*# sourceMappingURL=base.css.map */
