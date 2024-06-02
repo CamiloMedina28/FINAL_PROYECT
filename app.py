@@ -56,7 +56,6 @@ def login_user():
         else:
             return render_template('login.html', mensaje_error="El inicio de sesión ha sido incorrecto")
 
-
 @app.app.route('/logout_user')
 @login_required
 def logout_user():
@@ -66,28 +65,26 @@ def logout_user():
     sesiones_usuarios.cierre_de_sesion_de_usuario()
     return redirect(url_for('login'))
 
-
 @app.app.route('/admin_dash')
 @login_required
 def admin_dash():
     """
     Renderizar la página index del administrador
     """
-    if session['user_role'] == 'Administrador':
+    if session['rol_usuario'] == 'Administrador':
         return render_template('admin_dashboard.html')
     else:
         return redirect('/logout_user')
 
-
 @app.app.route('/Personal_Info')
 @login_required
 def render_personal_info():
-    if session['user_role'] == 'Administrador' or session['user_role'] == 'Egresado':
+    if session['rol_usuario'] == 'Administrador' or session['rol_usuario'] == 'Egresado':
         return render_template('egresadosDatosPerso.html')
     else:
         return redirect('/logout_user')
-
-  
+    
+# ----------------------------- Egresados ----------------------------------------
 @app.app.route('/informacion_personal_egresados/<int:id>')
 @login_required
 def render_info_personal_egr(id):
@@ -95,20 +92,31 @@ def render_info_personal_egr(id):
         lista_info = egr.egr_info.ejecutar_pass_info_egr(id, 'ver_datos_personales')
         if lista_info[0] == 0:
             return render_template('informacion_personal_egresados.html',
-                                   info = lista_info[1])
+                                info = lista_info[1])
         else: 
             return render_template('informacion_personal_egresados.html',
-                                   mensaje = "Los datos solicitados no puedieron ser encontrados.")
+                                mensaje = "Los datos solicitados no puedieron ser encontrados.")
     if session['rol_usuario'] == "Administrador":
         lista_info = egr.egr_info.ejecutar_pass_info_egr(id=0, nombre_proc='ver_datos_personales')
         if lista_info[0] == 0:
             return render_template('informacion_personal_egresados.html',
-                                   info = lista_info)
+                                info = lista_info)
         else:
             return render_template('informacion_personal_egresados.html',
-                                   mensaje = "Los datos solicitados no puedieron ser encontrados.")
+                                mensaje = "Los datos solicitados no puedieron ser encontrados.")
 
+@app.app.route('/egresados')
+def render_inicioEgreados():
+    return render_template('egresadosIndex.html')
 
+@app.app.route('/egresados/DatosPersonales')
+def render_PersonalEgreados():
+    return render_template('egresadosDatosPerso.html')
+
+@app.app.route('/egresados/convocatorias')
+def render_convocaEgreados():
+    return render_template('egresadosConvocatorias.html')
+# ----------------------------- bibliotecario ----------------------------------------
 @app.app.route('/bibliotecario')
 def render_inicioBiblio():
     return render_template('biblioIndex.html')
@@ -131,18 +139,19 @@ def render_libros():
     else:
         return render_template('biblioLibros.html', datos_libros = info_libros[1])
 
-
-
 @app.app.route('/bibliotecario/libros/crear')
 @login_required
 def crear_libro():
     return render_template('biblioLibros.html')
 
+# ----------------bibliotecario - prestamo
 @app.app.route('/bibliotecario/prestamo')
 @login_required
 def render_prestamo():
     return render_template('biblioPrestamo.html')
 
+
+# ----------------------------- empresa ----------------------------------------
 @app.app.route('/empresa')
 def render_empresa():
     return render_template('empresaBase.html')
@@ -157,7 +166,7 @@ def render_convocatorias():
 def render_aplicantes():
     return render_template('empresaAplicantes.html')
 
-
+# ----------------------------- pregrado ----------------------------------------
 @app.app.route('/pregrado')
 def render_pregrado():
     return render_template('pregradoBase.html')

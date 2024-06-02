@@ -1,7 +1,6 @@
 function add_libro(){
-    document.getElementById("return_button").style.display = "block"; // renderizar boton de volver
-    document.getElementById("tabla_libros").innerHTML = "<iframe src=''></iframe>";
-    // fetch(`/bibliotecario/libros/crear?id=`)
+    document.getElementById("formulario_libro").style.display = "block"; // renderizar boton de volver
+    document.getElementById("tabla_libros").style.display = "none"; // Ocultar tabla de libros
 }
 
 function eliminar_libro(id_libro){

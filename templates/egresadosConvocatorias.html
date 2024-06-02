@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}" type="text/css" />
+
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{url_for('static', filename='js/añadir_onclick.js')}}"></script>
+
+{% extends 'biblioBase.html' %}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+{% block content %}
+
+<div class="flexcontainer" id="tabla_libros">
+  {% if mensaje %}
+    <span class="error_message">
+      {{ mensaje }}
+    </span>
+  {% endif %}
+  <h1>Convocatorias Aplicadas</h1>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Empresa</th>
+        <th>Cargo</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for libro in datos_libros %}
+      <tr>
+        <td>{{ libro['lib_id_libro'] }}</td>
+        <td>{{ libro['lib_titulo'] }}</td>
+        <td>{{ libro['lib_biblioteca'] }}</td>
+        <td class="transaction-actions">
+          <a
+            class="btn btn-sm btn-danger"
+            id="delete_button"
+            onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+            >Delete</a
+          >
+          <a
+          class="btn btn-sm btn-danger"
+          id="delete_button"
+          onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+          >Mas Info</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+    <button onclick="add_libro()" class="waves-effect waves-light btn">
+      Aplicar Nueva Convocatoria
+    </button >
+</div>
+<div id="formulario_libro" style="display: none;" class="flexcontainer">
+  {% if mensaje %}
+    <span class="error_message">
+      {{ mensaje }}
+    </span>
+  {% endif %}
+  <h1>Convocatorias Disponibles</h1>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Empresa</th>
+        <th>Cargo</th>
+        <th>Salario</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for libro in datos_libros %}
+      <tr>
+        <td>{{ libro['lib_id_libro'] }}</td>
+        <td>{{ libro['lib_titulo'] }}</td>
+        <td>{{ libro['lib_biblioteca'] }}</td>
+        <td class="transaction-actions">
+          <a
+            class="btn btn-sm btn-danger"
+            id="delete_button"
+            onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+            >Aplicar</a
+          >
+          <a
+          class="btn btn-sm btn-danger"
+          id="delete_button"
+          onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+          >Mas Info</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    <a href="/egresados/convocatorias" class="waves-effect waves-light btn">Return</a>
+</div>
+{% endblock content %}

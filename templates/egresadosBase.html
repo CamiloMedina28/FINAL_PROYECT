@@ -1,41 +1,38 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/baseBibliotecario/baseEgresado.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioBase/biblioBase.css') }}" type="text/css" />
 <script src="{{ url_for('static', filename='js/dropDown.js') }}"></script>
 {% extends 'base.html' %}
 
 {% block nav %}
-<li class="dropdown">
-    <button class="dropbtn" onclick="myFunction()">Dropdown
+<div class="navbar">
+    <a href="/egresados">Inicio</a>
+    <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">
+            Informacion
         <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content" id="myDropdown">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+            <a href="/egresados/DatosPersonales">Personal</a>
+            <a href="#">Academica</a>
+            <a href="#">Laboral</a>
+        </div>
     </div>
-</li> 
-<li><a href="/">Inicio</a></li>
-<li><a href="/logout_user">Cerrar Sesión</a></li>
-
-<script>
-    /* When the user clicks on the button, 
-    toggle between hiding and showing the dropdown content */
-    function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-    }
-    
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function(e) {
-    if (!e.target.matches('.dropbtn')) {
-    var myDropdown = document.getElementById("myDropdown");
-        if (myDropdown.classList.contains('show')) {
-        myDropdown.classList.remove('show');
-        }
-    }
-    }
-</script>
+    <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction2()">
+            Servicios
+        <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown2">
+            <a href="/egresados/convocatorias">Convocatorias</a>
+            <a href="#">Asesorias</a>
+            <a href="#">Prestamos</a>
+            <a href="#">Carnetizacion</a>
+        </div>
+    </div>
+    <a href="/logout_user">Cerrar Sesión</a>
+</div>
 
 {% endblock nav %} 
 
-{% block content %} 
+{% block content %}
 
 {% endblock content %}

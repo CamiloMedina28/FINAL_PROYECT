@@ -1,7 +1,84 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}" type="text/css" />
+
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{url_for('static', filename='js/añadir_onclick.js')}}"></script>
+
 {% extends 'biblioBase.html' %}
 {% block nav %}
 {{super()}}
 {% endblock nav %}
 {% block content %}
-este es el prestamo
+
+<div class="flexcontainer" id="tabla_libros">
+    {% if mensaje %}
+    <span class="error_message">
+    {{ mensaje }}
+    </span>
+    {% endif %}
+<h1>Registros de prestamos</h1>
+
+<table class="striped">
+    <thead>
+    <tr>
+        <th>Documento</th>
+        <th>Id Libro</th>
+        <th>Fecha prestamo</th>
+        <th>Fecha Vebcimiento</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for libro in datos_libros %}
+    <tr>
+        <td>{{ libro['lib_id_libro'] }}</td>
+        <td>{{ libro['lib_titulo'] }}</td>
+        <td>{{ libro['lib_biblioteca'] }}</td>
+        <td>{{ libro['lib_autor'] }}</td>
+        <td>{{ libro['lib_estante'] }}</td>
+        <td class="transaction-actions">
+        <a
+            class="btn btn-sm btn-danger"
+            id="delete_button"
+            onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+            >Delete</a
+        >
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <button onclick="add_libro()" class="waves-effect waves-light btn">
+    AÑADIR REGISTRO
+    </button >
+</div>
+<div id="formulario_libro" style="display: none;" class="form-container">
+    <form id="nuevo_libro_form">
+    <h1>Añadir prestamo</h1>
+    <div class="input-field">
+    <label for="titulo">Documento</label>
+    <input type="text" id="titulo" name="titulo" required>
+    </div>
+    <div class="input-field">
+    <label for="biblioteca">Id Libro</label>
+    <input type="text" id="biblioteca" name="biblioteca" required>
+    </div>
+    <div class="input-field">
+    <label for="autor">Fecha prestamo</label>
+    <input type="text" id="autor" name="autor" required>
+    </div>
+    <div class="input-field">
+    <label for="estante">Fecha Vencimiento</label>
+    <input type="text" id="estante" name="estante" required>
+    </div>
+    <div class="form-footer">
+    <button type="submit" class="waves-effect waves-light btn">Guardar</button>
+    <a href="/bibliotecario/prestamo" class="waves-effect waves-light btn">Return</a>
+    </div>
+</form>
+</div>
 {% endblock content %}
