@@ -130,7 +130,7 @@ def eliminar_libro():
     libros.acciones_libros.delete_book(id_libro)
     return redirect('/bibliotecario/libros')
 
-@app.app.route('/bibliotecario/libros')
+@app.app.route('/bibliotecario/libros', methods = ['POST', 'GET'])
 @login_required
 def render_libros():
     info_libros = libros.acciones_libros.read_book()
@@ -142,6 +142,17 @@ def render_libros():
 @app.app.route('/bibliotecario/libros/crear')
 @login_required
 def crear_libro():
+    print("Hello")
+    id_libro = request.args.get('id')
+    titulo = request.args.get('titulo')
+    biblioteca = request.args.get('biblioteca')
+    autor = request.args.get('autor')
+    estante = request.args.get('estante')
+    libros.acciones_libros.crear_libro(id_libro,
+                                       titulo,
+                                       biblioteca,
+                                       autor,
+                                       estante)
     return render_template('biblioLibros.html')
 
 # ----------------bibliotecario - prestamo

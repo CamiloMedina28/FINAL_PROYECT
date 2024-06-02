@@ -9,3 +9,12 @@ function eliminar_libro(id_libro){
         fetch(`/bibliotecario/libros/eliminar?id=${id_libro}`)
     }
 }
+
+function send_info_book(){
+    var id = document.getElementById('id').value;
+    var titulo = document.getElementById('titulo').value;
+    var biblioteca = document.getElementById('biblioteca').value;
+    var autor = document.getElementById('autor').value;
+    var estante = document.getElementById('estante').value;
+    fetch(`/bibliotecario/libros/crear?id=${id}&titulo=${titulo}&biblioteca=${biblioteca}&autor=${autor}&estante=${estante}`)
+}
