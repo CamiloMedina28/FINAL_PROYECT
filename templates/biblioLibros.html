@@ -15,9 +15,14 @@
 {% block content %}
 
 <div class="flexcontainer" id="tabla_libros">
-  {% if mensaje %}
+  {% if mensaje_error %}
     <span class="error_message">
-      {{ mensaje }}
+      {{ mensaje_error }}
+    </span>
+  {% endif %}
+  {% if mensaje_success %}
+    <span class="success_message">
+      {{ mensaje_success }}
     </span>
   {% endif %}
   <h1>Registros de libros</h1>

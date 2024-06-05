@@ -14,11 +14,16 @@
 {% endblock nav %}
 {% block content %}
 
-<div class="flexcontainer" id="tabla_libros">
-    {% if mensaje %}
-    <span class="error_message">
-    {{ mensaje }}
-    </span>
+<div class="flexcontainer" id="tabla_prestamos">
+    {% if mensaje_error %}
+        <span class="error_message">
+            {{ mensaje_error }}
+        </span>
+    {% endif %}
+    {% if mensaje_success %}
+        <span class="error_message">
+            {{ mensaje_success }}
+        </span>
     {% endif %}
 <h1>Registros de prestamos</h1>
 
@@ -28,22 +33,22 @@
         <th>Documento</th>
         <th>Id Libro</th>
         <th>Fecha prestamo</th>
-        <th>Fecha Vebcimiento</th>
+        <th>Fecha Vencimiento</th>
     </tr>
     </thead>
     <tbody>
-    {% for libro in datos_libros %}
+    {% for prestamo in prestamos %}
     <tr>
         <td>{{ libro['lib_id_libro'] }}</td>
         <td>{{ libro['lib_titulo'] }}</td>
         <td>{{ libro['lib_biblioteca'] }}</td>
         <td>{{ libro['lib_autor'] }}</td>
-        <td>{{ libro['lib_estante'] }}</td>
+
         <td class="transaction-actions">
         <a
             class="btn btn-sm btn-danger"
             id="delete_button"
-            onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
+            onclick=""
             >Delete</a
         >
         </td>
@@ -52,29 +57,22 @@
     </tbody>
     </table>
 
-    <button onclick="add_libro()" class="waves-effect waves-light btn">
+    <button onclick="add_prestamo()" class="waves-effect waves-light btn">
     AÑADIR REGISTRO
     </button >
 </div>
-<div id="formulario_libro" style="display: none;" class="form-container">
+<div id="formulario_prestamo" style="display: none;" class="form-container">
     <form id="nuevo_libro_form">
     <h1>Añadir prestamo</h1>
     <div class="input-field">
-    <label for="titulo">Documento</label>
-    <input type="text" id="titulo" name="titulo" required>
+    <label for="documento">Documento</label>
+    <input type="text" id="documento" name="documento" required>
     </div>
     <div class="input-field">
-    <label for="biblioteca">Id Libro</label>
-    <input type="text" id="biblioteca" name="biblioteca" required>
+    <label for="id_libro">Id Libro</label>
+    <input type="text" id="id_libro" name="id_libro" required>
     </div>
-    <div class="input-field">
-    <label for="autor">Fecha prestamo</label>
-    <input type="text" id="autor" name="autor" required>
-    </div>
-    <div class="input-field">
-    <label for="estante">Fecha Vencimiento</label>
-    <input type="text" id="estante" name="estante" required>
-    </div>
+    
     <div class="form-footer">
     <button type="submit" class="waves-effect waves-light btn">Guardar</button>
     <a href="/bibliotecario/prestamo" class="waves-effect waves-light btn">Return</a>

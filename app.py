@@ -127,8 +127,12 @@ def render_inicioBiblio():
 @login_required
 def eliminar_libro():
     id_libro = request.args.get('id')
-    libros.acciones_libros.delete_book(id_libro)
-    return redirect('/bibliotecario/libros')
+    resultado = libros.acciones_libros.delete_book(id_libro)
+    if resultado[0] == 1:
+        return redirect('/bibliotecario/libros', mensaje_error = "Error en la inserción del dato en la base de datos.")
+    else:
+        return redirect('/bibliotecario/libros', mensaje_success = "Dato ingresado correctamente en la base de datos.")
+
 
 @app.app.route('/bibliotecario/libros', methods = ['POST', 'GET'])
 @login_required
@@ -159,7 +163,19 @@ def crear_libro():
 @app.app.route('/bibliotecario/prestamo')
 @login_required
 def render_prestamo():
-    return render_template('biblioPrestamo.html')
+    prestamos = libros.prestamo_libros.ver_prestamos()
+    return render_template('biblioPrestamo.html', prestamos = prestamos)
+
+@app.app.route('/bibliotecario/prestamo/agregarprestamo')
+@login_required
+def agregar_libro():
+    documento = int(request.args.get('documento'))
+    id_libro = int(request.args.get('id_libro'))
+    agregar_libro = libros.prestamo_libros.ingresar_prestamo(documento, id_libro)
+    if agregar_libro[0] == 1:
+        return redirect('/bibliotecario/prestamo', mensaje_error = agregar_libro[1])
+    else:
+        return redirect('/bibliotecario/prestamo', mensaje_success = agregar_libro[1])
 
 
 # ----------------------------- empresa ----------------------------------------
