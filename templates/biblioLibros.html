@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}"
+  type="text/css" />
 
 <!-- IMPORTACIONES DE MATERIALIZE -->
 <!-- Compiled and minified CSS -->
@@ -16,14 +17,14 @@
 
 <div class="flexcontainer" id="tabla_libros">
   {% if mensaje_error %}
-    <span class="error_message">
-      {{ mensaje_error }}
-    </span>
+  <span class="error_message">
+    {{ mensaje_error }}
+  </span>
   {% endif %}
   {% if mensaje_success %}
-    <span class="success_message">
-      {{ mensaje_success }}
-    </span>
+  <span class="success_message">
+    {{ mensaje_success }}
+  </span>
   {% endif %}
   <h1>Registros de libros</h1>
 
@@ -47,21 +48,17 @@
         <td>{{ libro['lib_autor'] }}</td>
         <td>{{ libro['lib_estante'] }}</td>
         <td class="transaction-actions">
-          <a
-            class="btn btn-sm btn-danger"
-            id="delete_button"
-            onclick="eliminar_libro({{ libro['lib_id_libro'] }})"
-            >Delete</a
-          >
+          <a class="btn btn-sm btn-danger" id="delete_button"
+            onclick="eliminar_libro({{ libro['lib_id_libro'] }})">Delete</a>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-    <button onclick="add_libro()" class="waves-effect waves-light btn">
-      AÑADIR REGISTRO
-    </button >
+  <button onclick="add_libro()" class="waves-effect waves-light btn">
+    AÑADIR REGISTRO
+  </button>
 </div>
 <div id="formulario_libro" style="display: none;" class="form-container">
   <form id="nuevo_libro_form">
