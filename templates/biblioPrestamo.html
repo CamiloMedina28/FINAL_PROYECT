@@ -1,82 +1,85 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}" type="text/css" />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}"
+  type="text/css"
+/>
 
 <!-- IMPORTACIONES DE MATERIALIZE -->
 <!-- Compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script src="{{url_for('static', filename='js/añadir_onclick.js')}}"></script>
 
-{% extends 'biblioBase.html' %}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
+{% extends 'biblioBase.html' %} {% block nav %} {{super()}} {% endblock nav %}
 {% block content %}
 
 <div class="flexcontainer" id="tabla_prestamos">
-    {% if mensaje_error %}
-        <span class="error_message">
-            {{ mensaje_error }}
-        </span>
-    {% endif %}
-    {% if mensaje_success %}
-        <span class="error_message">
-            {{ mensaje_success }}
-        </span>
-    {% endif %}
-<h1>Registros de prestamos</h1>
+  {% if mensaje_error %}
+  <span class="error_message"> {{ mensaje_error }} </span>
+  {% endif %} {% if mensaje_success %}
+  <span class="error_message"> {{ mensaje_success }} </span>
+  {% endif %}
+  <h1>Registros de prestamos</h1>
 
-<table class="striped">
+  <table class="striped">
     <thead>
-    <tr>
+      <tr>
         <th>Documento</th>
         <th>Id Libro</th>
         <th>Fecha prestamo</th>
         <th>Fecha Vencimiento</th>
-    </tr>
+      </tr>
     </thead>
     <tbody>
-    {% for prestamo in prestamos %}
-    <tr>
-        <td>{{ libro['lib_id_libro'] }}</td>
-        <td>{{ libro['lib_titulo'] }}</td>
-        <td>{{ libro['lib_biblioteca'] }}</td>
-        <td>{{ libro['lib_autor'] }}</td>
+      {% for prestamo in prestamos %}
+      <tr>
+        <td>{{ prestamo['pre_egr_numero_documento_identidad'] }}</td>
+        <td>{{ prestamo['pre_lib_id'] }}</td>
+        <td>{{ prestamo['pre_fecha_prestamo'] }}</td>
+        <td>{{ prestamo['pre_fecha_vencimiento'] }}</td>
 
         <td class="transaction-actions">
-        <a
+          <a
             class="btn btn-sm btn-danger"
             id="delete_button"
-            onclick=""
+            onclick="eliminar_prestamo({{prestamo['pre_egr_numero_documento_identidad']}},{{ prestamo['pre_lib_id']}})"
             >Delete</a
-        >
+          >
         </td>
-    </tr>
-    {% endfor %}
+      </tr>
+      {% endfor %}
     </tbody>
-    </table>
+  </table>
 
-    <button onclick="add_prestamo()" class="waves-effect waves-light btn">
+  <button onclick="add_prestamo()" class="waves-effect waves-light btn">
     AÑADIR REGISTRO
-    </button >
+  </button>
 </div>
-<div id="formulario_prestamo" style="display: none;" class="form-container">
-    <form id="nuevo_libro_form">
+<div id="formulario_prestamo" style="display: none" class="form-container">
+  <form id="nuevo_libro_form">
     <h1>Añadir prestamo</h1>
     <div class="input-field">
-    <label for="documento">Documento</label>
-    <input type="text" id="documento" name="documento" required>
+      <label for="documento">Documento</label>
+      <input type="text" id="documento" name="documento" required />
     </div>
     <div class="input-field">
-    <label for="id_libro">Id Libro</label>
-    <input type="text" id="id_libro" name="id_libro" required>
+      <label for="id_libro">Id Libro</label>
+      <input type="text" id="id_libro" name="id_libro" required />
     </div>
-    
+
     <div class="form-footer">
-    <button type="submit" class="waves-effect waves-light btn">Guardar</button>
-    <a href="/bibliotecario/prestamo" class="waves-effect waves-light btn">Return</a>
+      <button type="submit" class="waves-effect waves-light btn">
+        Guardar
+      </button>
+      <a href="/bibliotecario/prestamo" class="waves-effect waves-light btn"
+        >Return</a
+      >
     </div>
-</form>
+  </form>
 </div>
 {% endblock content %}
