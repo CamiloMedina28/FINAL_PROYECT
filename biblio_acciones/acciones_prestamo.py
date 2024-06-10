@@ -38,14 +38,12 @@ def read_loan() -> None:
             return (1, f"Error en la obtención de información {str(error)}")
 
 
-def create_loan(documento_egresado: int, id_libro: int, fecha_prestamo: str, fecha_vencimiento: str) -> tuple:
-    """Funció para la inserción de prestamos en la base de datos
+def create_loan(documento_egresado: int, id_libro: int) -> tuple:
+    """Función para la inserción de prestamos en la base de datos
 
     Args:
         documento_egresado (int): Identificador único del egresado
         id_libro (int): Identificador único del libro.
-        fecha_prestamo (str): Momento en que se realiza el préstamo del libro
-        fecha_vencimiento (str):Momento en que se vence el préstamo del libro
 
     Returns:
         tuple: tupla con el código de error y mensaje
@@ -58,9 +56,9 @@ def create_loan(documento_egresado: int, id_libro: int, fecha_prestamo: str, fec
         try:
             with conexion.cursor() as cursor:
                 cursor.callproc('insertar_prestamo_datos',
-                                (documento_egresado, id_libro, fecha_prestamo, fecha_vencimiento))
+                                (documento_egresado, id_libro))
                 conexion.commit()
         except Exception as error:
             return (1, f"Error en la inserción de los datos {str(error)}")
         else:
-            (0, "El dato ha sido ingresado con exito en la base de datos.")
+            return (0, "El dato ha sido ingresado con exito en la base de datos.")

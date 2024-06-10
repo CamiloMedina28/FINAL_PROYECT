@@ -7,7 +7,12 @@ function eliminar_libro(id_libro) {
   let confirmacion =
     "¿Está seguro que desea eliminar el libro con id " + id_libro + "?";
   if (confirm(confirmacion)) {
-    fetch(`/bibliotecario/libros/eliminar?id=${id_libro}`);
+    fetch(`/bibliotecario/libros/eliminar?id=${id_libro}`)
+    .then(response => response.text())
+    .then(data => {
+      alert(data);
+      window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
+    });
   }
 }
 
@@ -19,7 +24,11 @@ function send_info_book() {
   var estante = document.getElementById("estante").value;
   fetch(
     `/bibliotecario/libros/crear?id=${id}&titulo=${titulo}&biblioteca=${biblioteca}&autor=${autor}&estante=${estante}`
-  );
+  ).then(response => response.text())
+  .then(data => {
+    alert(data);
+    window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
+  });
 }
 
 function add_prestamo() {
@@ -31,20 +40,23 @@ function send_info_loan() {
   var documento = document.getElementById("documento").value;
   var id_libro = document.getElementById("id_libro").value;
   fetch(
-    `/bibliotecario/prestamo/agregarprestamo?documento=${documento}&id_libro=${id_libro}`
-  );
+    `/bibliotecario/prestamo/crear?documento=${documento}&id_libro=${id_libro}`
+  ).then(response => response.text())
+  .then(data => {
+    alert(data);
+  });
 }
 
-function eliminar_prestamo(documento, id_libro) {
-  let confirmacion =
-    "¿Está seguro que desea eliminar el préstamo del egresado" +
-    documento +
-    "para el libro id " +
-    id_libro +
-    "?";
-  if (confirm(confirmacion)) {
-    fetch(
-      `/bibliotecario/prestamo/eliminar?documento=${documento}&id_libro=${id_libro}`
-    );
-  }
-}
+// function eliminar_prestamo(documento, id_libro) {
+//   let confirmacion =
+//     "¿Está seguro que desea eliminar el préstamo del egresado" +
+//     documento +
+//     "para el libro id " +
+//     id_libro +
+//     "?";
+//   if (confirm(confirmacion)) {
+//     fetch(
+//       `/bibliotecario/prestamo/eliminar?documento=${documento}&id_libro=${id_libro}`
+//     );
+//   }
+// }

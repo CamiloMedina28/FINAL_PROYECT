@@ -19,11 +19,6 @@
 {% block content %}
 
 <div class="flexcontainer" id="tabla_prestamos">
-  {% if mensaje_error %}
-  <span class="error_message"> {{ mensaje_error }} </span>
-  {% endif %} {% if mensaje_success %}
-  <span class="error_message"> {{ mensaje_success }} </span>
-  {% endif %}
   <h1>Registros de prestamos</h1>
 
   <table class="striped">
@@ -73,7 +68,7 @@
     </div>
 
     <div class="form-footer">
-      <button type="submit" class="waves-effect waves-light btn">
+      <button type="submit" class="waves-effect waves-light btn" onclick="send_info_loan()">
         Guardar
       </button>
       <a href="/bibliotecario/prestamo" class="waves-effect waves-light btn"

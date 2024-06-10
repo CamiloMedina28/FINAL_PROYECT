@@ -16,6 +16,7 @@ def delete_book(id: int) -> None:
             with conexion.cursor() as cursor:
                 cursor.callproc('borrar_libro_datos', id)
                 conexion.commit()
+            return (0, "El registro ha sido eliminado con éxito.")
         except Exception as error:
             return (1, f"Error al eliminar libros en la base de datos {str(error)}")
 

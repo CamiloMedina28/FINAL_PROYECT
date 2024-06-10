@@ -17,7 +17,9 @@ client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
 db = client['mongo']
 
 tabla_permisos = {
-    'Administrador': []
+    'Administrador': ['eliminar-libros', 'ver-libros'],
+    'Bibliotecario': ['eliminar-libros', 'ver-libros'],
+    'Egresado' : ['ver-libros']
 }
 
 
@@ -138,55 +140,51 @@ def render_inicioBiblio():
 @app.app.route('/bibliotecario/libros/eliminar')
 @login_required
 def eliminar_libro():
-    id_libro = request.args.get('id')
-    resultado = biblio.acciones_libros.delete_book(id_libro)
-    if resultado[0] == 1:
-        return redirect('/bibliotecario/libros', mensaje_error="Error en la inserción del dato en la base de datos.")
+    if 'eliminar-libros' in tabla_permisos[session['rol_usuario']]:
+        id_libro = request.args.get('id')
+        resultado = biblio.acciones_libros.delete_book(id_libro)
+        return resultado[1]
     else:
-        return redirect('/bibliotecario/libros', mensaje_success="Dato ingresado correctamente en la base de datos.")
+        return redirect('/logout_user')
 
 
 @app.app.route('/bibliotecario/libros', methods=['POST', 'GET'])
 @login_required
 def render_libros():
-    info_libros = biblio.acciones_libros.read_book()
-    if info_libros[0] == 1:
-        return render_template('biblioLibros.html', mensaje=info_libros[1])
+    if 'ver-libros' in tabla_permisos[session['rol_usuario']]:
+        info_libros = biblio.acciones_libros.read_book()
+        if info_libros[0] == 1:
+            return render_template('biblioLibros.html', mensaje=info_libros[1])
+        else:
+            return render_template('biblioLibros.html', datos_libros=info_libros[1])
     else:
-        return render_template('biblioLibros.html', datos_libros=info_libros[1])
+        return redirect('/logout_user')
 
 
 @app.app.route('/bibliotecario/libros/crear')
 @login_required
 def crear_libro():
-    print("Hello")
     id_libro = request.args.get('id')
     titulo = request.args.get('titulo')
     biblioteca = request.args.get('biblioteca')
     autor = request.args.get('autor')
     estante = request.args.get('estante')
-    biblio.acciones_libros.create_book(id_libro,
+    resultado = biblio.acciones_libros.create_book(id_libro,
                                        titulo,
                                        biblioteca,
                                        autor,
                                        estante)
-    return render_template('biblioLibros.html')
+    return resultado[1]
 
 # ----------------bibliotecario - prestamo
 
-
-@app.app.route('/bibliotecario/prestamo/eliminar')
-@login_required
-def eliminar_prestamo():
-    documento = request.args.get('documento')
-    print(documento)
-    id_libro = request.args.get('id_libro')
-    print(id_libro)
-    resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
-    if resultado[0] == 1:
-        return redirect('/bibliotecario/prestamo', mensaje_error="Error en la inserción del dato en la base de datos.")
-    else:
-        return redirect('/bibliotecario/prestamo', mensaje_success="Dato ingresado correctamente en la base de datos.")
+# @app.app.route('/bibliotecario/prestamo/eliminar')
+# @login_required
+# def eliminar_prestamo():
+#     documento = request.args.get('documento')
+#     id_libro = request.args.get('id_libro')
+#     resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
+#     return resultado[1]
 
 
 @app.app.route('/bibliotecario/prestamo', methods=['POST', 'GET'])
@@ -202,16 +200,11 @@ def render_prestamo():
 @app.app.route('/bibliotecario/prestamo/crear')
 @login_required
 def crear_prestamo():
-    documento = int(request.args.get('documento_egresado'))
+    documento = int(request.args.get('documento'))
     id_libro = int(request.args.get('id_libro'))
-    fecha_prestamo = str(request.args.get('fecha_prestamo'))  # 'YYYY-MM-DD'
-    fecha_vencimiento = str(request.args.get('fecha_vencimiento'))
-    biblio.acciones_prestamo.create_loan(documento,
-                                         id_libro,
-                                         fecha_prestamo,
-                                         fecha_vencimiento)
-    return render_template('biblioPrestamo.html')
-
+    insercion_resultado = biblio.acciones_prestamo.create_loan(documento, id_libro)
+    print(insercion_resultado[1])
+    return insercion_resultado[1]
 
 # ----------------------------- empresa ----------------------------------------
 @app.app.route('/empresa')
