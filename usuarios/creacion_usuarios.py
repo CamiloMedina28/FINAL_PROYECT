@@ -23,12 +23,11 @@ query_existencia_documento = 'SELECT * FROM Usuarios WHERE usr_documento = %s;'
 query_existencia_nombre_de_usuario = 'SELECT * FROM Usuarios WHERE usr_username = %s;'
 cursor.execute(query_existencia_nombre_de_usuario, [username])
 if cursor.fetchone():
-    raise ValueError("El nombre de usuario ya se encuentra registrado en la base de datos.")
-    
+    raise ValueError(
+        "El nombre de usuario ya se encuentra registrado en la base de datos.")
 
-cursor.execute("INSERT INTO Usuarios VALUES(%s,%s,%s,'Administrador');", (documento, username, user_password))
+
+cursor.execute("INSERT INTO Usuarios VALUES(%s,%s,%s,'Administrador');",
+               (documento, username, user_password))
 coneccion.commit()
 cursor.close()
-
-
-

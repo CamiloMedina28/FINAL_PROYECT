@@ -8,11 +8,11 @@ function eliminar_libro(id_libro) {
     "¿Está seguro que desea eliminar el libro con id " + id_libro + "?";
   if (confirm(confirmacion)) {
     fetch(`/bibliotecario/libros/eliminar?id=${id_libro}`)
-    .then(response => response.text())
-    .then(data => {
-      alert(data);
-      window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
-    });
+      .then((response) => response.text())
+      .then((data) => {
+        alert(data);
+        window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
+      });
   }
 }
 
@@ -24,11 +24,12 @@ function send_info_book() {
   var estante = document.getElementById("estante").value;
   fetch(
     `/bibliotecario/libros/crear?id=${id}&titulo=${titulo}&biblioteca=${biblioteca}&autor=${autor}&estante=${estante}`
-  ).then(response => response.text())
-  .then(data => {
-    alert(data);
-    window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
-  });
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+      window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
+    });
 }
 
 function add_prestamo() {
@@ -41,10 +42,11 @@ function send_info_loan() {
   var id_libro = document.getElementById("id_libro").value;
   fetch(
     `/bibliotecario/prestamo/crear?documento=${documento}&id_libro=${id_libro}`
-  ).then(response => response.text())
-  .then(data => {
-    alert(data);
-  });
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
 }
 
 // function eliminar_prestamo(documento, id_libro) {

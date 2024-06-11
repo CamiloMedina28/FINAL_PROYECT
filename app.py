@@ -11,15 +11,17 @@ from flask import session
 from pymongo import MongoClient
 import egresados as egr
 import biblio_acciones as biblio
+import pregra_acciones as pregrado
 
 app.instanciate_app(__name__)
 client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
 db = client['mongo']
 
 tabla_permisos = {
-    'Administrador': ['eliminar-libros', 'ver-libros'],
+    'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado'],
     'Bibliotecario': ['eliminar-libros', 'ver-libros'],
-    'Egresado' : ['ver-libros']
+    'Egresado': ['ver-libros'],
+    'Pregrado': ['ver-pregrado']
 }
 
 
@@ -170,10 +172,10 @@ def crear_libro():
     autor = request.args.get('autor')
     estante = request.args.get('estante')
     resultado = biblio.acciones_libros.create_book(id_libro,
-                                       titulo,
-                                       biblioteca,
-                                       autor,
-                                       estante)
+                                                   titulo,
+                                                   biblioteca,
+                                                   autor,
+                                                   estante)
     return resultado[1]
 
 # ----------------bibliotecario - prestamo
@@ -202,11 +204,14 @@ def render_prestamo():
 def crear_prestamo():
     documento = int(request.args.get('documento'))
     id_libro = int(request.args.get('id_libro'))
-    insercion_resultado = biblio.acciones_prestamo.create_loan(documento, id_libro)
+    insercion_resultado = biblio.acciones_prestamo.create_loan(
+        documento, id_libro)
     print(insercion_resultado[1])
     return insercion_resultado[1]
 
 # ----------------------------- empresa ----------------------------------------
+
+
 @app.app.route('/empresa')
 def render_empresa():
     return render_template('empresaBase.html')
@@ -226,12 +231,24 @@ def render_aplicantes():
 
 @app.app.route('/pregrado')
 def render_pregrado():
-    return render_template('pregradoBase.html')
+    return render_template('pregradoIndex.html')
 
 
-@app.app.route('/pregrado/asesoria')
-def render_asesoria():
-    return render_template('pregradoAsesoria.html')
+@app.app.route('/pregrado/asesoria/<int:id>', methods=['POST', 'GET'])
+@login_required
+def render_asesoria(id):
+    if 'ver-pregrado' in tabla_permisos[session['rol_usuario']]:
+        info_pregrado = pregrado.pregrado_acciones.read_student(id)
+        print(info_pregrado)
+        if info_pregrado[0] == 1:
+            return render_template('pregradoAsesoria.html', mensaje=info_pregrado[1])
+        else:
+            if len(info_pregrado[1]):
+                return render_template('pregradoAsesoria.html', datos_pregrado=info_pregrado[1])
+            else:
+                return render_template('pregradoAsesoria.html', datos_pregrados=info_pregrado[1])
+    else:
+        return redirect('/logout_user')
 
 
 if __name__ == '__main__':
