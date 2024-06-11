@@ -1,7 +1,79 @@
-{% extends 'pregradoBase.html' %}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/pregrado/pregradoAsesoria.css') }}"
+  type="text/css" />
+
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{url_for('static', filename='js/añadir_onclick.js')}}"></script>
+
+{% extends 'pregradoBase.html' %} {% block nav %} {{super()}} {% endblock nav %}
 {% block content %}
-esto es asesoria
+<div class="flexcontainer" id="tabla_asesoria">
+  {% if mensaje_error %}
+  <span class="error_message"> {{ mensaje_error }} </span>
+  {% endif %} {% if mensaje_success %}
+  <span class="success_message"> {{ mensaje_success }} </span>
+  {% endif %}
+
+  <h1>Estudiante pregrado</h1>
+</div>
+<div id="formulario_pregrado" class="form-container">
+  <form id="pregrado_form">
+    <h1>Realizar solicitud asesoría</h1>
+    <div class="input-field">
+      <label for="id">Identificación</label>
+      <input type="text" id="id" name="id" required />
+    </div>
+    <div class="input-field">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required />
+    </div>
+    <div class="input-field">
+      <label for="primer_apellido">Primer apellido</label>
+      <input type="text" id="primer_apellido" name="primer_apellido" required />
+    </div>
+    <div class="input-field">
+      <label for="segundo_apellido">Segundo apellido</label>
+      <input type="text" id="segundo_apellido" name="segundo_apellido" required />
+    </div>
+    <div class="input-field">
+      <label for="facultad">Facultad </label>
+      <input type="text" id="facultad" name="facultad" required />
+    </div>
+    <div class="input-field">
+      <label for="carrera">Carrera </label>
+      <input type="text" id="carrera" name="carrera" required />
+    </div>
+    <div class="input-field">
+      <label for="admision_especial">Admisión especial </label>
+      <select name="admision_especial" id="admision_especial">
+        <option value="paes">Paes</option>
+        <option value="peama">Peama</option>
+      </select>
+    </div>
+  </form>
+</div>
+{% if datos_pregrado %}
+holi
+
+{% for pregrado in datos_pregrado %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('id').value = "{{ pregrado['est_pre_numero_de_identificacion'] }}";
+    document.getElementById('nombre').value = "{{ pregrado['est_pre_nombre'] }}";
+    document.getElementById('primer_apellido').value = "{{ pregrado['est_pre_primer_apellido'] }}";
+    document.getElementById('segundo_apellido').value = "{{ pregrado['est_pre_segundo_apellido'] }}";
+    document.getElementById('facultad').value = "{{ pregrado['est_pre_facultad'] }}";
+    document.getElementById('carrera').value = "{{ pregrado['est_pre_carrera'] }}";
+    document.getElementById('admision_especial').value = "{{ pregrado[est_pre_admision_especial] }}";
+
+  });
+</script>
+
+{% endfor %}
+{% endif %}
 {% endblock content %}

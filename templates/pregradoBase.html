@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
-
 {% block nav %}
 <li><a href="/pregrado">Inicio</a></li>
-<li><a href="/pregrado/asesoria">Asesoria</a></li>
-<li>Cerrar Sesión</li>
+<li><a href="/pregrado/asesoria/2000000001">Asesoria</a></li>
+<li><a href="/logout_user">Cerrar Sesión</a></li>
 {% endblock nav %}
 
-{% include 'index.html' %}
 {% block content %}
-{{super()}}
-{% endblock content %}
+
+{%endblock content %}
