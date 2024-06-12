@@ -1,33 +1,22 @@
-import conectar_db as connect
+# import conectar_db as connect
+from . import conectar_db as connect
 from werkzeug.security import generate_password_hash
 
-coneccion = connect.conexion()
-cursor = coneccion.cursor()
-
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Usuarios(
-	usr_documento INT NOT NULL PRIMARY KEY, 
-    usr_username VARCHAR(45) NOT NULL, 
-    usr_password TEXT, 
-    usr_role VARCHAR(45)
-);
-""")
-
-documento = input('Ingrese el número de documento de identidad: ')
-username = input('Ingrese el nombre de usuario: ')
-password = input('Ingrese la contraseña: ')
-user_password = generate_password_hash(password)
-
-query_existencia_documento = 'SELECT * FROM Usuarios WHERE usr_documento = %s;'
-
-query_existencia_nombre_de_usuario = 'SELECT * FROM Usuarios WHERE usr_username = %s;'
-cursor.execute(query_existencia_nombre_de_usuario, [username])
-if cursor.fetchone():
-    raise ValueError(
-        "El nombre de usuario ya se encuentra registrado en la base de datos.")
+conexion = connect.conexion_base_de_datos()
 
 
-cursor.execute("INSERT INTO Usuarios VALUES(%s,%s,%s,'Administrador');",
-               (documento, username, user_password))
-coneccion.commit()
-cursor.close()
+def create_temporal_user(rol, documento, user_name, password):
+    with conexion.cursor() as cursor:
+        query_existencia_1 = "SELECT * FROM Usuarios_por_autorizar WHERE usr_aut_documento = %s;"
+        query_existencia_2 = "SELECT * FROM Usuarios WHERE usr_documento = %s;"
+        cursor.execute(query_existencia_1, (str(documento),))
+        if cursor.fetchone():
+            return "El usuario se encuentra a la espera de aprobación."
+        cursor.execute(query_existencia_2, (documento,))
+        if cursor.fetchone():
+            return "El usuario ya existe en la base de datos."
+        # Creación del hash con la contraseña del usuario.
+        user_password = generate_password_hash(password)
+        cursor.callproc('Ingresar_usuario_por_autorizar', (documento, rol, user_name, user_password))
+        conexion.commit()
+        return "El usuario ha enviado su solicitud para ingresar a la base de datos, esperando aprobación."

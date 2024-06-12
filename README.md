@@ -16,5 +16,5 @@ Se pretende desarrollar un sistema de infrmación, a través del cual los estudi
 
 **Client:** Python, SCSS, CSS, HTML, JAVASCRIPT, MYSQL
 
-**Server:** AWS EC2, AWS RDS
+
 

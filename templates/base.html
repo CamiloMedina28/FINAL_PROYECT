@@ -12,7 +12,9 @@
 <body>
     <div class="barra-navegacion container">
         <div class="imagen">
-            <img src="{{ url_for('static', filename='img/unal2.png') }}" alt="logo unal">
+            <a href="/">
+                <img src="{{ url_for('static', filename='img/unal2.png') }}" alt="logo unal">
+            </a>
         </div>
 
         <nav>
@@ -25,11 +27,10 @@
 
     </div>
 
-    <div class="container">
-        {% block content %}
+    
 
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
 
     <footer>
 

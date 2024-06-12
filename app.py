@@ -5,21 +5,22 @@ Manejo de todas las funcionalidades del programa
 """
 from flask import redirect, render_template, request, url_for
 from flask_login import login_required
-from usuarios import sesiones_usuarios
+from usuarios import sesiones_usuarios, creacion_usuarios
 import localsettings as app
 from flask import session
 from pymongo import MongoClient
 import egresados as egr
 import biblio_acciones as biblio
 import pregra_acciones as pregrado
+import usuarios as users
 
 app.instanciate_app(__name__)
 client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
 db = client['mongo']
 
 tabla_permisos = {
-    'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado'],
-    'Bibliotecario': ['eliminar-libros', 'ver-libros'],
+    'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado', 'inicio-bibliotecario', 'ver-solicitudes-acceso'],
+    'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario'],
     'Egresado': ['ver-libros'],
     'Pregrado': ['ver-pregrado']
 }
@@ -55,6 +56,8 @@ def login_user():
         if resultado_login:
             if session['rol_usuario'] == 'Administrador':
                 return redirect(url_for('admin_dash'))
+            elif session['rol_usuario'] == 'Bibliotecario':
+                return redirect(url_for('/bibliotecario'))
             else:
                 pass
         else:
@@ -134,8 +137,10 @@ def render_convocaEgreados():
 
 
 @app.app.route('/bibliotecario')
+@login_required
 def render_inicioBiblio():
-    return render_template('biblioIndex.html')
+    if 'inicio-bibliotecario' in tabla_permisos[session['rol_usuario']]:
+        return render_template('biblioIndex.html')
 
 
 # ----------------bibliotecario - libros
@@ -161,6 +166,13 @@ def render_libros():
             return render_template('biblioLibros.html', datos_libros=info_libros[1])
     else:
         return redirect('/logout_user')
+
+
+@app.app.route('/ver-solicitudes-acceso')
+@login_required
+def render_solicitudes():
+    if 'ver-solicitudes-acceso' in tabla_permisos[session['rol_usuario']]:
+        pass
 
 
 @app.app.route('/bibliotecario/libros/crear')
@@ -250,6 +262,21 @@ def render_asesoria(id):
     else:
         return redirect('/logout_user')
 
+@app.app.route('/registrarse', methods = ['GET', 'POST'])
+def registrarse_en_sistema():
+    if request.method == 'POST':
+        rol = request.form.get('rol')
+        identificacion = request.form.get('identificacion')
+        nombre = request.form.get('nombre')
+        password = request.form.get('contrasenia')
+        try:
+            resultado = creacion_usuarios.create_temporal_user(rol, int(identificacion), nombre, password)
+            return render_template('registrarse_en_sistema.html', mensaje = resultado)
+        except Exception as error:
+            return render_template('registrarse_en_sistema.html', mensaje = "Error al registrarse, revise argumentos")
+    else:
+        return render_template('registrarse_en_sistema.html')
+    
 
 if __name__ == '__main__':
     app.app.run(port=5010)

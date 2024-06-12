@@ -1,0 +1,31 @@
+body{
+    background-image: url(/static/img/un2.jpg);
+    font-family: Roboto;
+}
+
+.flexcontainer{
+    flex-direction: column;
+    width: 100%;
+}
+
+.formulario_solicitud_creacion{
+    width: 30vw;
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    height: 90vh;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.formulario_solicitud_creacion img{
+    width: 30vw;
+    height: 55vh;
+    margin: 0 auto;
+}
+
+.formulario_solicitud_creacion form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

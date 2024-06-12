@@ -1,12 +1,54 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/registro/registro.css') }}" type="text/css">
 {% extends 'base.html'%}
 
-<h1>Solicitud de creación de usuarios en la base de datos</h1>
-<p>Llene el siguiente formulario para solicitar la creación de un usuario en el sistema de información.</p>
+{% block content %}
+<div class="container">
+    <h1>Solicitud de creación de usuarios en la base de datos</h1>
+    
+</div>
 
-<label>Por favor seleccione el rol para el nuevo usuario</label>
-<select>
-    <option selected disabled>Seleccione un rol</option>
-    <option value="Administrador">Administrador</option>
-    <option value="">Egresado</option>
-    <option value="">Bibliotecarios</option>
-</select>
+<div class="formulario_solicitud_creacion">
+    <form method="post" action="/registrarse">
+        <div class="flexcontainer">
+            {% if mensaje %}
+                <div class="succes_message">
+                    {{ mensaje }}
+                </div>
+            {% endif %}
+            <p>Llene el siguiente formulario para solicitar la creación de un usuario en el sistema de información.</p>
+            <img src="{{ url_for('static', filename='img/UNAL-LOGO-2.jpg') }}">
+        </div>
+        <div class="flexcontainer">
+            <label for="rol">Por favor seleccione el rol para el nuevo usuario</label>
+            <select name="rol" id="rol">
+                <option selected disabled>Seleccione un rol</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Egresado">Egresado</option>
+                <option value="Bibliotecario">Bibliotecario</option>
+                <option value="Empresa">Empresa</option>
+                <option value="Pregrado">Estudiante de pregrado</option>
+            </select>
+        </div>
+       
+        <div class="flexcontainer">
+            <label for="identificacion">Por favor ingrese su número de identificación/NIT</label>
+            <input name="identificacion" id="identificacion" type="text" placeholder="Número de identificación">
+        </div>
+        
+        <div class="flexcontainer">
+            <label for="nombre">Por favor ingrese el nombre</label>
+            <input name="nombre" id="nombre" type="text" placeholder="Nombre">
+        </div>
+        
+        <div class="flexcontainer">
+            <label for="contrasenia">Por favor ingrese la contraseña</label>
+            <input name="contrasenia" id="contrasenia" type="password" placeholder="Contraseña">
+        </div>
+        
+
+        <input type="submit">
+    </form>
+</div>
+
+{% endblock %}
+
