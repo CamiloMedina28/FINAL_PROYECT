@@ -19,7 +19,7 @@ USE egresado_db ;
 
 
 -- -----------------------------------------------------
--- Table egresado_db.Informacion_personal_egresado
+-- Table egresado_db.informacion_personal_egresado
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS egresado_db.informacion_personal_egresado ;
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.informacion_residencia (
   inf_res_direccion_residencia VARCHAR(45) NULL,
   PRIMARY KEY (inf_res_egr_numero_de_identificacion),
     FOREIGN KEY (inf_res_egr_numero_de_identificacion)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.contacto (
   con_correo_adicional VARCHAR(45) NULL,
   PRIMARY KEY (con_egr_numero_de_identificacion),
     FOREIGN KEY (con_egr_numero_de_identificacion)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -93,17 +93,17 @@ CREATE TABLE IF NOT EXISTS egresado_db.distincion (
   dist_descripcion VARCHAR(150) NOT NULL,
   PRIMARY KEY (dis_documento_egresado),
     FOREIGN KEY (dis_documento_egresado)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table egresado_db.Hijo_egresado
+-- Table egresado_db.hijo_egresado
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS egresado_db.Hijo_egresado ;
+DROP TABLE IF EXISTS egresado_db.hijo_egresado ;
 
-CREATE TABLE IF NOT EXISTS egresado_db.Hijo_egresado (
+CREATE TABLE IF NOT EXISTS egresado_db.hijo_egresado (
   hij_documento INT NOT NULL,
   hij_nombre VARCHAR(45) NOT NULL,
   hij_primer_apellido VARCHAR(45) NOT NULL,
@@ -123,11 +123,11 @@ CREATE TABLE IF NOT EXISTS egresado_db.familiar (
   fam_hijo_egresado_documento INT NOT NULL,
   PRIMARY KEY (fam_egr_numero_documento_identidad, fam_hijo_egresado_documento),
     FOREIGN KEY (fam_egr_numero_documento_identidad)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     FOREIGN KEY (fam_hijo_egresado_documento)
-    REFERENCES egresado_db.Hijo_egresado (hij_documento)
+    REFERENCES egresado_db.hijo_egresado (hij_documento)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.estudio_realizado (
   est_nivel_educativo ENUM('Pregrado', 'Tecnico', 'Tecnologo', 'Especializacion', 'Maestria', 'Doctorado', 'Posdoctorado') NOT NULL DEFAULT 'Pregrado',
   PRIMARY KEY (est_documento_egresado, est_programa),
     FOREIGN KEY (est_documento_egresado)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.idioma_egresado (
   idi_egr_nivel VARCHAR(45) NOT NULL,
   PRIMARY KEY (idi_egr_numero_de_identificacion, idi_egr_idi_idioma_id),
   FOREIGN KEY (idi_egr_numero_de_identificacion)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     FOREIGN KEY (idi_egr_idi_idioma_id)
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.proyecto_de_investigacion (
   pro_inv_id_colciencias INT NOT NULL,
   pro_inv_nombre_grupo LONGTEXT NOT NULL,
   pro_inv_descripcion LONGTEXT NOT NULL,
-  institucion VARCHAR(45) NOT NULL,
+  pro_inv_institucion VARCHAR(45) NOT NULL,
   PRIMARY KEY (pro_inv_id_colciencias))
 ENGINE = InnoDB;
 
@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.investigacion_del_egresado (
   inv_fecha_finalizacion DATE NOT NULL,
   PRIMARY KEY (inv_documento_egresado, inv_id_colciencias),
     FOREIGN KEY (inv_documento_egresado)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     FOREIGN KEY (inv_id_colciencias)
@@ -348,7 +348,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS egresado_db.jefe ;
 
-CREATE TABLE IF NOT EXISTS egresado_db.Jefe (
+CREATE TABLE IF NOT EXISTS egresado_db.jefe (
   jef_id INT AUTO_INCREMENT,
   jef_documento_egresado INT NOT NULL,
   jef_nombre VARCHAR(45) NOT NULL,
@@ -372,7 +372,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.carnet (
   car_egr_solicitud TINYINT DEFAULT 1,
   PRIMARY KEY (car_egr_numero_de_identificacion),
     FOREIGN KEY (car_egr_numero_de_identificacion)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -402,7 +402,6 @@ DROP TABLE IF EXISTS egresado_db.asesoria ;
 CREATE TABLE IF NOT EXISTS egresado_db.asesoria (
   ase_egr_numero_de_identificacion INT NOT NULL,
   ase_est_pre_numero_de_identificacion INT NOT NULL,
-  ase_nombre_proyecto_grado VARCHAR(45) NOT NULL,
   ase_fecha_inicio DATE NOT NULL,
   ase_fecha_finalizacion VARCHAR(45) NULL,
   PRIMARY KEY ( ase_egr_numero_de_identificacion, ase_est_pre_numero_de_identificacion,ase_fecha_inicio),
@@ -411,7 +410,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.asesoria (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     FOREIGN KEY (ase_egr_numero_de_identificacion)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion)
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -428,11 +427,11 @@ CREATE TABLE IF NOT EXISTS egresado_db.prestamo (
   pre_fecha_vencimiento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (pre_egr_numero_documento_identidad, pre_lib_id, pre_fecha_prestamo),
     FOREIGN KEY (pre_egr_numero_documento_identidad)
-    REFERENCES egresado_db.Informacion_personal_egresado (egr_numero_de_identificacion) 
+    REFERENCES egresado_db.informacion_personal_egresado (egr_numero_de_identificacion) 
     ON DELETE CASCADE 
     ON UPDATE CASCADE,
     FOREIGN KEY (pre_lib_id)
-    REFERENCES egresado_db.Libro (lib_id_libro)
+    REFERENCES egresado_db.libro (lib_id_libro)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -452,10 +451,10 @@ CREATE TABLE IF NOT EXISTS egresado_db.libro (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table egresado_db.Usuarios
+-- Table egresado_db.usuarios
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS egresado_db.Usuarios;
-CREATE TABLE IF NOT EXISTS Usuarios(
+DROP TABLE IF EXISTS egresado_db.usuarios;
+CREATE TABLE IF NOT EXISTS usuarios(
 	usr_documento INT NOT NULL, 
     usr_username VARCHAR(45) NOT NULL, 
     usr_password TEXT, 
@@ -464,10 +463,10 @@ CREATE TABLE IF NOT EXISTS Usuarios(
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table egresado_db.Usuarios por autorizar
+-- Table egresado_db.usuarios por autorizar
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS egresado_db.Usuarios_por_autorizar;
-CREATE TABLE IF NOT EXISTS Usuarios_por_autorizar(
+DROP TABLE IF EXISTS egresado_db.usuarios_por_autorizar;
+CREATE TABLE IF NOT EXISTS usuarios_por_autorizar(
 	usr_aut_documento INT NOT NULL,
     usr_aut_rol VARCHAR(45) NOT NULL, 
 	usr_aut_user_name VARCHAR(45) NOT NULL, 
@@ -484,7 +483,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Información predeterminada
 -- -----------------------------------------------------
 
-INSERT INTO Usuarios VALUES 
+INSERT INTO usuarios VALUES 
 (111, 'cmedinasa', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador'), 
 (222, 'sisuarezc', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador'), 
 (333, 'jramirezes', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador');

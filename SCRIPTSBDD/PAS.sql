@@ -526,7 +526,7 @@ CREATE PROCEDURE insertar_hijos_egresado_datos(
 BEGIN 
 	DECLARE msg varchar(255); 
     IF operacion = 1 THEN
-        INSERT INTO Hijo_egresado (
+        INSERT INTO hijo_egresado (
             hij_documento, hij_nombre, hij_primer_apellido, hij_segundo_apellido, 
             hij_año_nacimiento, hij_direccion_residencia
         )
@@ -535,8 +535,8 @@ BEGIN
             año_nacimiento, direccion_residencia
         );
     ELSEIF operacion = 2 THEN
-		IF (SELECT count(*) FROM Hijo_egresado WHERE hij_documento = documento)!=0 THEN
-			UPDATE Hijo_egresado
+		IF (SELECT count(*) FROM hijo_egresado WHERE hij_documento = documento)!=0 THEN
+			UPDATE hijo_egresado
 			SET 
 				hij_nombre = nombre,
 				hij_primer_apellido = primer_apellido,
@@ -558,7 +558,7 @@ DROP PROCEDURE IF EXISTS borrar_hijos_egresado_datos;
 DELIMITER $$
 CREATE PROCEDURE borrar_hijos_egresado_datos(IN documento INT)
 BEGIN
-    DELETE FROM Hijo_egresado WHERE hij_documento = documento;
+    DELETE FROM hijo_egresado WHERE hij_documento = documento;
 END $$
 DELIMITER ;
 	
@@ -913,7 +913,7 @@ CREATE PROCEDURE insertar_jefe_datos(
     IN telefono BIGINT
 )
 BEGIN 
-	INSERT INTO Jefe (
+	INSERT INTO jefe (
 		jef_id, jef_documento_egresado, jef_nombre, 
 		jef_primer_apellido, jef_segundo_apellidos, jef_telefono
 	)
@@ -922,7 +922,6 @@ BEGIN
 		primer_apellido, segundo_apellido, telefono
 	);
 END $$
-
 DELIMITER ;
 
 -- PA para egresado y administrador
@@ -932,7 +931,7 @@ CREATE PROCEDURE borrar_jefe_datos(
     IN id_jefe INT,
     IN documento_egresado INT)
 BEGIN
-	DELETE FROM Jefe WHERE jef_id = id_jefe AND jef_documento_egresado = documento_egresado;
+	DELETE FROM jefe WHERE jef_id = id_jefe AND jef_documento_egresado = documento_egresado;
 END $$
 DELIMITER ;
 
@@ -1061,7 +1060,6 @@ DELIMITER $$
 CREATE PROCEDURE insertar_asesoria_datos(
     IN numero_identificacion_egresado INT,
     IN numero_identificacion_estudiante_pregrado INT,
-    IN nombre_proyecto_grado VARCHAR(45),
     IN fecha_inicio DATE,
     IN fecha_finalizacion VARCHAR(45),
     IN solicitud TINYINT
@@ -1071,11 +1069,11 @@ BEGIN
 	IF solicitud =1 THEN
 		INSERT INTO asesoria (
 			ase_egr_numero_de_identificacion, ase_est_pre_numero_de_identificacion,
-			ase_nombre_proyecto_grado, ase_fecha_inicio, ase_fecha_finalizacion
+			ase_fecha_inicio, ase_fecha_finalizacion
 		)
 		VALUES (
 			numero_identificacion_egresado, numero_identificacion_estudiante_pregrado,
-			nombre_proyecto_grado, fecha_inicio, fecha_finalizacion
+			fecha_inicio, fecha_finalizacion
 		);
 		UPDATE estudiante_pregrado 
         SET est_pre_solicitud = 0 WHERE est_pre_numero_de_identificacion = numero_identificacion_estudiante_pregrado;
@@ -1143,7 +1141,7 @@ DROP PROCEDURE IF EXISTS Listar_usuarios_por_autorizar;
 DELIMITER $$
 CREATE PROCEDURE Listar_usuarios_por_autorizar ()
 BEGIN 
-	SELECT * FROM Usuarios_por_autorizar;
+	SELECT * FROM usuarios_por_autorizar;
 END $$
 DELIMITER ;
 
@@ -1152,7 +1150,7 @@ DROP PROCEDURE IF EXISTS Ingresar_usuario_por_autorizar;
 DELIMITER $$
 CREATE PROCEDURE Ingresar_usuario_por_autorizar(IN documento BIGINT, IN rol VARCHAR(45), IN user_name VARCHAR(45), IN pwd TEXT)
 BEGIN 
-	INSERT INTO Usuarios_por_autorizar VALUES (documento, rol, user_name, pwd);
+	INSERT INTO usuarios_por_autorizar VALUES (documento, rol, user_name, pwd);
 END $$
 DELIMITER ;
 
@@ -1167,11 +1165,11 @@ BEGIN
     DECLARE usr_role VARCHAR(45);
 	START TRANSACTION;
         SET usr_documento = documento;
-        SET usr_username = (SELECT usr_aut_user_name FROM Usuarios_por_autorizar WHERE usr_aut_documento = documento);
-        SET usr_password = (SELECT usr_aut_password FROM Usuarios_por_autorizar WHERE usr_aut_documento = documento);
-        SET usr_role = (SELECT usr_aut_rol FROM Usuarios_por_autorizar WHERE usr_aut_documento = documento);
-		DELETE FROM Usuarios_por_autorizar WHERE usr_aut_documento = documento;
-        INSERT INTO Usuarios VALUES (usr_documento, usr_username, usr_password, usr_role);
+        SET usr_username = (SELECT usr_aut_user_name FROM usuarios_por_autorizar WHERE usr_aut_documento = documento);
+        SET usr_password = (SELECT usr_aut_password FROM usuarios_por_autorizar WHERE usr_aut_documento = documento);
+        SET usr_role = (SELECT usr_aut_rol FROM usuarios_por_autorizar WHERE usr_aut_documento = documento);
+		DELETE FROM usuarios_por_autorizar WHERE usr_aut_documento = documento;
+        INSERT INTO usuarios VALUES (usr_documento, usr_username, usr_password, usr_role);
 	COMMIT;
 END $$
 DELIMITER ;
