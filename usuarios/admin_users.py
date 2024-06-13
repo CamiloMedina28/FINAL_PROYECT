@@ -19,3 +19,4 @@ def autorizar_usuario(documento):
     else:
         with conexion.cursor() as cursor:
             cursor.callproc('Autorizar_usuarios', (documento,))
+        return "El usuario " + documento + " ha sido autorizado."

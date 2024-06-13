@@ -1,0 +1,58 @@
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}"
+  type="text/css"
+/>
+
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/aprobacion_usuarios.js') }}"></script>
+
+{% block content %}
+
+<div class="container">
+    <div class="flexcontainer" id="tabla_prestamos">
+      <h1>Usuarios por autorizar</h1>
+      <span id="mensaje"></span>
+    
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Rol</th>
+            <th>Nombre de usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios_por_autorizar %}
+          <tr>
+            <td>{{ usuario['usr_aut_documento'] }}</td>
+            <td>{{ usuario['usr_aut_rol'] }}</td>
+            <td>{{ usuario['usr_aut_user_name'] }}</td>
+    
+            <td class="transaction-actions">
+              <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="autorizar_user({{ usuario['usr_aut_documento'] }})"
+                >Aprobar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="eliminar_user({{ usuario['usr_aut_documento'] }})"
+                >Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+{% endblock %}

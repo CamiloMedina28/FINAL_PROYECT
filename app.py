@@ -5,14 +5,13 @@ Manejo de todas las funcionalidades del programa
 """
 from flask import redirect, render_template, request, url_for
 from flask_login import login_required
-from usuarios import sesiones_usuarios, creacion_usuarios
 import localsettings as app
 from flask import session
 from pymongo import MongoClient
 import egresados as egr
 import biblio_acciones as biblio
 import pregra_acciones as pregrado
-import usuarios as users
+import usuarios
 
 app.instanciate_app(__name__)
 client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
@@ -51,7 +50,7 @@ def login_user():
         username = request.form.get('usuario')
         contrasenia = request.form.get('contraseña')
         rol = request.form.get('rol')
-        resultado_login = sesiones_usuarios.iniciar_sesion_de_usuario(
+        resultado_login = usuarios.sesiones_usuarios.iniciar_sesion_de_usuario(
             username, contrasenia, rol)
         if resultado_login:
             if session['rol_usuario'] == 'Administrador':
@@ -70,7 +69,7 @@ def logout_user():
     """
     Cierre de la sesión del usuario que ha iniciado sesión
     """
-    sesiones_usuarios.cierre_de_sesion_de_usuario()
+    usuarios.sesiones_usuarios.cierre_de_sesion_de_usuario()
     return redirect(url_for('login'))
 
 
@@ -172,7 +171,19 @@ def render_libros():
 @login_required
 def render_solicitudes():
     if 'ver-solicitudes-acceso' in tabla_permisos[session['rol_usuario']]:
+        usuarios_por_autorizar = usuarios.admin_users.usuarios_por_autorizar()
+        print(usuarios_por_autorizar)
+        return render_template('listar_usuarios_autorizar.html', usuarios_por_autorizar = usuarios_por_autorizar)
+    else:
         pass
+
+
+@app.app.route('/autorizar_usuario')
+@login_required
+def auth_user():
+    documento = request.args.get('documento')
+    resultados = usuarios.admin_users.autorizar_usuario(documento)
+    return resultados
 
 
 @app.app.route('/bibliotecario/libros/crear')
@@ -218,7 +229,6 @@ def crear_prestamo():
     id_libro = int(request.args.get('id_libro'))
     insercion_resultado = biblio.acciones_prestamo.create_loan(
         documento, id_libro)
-    print(insercion_resultado[1])
     return insercion_resultado[1]
 
 # ----------------------------- empresa ----------------------------------------
@@ -251,7 +261,6 @@ def render_pregrado():
 def render_asesoria(id):
     if 'ver-pregrado' in tabla_permisos[session['rol_usuario']]:
         info_pregrado = pregrado.pregrado_acciones.read_student(id)
-        print(info_pregrado)
         if info_pregrado[0] == 1:
             return render_template('pregradoAsesoria.html', mensaje=info_pregrado[1])
         else:
@@ -270,7 +279,7 @@ def registrarse_en_sistema():
         nombre = request.form.get('nombre')
         password = request.form.get('contrasenia')
         try:
-            resultado = creacion_usuarios.create_temporal_user(rol, int(identificacion), nombre, password)
+            resultado = usuarios.creacion_usuarios.create_temporal_user(rol, int(identificacion), nombre, password)
             return render_template('registrarse_en_sistema.html', mensaje = resultado)
         except Exception as error:
             return render_template('registrarse_en_sistema.html', mensaje = "Error al registrarse, revise argumentos")

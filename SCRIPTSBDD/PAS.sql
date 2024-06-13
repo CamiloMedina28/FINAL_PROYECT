@@ -1161,7 +1161,7 @@ CREATE PROCEDURE Autorizar_usuarios(IN documento BIGINT)
 BEGIN
 	DECLARE usr_documento BIGINT;
     DECLARE usr_username VARCHAR(45);
-    DECLARE usr_password VARCHAR(45);
+    DECLARE usr_password TEXT;
     DECLARE usr_role VARCHAR(45);
 	START TRANSACTION;
         SET usr_documento = documento;
