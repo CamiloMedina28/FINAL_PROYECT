@@ -1,0 +1,12 @@
+<script src="{{ url_for('static', filename='js/dropDown.js') }}"></script>
+
+
+{% extends 'egresadosBase.html' %}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+
+{% include 'asesoria.html' %}
+{%block content %}
+{{super()}}
+{% endblock content %}

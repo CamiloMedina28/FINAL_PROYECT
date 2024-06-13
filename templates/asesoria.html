@@ -1,0 +1,134 @@
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/pregrado/pregradoAsesoria.css') }}"
+  type="text/css"
+/>
+
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{url_for('static', filename='js/añadir_onclick.js')}}"></script>
+
+{% extends 'base.html' %} {% block nav %} {% endblock nav %} {% block content %}
+<div class="flexcontainer" id="tabla_asesoria">
+  {% if mensaje_error %}
+  <span class="error_message"> {{ mensaje_error }} </span>
+  {% endif %} {% if mensaje_success %}
+  <span class="success_message"> {{ mensaje_success }} </span>
+  {% endif %}
+</div>
+
+<div id="formulario_pregrado" class="form-container">
+  <form id="pregrado_form">
+    <h1>Realizar solicitud asesoría</h1>
+    <div class="input-field">
+      <label for="id">Identificación</label>
+      <input type="text" id="id" name="id" required />
+    </div>
+    <div class="input-field">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required />
+    </div>
+    <div class="input-field">
+      <label for="primer_apellido">Primer apellido</label>
+      <input type="text" id="primer_apellido" name="primer_apellido" required />
+    </div>
+    <div class="input-field">
+      <label for="segundo_apellido">Segundo apellido</label>
+      <input
+        type="text"
+        id="segundo_apellido"
+        name="segundo_apellido"
+        required
+      />
+    </div>
+    <div class="input-field">
+      <label for="facultad">Facultad </label>
+      <input type="text" id="facultad" name="facultad" required />
+    </div>
+    <div class="input-field">
+      <label for="carrera">Carrera </label>
+      <input type="text" id="carrera" name="carrera" required />
+    </div>
+    <div class="input-field">
+      <select name="admision_especial" id="admision_especial">
+        <option value="" disabled selected>Admision Especial</option>
+        <option value="paes">Paes</option>
+        <option value="peama">Peama</option>
+      </select>
+    </div>
+  </form>
+</div>
+
+{% if datos_pregrado %} {% for pregrado in datos_pregrado %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("id").value =
+      "{{ pregrado['est_pre_numero_de_identificacion'] }}";
+    document.getElementById("nombre").value =
+      "{{ pregrado['est_pre_nombre'] }}";
+    document.getElementById("primer_apellido").value =
+      "{{ pregrado['est_pre_primer_apellido'] }}";
+    document.getElementById("segundo_apellido").value =
+      "{{ pregrado['est_pre_segundo_apellido'] }}";
+    document.getElementById("facultad").value =
+      "{{ pregrado['est_pre_facultad'] }}";
+    document.getElementById("carrera").value =
+      "{{ pregrado['est_pre_carrera'] }}";
+    document.getElementById("admision_especial").value =
+      "{{ pregrado['est_pre_admision_especial'] }}";
+  });
+</script>
+
+{% endfor %} {% endif %} {% if datos_pregrados %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("formulario_pregrado").style.display = "none";
+  });
+</script>
+<div class="container">
+  <h1>Estudiantes que solicitan asesoría</h1>
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Identificación</th>
+        <th>Nombre</th>
+        <th>Primer apellido</th>
+        <th>Segundo apellido</th>
+        <th>Facultad</th>
+        <th>Carrera</th>
+        <th>Admision Especial</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pregrado in datos_pregrados %}
+      <tr>
+        <td>{{ pregrado['est_pre_numero_de_identificacion'] }}</td>
+        <td>{{ pregrado['est_pre_nombre'] }}</td>
+        <td>{{ pregrado['est_pre_primer_apellido'] }}</td>
+        <td>{{ pregrado['est_pre_segundo_apellido'] }}</td>
+        <td>{{ pregrado['est_pre_facultad'] }}</td>
+        <td>{{ pregrado['est_pre_carrera'] }}</td>
+        <td>{{ pregrado['est_pre_admision_especial'] }}</td>
+        <td class="transaction-actions">
+          <a
+            class="btn btn-sm btn-danger"
+            id="boton_aceptar"
+            onclick="agregar_asesoria({{ pregrado['est_pre_numero_de_identificacion'] }},{{pregrado['est_pre_solicitud']}})"
+            >Asesorar</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %} {% endblock %}

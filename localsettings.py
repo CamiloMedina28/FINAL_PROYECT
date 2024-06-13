@@ -16,7 +16,7 @@ app = Flask(app_name)
 
 app.secret_key = '192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf'
 
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 

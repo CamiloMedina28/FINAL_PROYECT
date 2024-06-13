@@ -55,6 +55,19 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS ver_pregrado;
+DELIMITER $$ 
+CREATE PROCEDURE ver_pregrado(IN pre_id INT)
+BEGIN
+	IF pre_id=0 THEN
+		SELECT * FROM estudiante_pregrado;
+    ELSE
+		SELECT * FROM estudiante_pregrado
+		WHERE est_pre_numero_de_identificacion = pre_id ;
+    END IF;
+END$$
+DELIMITER ;
+
 -- 1 Insert, 2 Update, 3 Delete
 -- PA para egresado y administrador
 DROP PROCEDURE IF EXISTS insertar_egresado_datos;
@@ -1060,8 +1073,6 @@ DELIMITER $$
 CREATE PROCEDURE insertar_asesoria_datos(
     IN numero_identificacion_egresado INT,
     IN numero_identificacion_estudiante_pregrado INT,
-    IN fecha_inicio DATE,
-    IN fecha_finalizacion VARCHAR(45),
     IN solicitud TINYINT
 )
 BEGIN 
@@ -1073,7 +1084,7 @@ BEGIN
 		)
 		VALUES (
 			numero_identificacion_egresado, numero_identificacion_estudiante_pregrado,
-			fecha_inicio, fecha_finalizacion
+			DATE_ADD(NOW(),INTERVAL 5 DAY), DATE_ADD(NOW(), INTERVAL 1 MONTH )
 		);
 		UPDATE estudiante_pregrado 
         SET est_pre_solicitud = 0 WHERE est_pre_numero_de_identificacion = numero_identificacion_estudiante_pregrado;

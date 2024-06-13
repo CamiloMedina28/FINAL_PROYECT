@@ -26,6 +26,7 @@ def iniciar_sesion_de_usuario(username: str, contrasenia: str, role: str) -> boo
         bool: True si el inicio de sesión es válido. De lo contrario False
     """
     session['rol_usuario'] = None  # Limpieza de la variable de sesion rol_usuario
+    session['doc_usuario'] = None
     conexion = conectar_db.conexion_base_de_datos()
     with conexion.cursor() as cursor:
         sql = 'SELECT * FROM usuarios WHERE usr_username = %s'
@@ -38,6 +39,7 @@ def iniciar_sesion_de_usuario(username: str, contrasenia: str, role: str) -> boo
                     datos_usuario['usr_role'])  # Modelo de datos
         # Guardado el rol del usuario
         session['rol_usuario'] = datos_usuario['usr_role']
+        session['doc_usuario'] = datos_usuario['usr_documento']
         login_user(user)  # Inicio de sesion
         return True
     return False

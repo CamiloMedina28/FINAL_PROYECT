@@ -62,3 +62,13 @@ function send_info_loan() {
 //     );
 //   }
 // }
+
+function agregar_asesoria(pre_id, solicitud) {
+  fetch(
+    `/egresados/asesoria/crear?documento_pregrado=${pre_id}&solicitud=${solicitud}`
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
+}
