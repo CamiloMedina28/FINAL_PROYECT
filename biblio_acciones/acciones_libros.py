@@ -21,9 +21,17 @@ def delete_book(id: int) -> None:
             return (1, f"Error al eliminar libros en la base de datos {str(error)}")
 
 
-def read_book() -> None:
+def read_book(id) -> None:
     """
     Lectura de todos los registros acerca de los libros.
+
+    Args:
+        id (int): El ID del libro a consultar.
+
+    Returns:
+        Tuple[int, Union[str, Tuple[List[Any], List[Any]]]]: 
+            - (0, (info1, info2)) si la consulta es exitosa.
+            - (1, "Mensaje de error") si hay un error en la conexión o en la consulta.
     """
     try:
         conexion = conexion_db.conexion_base_de_datos()
@@ -32,9 +40,11 @@ def read_book() -> None:
     else:
         try:
             with conexion.cursor() as cursor:
-                sql = 'SELECT * FROM libro'
-                cursor.execute(sql)
-                return (0, cursor.fetchall())
+                cursor.callproc('ver_libros', (id,))
+                info1 = cursor.fetchall()
+                cursor.callproc('ver_prestamo', (id,))
+                info2 = cursor.fetchall()
+                return (0, info1, info2)
         except Exception as error:
             return (1, f"Error en la obtención de información {str(error)}")
 
