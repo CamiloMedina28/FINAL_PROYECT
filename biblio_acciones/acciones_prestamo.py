@@ -35,7 +35,7 @@ def create_loan(documento_egresado: int, id_libro: int) -> tuple:
     else:
         try:
             with conexion.cursor() as cursor:
-                cursor.callproc('insertar_prestamo_datos',
+                cursor.callproc('prestar_libro',
                                 (documento_egresado, id_libro))
                 conexion.commit()
         except Exception as error:
