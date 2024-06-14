@@ -1,26 +1,6 @@
 from . import conexion_db
 
 
-def delete_loan(documento: int, id_libro: int) -> None:
-    """Eliminar registros de prestamos
-
-    Args:
-        documento (int) : Identificador único del egresado
-        id (int): Identificador del prestamo a eliminar
-    """
-    try:
-        conexion = conexion_db.conexion_base_de_datos()
-    except Exception as error:
-        return (1, f"Error en la conexión con la base de datos {str(error)}")
-    else:
-        try:
-            with conexion.cursor() as cursor:
-                cursor.callproc('borrar_prestamo_datos', (documento, id_libro))
-                conexion.commit()
-        except Exception as error:
-            return (1, f"Error al eliminar prestamo en la base de datos {str(error)}")
-
-
 def read_loan() -> None:
     """Lectura de todos los registros accerca de los prestamos
     """

@@ -1,38 +1,36 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/biblioBase/biblioBase.css') }}" type="text/css" />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/biblioBase/biblioBase.css') }}"
+  type="text/css"
+/>
 <script src="{{ url_for('static', filename='js/dropDown.js') }}"></script>
-{% extends 'base.html' %}
-
-{% block nav %}
+{% extends 'base.html' %} {% block nav %}
 <div class="navbar">
-    <a href="/egresados">Inicio</a>
-    <div class="dropdown">
-        <button class="dropbtn" onclick="myFunction()">
-            Informacion
-        <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content" id="myDropdown">
-            <a href="/egresados/DatosPersonales">Personal</a>
-            <a href="#">Academica</a>
-            <a href="#">Laboral</a>
-        </div>
+  <a href="/egresados">Inicio</a>
+  <div class="dropdown">
+    <button class="dropbtn" onclick="myFunction()">
+      Informacion
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="myDropdown">
+      <a href="/egresados/DatosPersonales">Personal</a>
+      <a href="#">Academica</a>
+      <a href="#">Laboral</a>
     </div>
-    <div class="dropdown">
-        <button class="dropbtn" onclick="myFunction2()">
-            Servicios
-        <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content" id="myDropdown2">
-            <a href="/egresados/convocatorias">Convocatorias</a>
-            <a href="#">Asesorias</a>
-            <a href="#">Prestamos</a>
-            <a href="#">Carnetizacion</a>
-        </div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn" onclick="myFunction2()">
+      Servicios
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content" id="myDropdown2">
+      <a href="/egresados/convocatorias">Convocatorias</a>
+      <a href="/egresados/asesoria/0">Asesorias</a>
+      <a href="#">Prestamos</a>
+      <a href="#">Carnetizacion</a>
     </div>
-    <a href="/logout_user">Cerrar Sesión</a>
+  </div>
+  <a href="/logout_user">Cerrar Sesión</a>
 </div>
 
-{% endblock nav %} 
-
-{% block content %}
-
-{% endblock content %}
+{% endblock nav %} {% block content %} {% endblock content %}

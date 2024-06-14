@@ -20,7 +20,7 @@ db = client['mongo']
 tabla_permisos = {
     'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado', 'inicio-bibliotecario', 'ver-solicitudes-acceso'],
     'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario'],
-    'Egresado': ['ver-libros'],
+    'Egresado': ['ver-libros', 'ver-asesoria'],
     'Pregrado': ['ver-pregrado']
 }
 
@@ -55,8 +55,12 @@ def login_user():
         if resultado_login:
             if session['rol_usuario'] == 'Administrador':
                 return redirect(url_for('admin_dash'))
+            elif session['rol_usuario'] == 'Egresado':
+                return redirect(url_for('render_inicioEgreados'))
             elif session['rol_usuario'] == 'Bibliotecario':
                 return redirect(url_for('/bibliotecario'))
+            elif session['rol_usuario'] == 'Pregrado':
+                return redirect(url_for('render_pregrado'))
             else:
                 pass
         else:
@@ -173,7 +177,7 @@ def render_solicitudes():
     if 'ver-solicitudes-acceso' in tabla_permisos[session['rol_usuario']]:
         usuarios_por_autorizar = usuarios.admin_users.usuarios_por_autorizar()
         print(usuarios_por_autorizar)
-        return render_template('listar_usuarios_autorizar.html', usuarios_por_autorizar = usuarios_por_autorizar)
+        return render_template('listar_usuarios_autorizar.html', usuarios_por_autorizar=usuarios_por_autorizar)
     else:
         pass
 
@@ -202,14 +206,6 @@ def crear_libro():
     return resultado[1]
 
 # ----------------bibliotecario - prestamo
-
-# @app.app.route('/bibliotecario/prestamo/eliminar')
-# @login_required
-# def eliminar_prestamo():
-#     documento = request.args.get('documento')
-#     id_libro = request.args.get('id_libro')
-#     resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
-#     return resultado[1]
 
 
 @app.app.route('/bibliotecario/prestamo', methods=['POST', 'GET'])
@@ -257,6 +253,7 @@ def render_pregrado():
 
 
 @app.app.route('/pregrado/asesoria/<int:id>', methods=['POST', 'GET'])
+@app.app.route('/egresados/asesoria/<int:id>', methods=['POST', 'GET'])
 @login_required
 def render_asesoria(id):
     if 'ver-pregrado' in tabla_permisos[session['rol_usuario']]:
@@ -264,14 +261,45 @@ def render_asesoria(id):
         if info_pregrado[0] == 1:
             return render_template('pregradoAsesoria.html', mensaje=info_pregrado[1])
         else:
-            if len(info_pregrado[1]):
-                return render_template('pregradoAsesoria.html', datos_pregrado=info_pregrado[1])
+            if len(info_pregrado[1]) == 0:
+                return render_template('pregradoAsesoria.html')
             else:
-                return render_template('pregradoAsesoria.html', datos_pregrados=info_pregrado[1])
+                return render_template('pregradoAsesoria.html', datos_pregrado=info_pregrado[1])
+
+    elif 'ver-asesoria' in tabla_permisos[session['rol_usuario']]:
+        info_pregrado = pregrado.pregrado_acciones.read_student(0)
+        if info_pregrado[0] == 1:
+            return render_template('egresadosAsesoria.html', mensaje=info_pregrado[1])
+        else:
+            return render_template('egresadosAsesoria.html', datos_pregrados=info_pregrado[1])
+
     else:
         return redirect('/logout_user')
 
-@app.app.route('/registrarse', methods = ['GET', 'POST'])
+
+# @app.app.route('/bibliotecario/prestamo/eliminar')
+# @login_required
+# def eliminar_prestamo():
+#     documento = request.args.get('documento')
+#     id_libro = request.args.get('id_libro')
+#     resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
+#     return resultado[1]
+
+
+@app.app.route('/egresados/asesoria/crear')
+def render_asesoria_crear():
+    if 'ver-asesoria' in tabla_permisos[session['rol_usuario']]:
+        documento_egresado = session['doc_usuario']
+        documento_pregrado = request.args.get('documento_pregrado')
+        solicitud = request.args.get('solicitud')
+        resultado = pregrado.pregrado_acciones.add_consulting(
+            documento_egresado, documento_pregrado, solicitud)
+        return resultado[1]
+    else:
+        return redirect('/logout_user')
+
+
+@app.app.route('/registrarse', methods=['GET', 'POST'])
 def registrarse_en_sistema():
     if request.method == 'POST':
         rol = request.form.get('rol')
@@ -279,13 +307,14 @@ def registrarse_en_sistema():
         nombre = request.form.get('nombre')
         password = request.form.get('contrasenia')
         try:
-            resultado = usuarios.creacion_usuarios.create_temporal_user(rol, int(identificacion), nombre, password)
-            return render_template('registrarse_en_sistema.html', mensaje = resultado)
+            resultado = usuarios.creacion_usuarios.create_temporal_user(
+                rol, int(identificacion), nombre, password)
+            return render_template('registrarse_en_sistema.html', mensaje=resultado)
         except Exception as error:
-            return render_template('registrarse_en_sistema.html', mensaje = "Error al registrarse, revise argumentos")
+            return render_template('registrarse_en_sistema.html', mensaje="Error al registrarse, revise argumentos")
     else:
         return render_template('registrarse_en_sistema.html')
-    
+
 
 if __name__ == '__main__':
     app.app.run(port=5010)
