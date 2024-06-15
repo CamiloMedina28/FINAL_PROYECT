@@ -19,7 +19,7 @@ db = client['mongo']
 
 tabla_permisos = {
     'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado', 'inicio-bibliotecario', 'ver-solicitudes-acceso'],
-    'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario'],
+    'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario', 'crear-prestamo'],
     'Egresado': ['ver-libros', 'ver-asesoria'],
     'Pregrado': ['ver-pregrado']
 }
@@ -58,7 +58,7 @@ def login_user():
             elif session['rol_usuario'] == 'Egresado':
                 return redirect(url_for('render_inicioEgreados'))
             elif session['rol_usuario'] == 'Bibliotecario':
-                return redirect(url_for('/bibliotecario'))
+                return redirect(url_for('render_inicioBiblio'))
             elif session['rol_usuario'] == 'Pregrado':
                 return redirect(url_for('render_pregrado'))
             else:
@@ -147,6 +147,7 @@ def render_inicioBiblio():
 
 
 # ----------------bibliotecario - libros
+
 @app.app.route('/bibliotecario/libros/eliminar')
 @login_required
 def eliminar_libro():
@@ -158,15 +159,24 @@ def eliminar_libro():
         return redirect('/logout_user')
 
 
+@app.app.route('/egresados/prestamo', methods=['POST', 'GET'])
 @app.app.route('/bibliotecario/libros', methods=['POST', 'GET'])
 @login_required
 def render_libros():
-    if 'ver-libros' in tabla_permisos[session['rol_usuario']]:
-        info_libros = biblio.acciones_libros.read_book()
+    if session['rol_usuario'] == 'Bibliotecario':
+
+        info_libros = biblio.acciones_libros.read_book(0)
         if info_libros[0] == 1:
             return render_template('biblioLibros.html', mensaje=info_libros[1])
         else:
-            return render_template('biblioLibros.html', datos_libros=info_libros[1])
+            return render_template('biblioLibros.html', datos_libros=info_libros[1],  eliminar=1)
+    elif session['rol_usuario'] == 'Egresado':
+        estudiante = session['doc_usuario']
+        info_libros = biblio.acciones_libros.read_book(estudiante)
+        if info_libros[0] == 1:
+            return render_template('egresadosLibros.html', mensaje=info_libros[1])
+        else:
+            return render_template('egresadosLibros.html', datos_libros=info_libros[1], libros_prestados=info_libros[2], solicitar=1)
     else:
         return redirect('/logout_user')
 
@@ -218,14 +228,26 @@ def render_prestamo():
         return render_template('biblioPrestamo.html', prestamos=info_prestamos[1])
 
 
+@app.app.route('/egresados/prestamo/crear')
 @app.app.route('/bibliotecario/prestamo/crear')
 @login_required
 def crear_prestamo():
-    documento = int(request.args.get('documento'))
-    id_libro = int(request.args.get('id_libro'))
-    insercion_resultado = biblio.acciones_prestamo.create_loan(
-        documento, id_libro)
-    return insercion_resultado[1]
+    if session['rol_usuario'] == 'Bibliotecario':
+        documento = int(request.args.get('documento'))
+        id_libro = int(request.args.get('id_libro'))
+        insercion_resultado = biblio.acciones_prestamo.create_loan(
+            documento, id_libro)
+        return insercion_resultado[1]
+    elif session['rol_usuario'] == 'Egresado':
+        documento = session['doc_usuario']
+        id_libro = int(request.args.get('id_libro'))
+        print(id_libro)
+        insercion_resultado = biblio.acciones_prestamo.create_loan(
+            documento, id_libro)
+        print(insercion_resultado)
+        return insercion_resultado[1]
+    else:
+        return redirect('/logout_user')
 
 # ----------------------------- empresa ----------------------------------------
 
@@ -256,7 +278,7 @@ def render_pregrado():
 @app.app.route('/egresados/asesoria/<int:id>', methods=['POST', 'GET'])
 @login_required
 def render_asesoria(id):
-    if 'ver-pregrado' in tabla_permisos[session['rol_usuario']]:
+    if session['rol_usuario'] == 'Pregrado':
         info_pregrado = pregrado.pregrado_acciones.read_student(id)
         if info_pregrado[0] == 1:
             return render_template('pregradoAsesoria.html', mensaje=info_pregrado[1])
@@ -266,7 +288,7 @@ def render_asesoria(id):
             else:
                 return render_template('pregradoAsesoria.html', datos_pregrado=info_pregrado[1])
 
-    elif 'ver-asesoria' in tabla_permisos[session['rol_usuario']]:
+    elif session['rol_usuario'] == 'Egresado':
         info_pregrado = pregrado.pregrado_acciones.read_student(0)
         if info_pregrado[0] == 1:
             return render_template('egresadosAsesoria.html', mensaje=info_pregrado[1])
@@ -275,15 +297,6 @@ def render_asesoria(id):
 
     else:
         return redirect('/logout_user')
-
-
-# @app.app.route('/bibliotecario/prestamo/eliminar')
-# @login_required
-# def eliminar_prestamo():
-#     documento = request.args.get('documento')
-#     id_libro = request.args.get('id_libro')
-#     resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
-#     return resultado[1]
 
 
 @app.app.route('/egresados/asesoria/crear')
