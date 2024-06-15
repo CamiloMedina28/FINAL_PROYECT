@@ -12,6 +12,7 @@ import egresados as egr
 import biblio_acciones as biblio
 import pregra_acciones as pregrado
 import usuarios
+import egresado_acciones as egresado
 
 app.instanciate_app(__name__)
 client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
@@ -100,27 +101,54 @@ def render_personal_info():
 # ----------------------------- Egresados ----------------------------------------
 
 
-@app.app.route('/informacion_personal_egresados/<int:id>')
+@app.app.route('/informacion_personal_egresados')
 @login_required
-def render_info_personal_egr(id):
+def render_info_personal_egr():
     if session['rol_usuario'] == "Egresado":
-        lista_info = egr.egr_info.ejecutar_pass_info_egr(
-            id, 'ver_datos_personales')
-        if lista_info[0] == 0:
-            return render_template('informacion_personal_egresados.html',
-                                   info=lista_info[1])
-        else:
-            return render_template('informacion_personal_egresados.html',
-                                   mensaje="Los datos solicitados no puedieron ser encontrados.")
+        info = egresado.informacion_egresado.retrieve_informacion_personal(session['doc_usuario'])
     if session['rol_usuario'] == "Administrador":
-        lista_info = egr.egr_info.ejecutar_pass_info_egr(
-            id=0, nombre_proc='ver_datos_personales')
-        if lista_info[0] == 0:
-            return render_template('informacion_personal_egresados.html',
-                                   info=lista_info)
-        else:
-            return render_template('informacion_personal_egresados.html',
-                                   mensaje="Los datos solicitados no puedieron ser encontrados.")
+        info = egresado.informacion_egresado.retrieve_informacion_personal()
+    return render_template('informacion_personal_egresados.html', datos_egresados = info)
+
+
+@app.app.route('/informacion_contacto_egr')
+@login_required
+def render_info_contacto():
+    if session['rol_usuario'] == "Egresado":
+        info = egresado.informacion_egresado.retrieve_informacion_contacto(session['doc_usuario'])
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_contacto()
+    return render_template('contacto.html', datos_contacto = info)
+
+
+@app.app.route('/informacion_familiar')
+@login_required
+def render_informacion_familiar():
+    if session['rol_usuario'] == "Egresado":
+        info = egresado.informacion_egresado.retrieve_datos_familiares(session['doc_usuario'])
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_datos_familiares()
+    return render_template('info_familiar.html', datos_familia= info)
+
+
+@app.app.route('/info_residencia')
+@login_required
+def render_info_residencia():
+    if session['rol_usuario'] == "Egresado":
+        info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado(session['doc_usuario'])
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado()
+    return render_template('informacion_residencia.html', datos_residencia= info)
+
+
+@app.app.route('/distinciones')
+@login_required
+def render_distinciones():
+    if session['rol_usuario'] == "Egresado":
+        info = egresado.informacion_egresado.retrieve_informacion_distinciones(session['doc_usuario'])
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_distinciones()
+    return render_template('distinciones.html', datos_distinciones= info)
 
 
 @app.app.route('/egresados')

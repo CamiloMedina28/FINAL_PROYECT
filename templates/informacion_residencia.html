@@ -1,0 +1,62 @@
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
+{% extends 'base.html'%}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="flexcontainer" id="tabla_prestamos">
+      <h1>Información de residencia</h1>
+      <span id="mensaje"></span>
+    
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Pais</th>
+            <th>Departamento</th>
+            <th>Ciudad</th>
+            <th>Direccion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for residencia in datos_residencia %}
+          <tr>
+            <td>{{ residencia['egr_numero_de_identificacion'] }}</td>
+            <td>{{ residencia['egr_primer_nombre'] }} {{ residencia['egr_segundo_nombre'] }} {{ residencia['egr_primer_apellido'] }} {{ residencia['egr_segundo_apellido'] }}</td>
+            <td>{{ residencia['inf_res_pais_residencia'] }}</td>
+            <td>{{ residencia['inf_res_departamento_residencia'] }}</td>
+            <td>{{ residencia['inf_res_ciudad_residencia'] }}</td>
+            <td>{{ residencia['inf_res_direccion_residencia' ] }}</td>
+    
+            <td class="transaction-actions">
+              <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Editar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
+{% extends 'base.html'%}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="flexcontainer" id="tabla_prestamos">
+      <h1>Información de la familia del egresado</h1>
+      <span id="mensaje"></span>
+    
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Documento egresado</th>
+            <th>Nombre egresado</th>
+            <th>Documento hijo</th>
+            <th>Nombre hijo</th>
+            <th>Año nacimiento</th>
+            <th>Dirección de residencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for familia in datos_familia %}
+          <tr>
+            <td>{{ familia['egr_numero_de_identificacion'] }}</td>
+            <td>{{ familia['egr_primer_nombre'] }} {{ familia['egr_primer_apellido'] }} </td>
+            <td>{{ familia['hij_documento'] }}</td>
+            <td>{{ familia['hij_nombre'] }} {{ familia['hij_primer_apellido'] }} {{ familia['hij_segundo_apellido'] }}</td>
+            <td>{{ familia['hij_año_nacimiento'] }}</td>
+            <td>{{ familia['hij_direccion_residencia'] }}</td>
+    
+            <td class="transaction-actions">
+              <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Editar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+
+</div>
+{% endblock %}
