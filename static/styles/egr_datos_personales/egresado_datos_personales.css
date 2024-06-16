@@ -1,14 +1,18 @@
+.container {
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: white;
+}
+
+.transaction-actions {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
 body {
   background: linear-gradient(to right, #26166e, #150026);
   color: #333;
-}
-
-.container {
-  padding: 20px;
-  margin: 20% auto;
-  background-color: rgb(211, 211, 211);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 100% !important;
 }
 
 .form-container {
@@ -37,4 +41,4 @@ nav {
 
 a {
   margin: 0 auto;
-}/*# sourceMappingURL=biblioLibros.css.map */
+}/*# sourceMappingURL=egresado_datos_personales.css.map */

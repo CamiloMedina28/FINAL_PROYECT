@@ -1,0 +1,63 @@
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
+{% extends 'base.html'%}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="flexcontainer" id="tabla_prestamos">
+      <h1>Información de distinciones</h1>
+      <span id="mensaje"></span>
+    
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Año</th>
+            <th>Nombre distinción</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for distincion in datos_distinciones %}
+          <tr>
+            <td>{{ distincion['egr_numero_de_identificacion'] }}</td>
+            <td>{{ distincion['egr_primer_nombre'] }} {{ distincion['egr_segundo_nombre'] }} {{ distincion['egr_primer_apellido'] }} {{ distincion['egr_segundo_apellido'] }}</td>
+            <td>{{ distincion['dis_año'] }}</td>
+            <td>{{ distincion['dist_nombre_distincion'] }}</td>
+            <td>{{ distincion['dist_descripcion' ] }}</td>
+    
+            <td class="transaction-actions">
+              <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Editar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="eliminar_distincion({{ distincion['egr_numero_de_identificacion'] }})"
+                >Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+
+</div>
+{% endblock %}

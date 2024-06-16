@@ -1,19 +1,86 @@
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
 {% extends 'base.html'%}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
 
 {% block content %}
 
 {% if mensaje %}
     <span class="error_message">
-        La información solicitada no puedo ser encontrada
+        La información solicitada no pudo ser encontrada
     </span>
 {% endif %}
 
-{% if info %}
-    {% for i in info %}
-        <table id="">
 
-        </table>
-    {% endfor %}
-{% endif %}
+<div class="container">
+    <div class="flexcontainer" id="tabla_prestamos">
+      <h1>Información de egresado</h1>
+      <span id="mensaje"></span>
+    
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Tipo de documento</th>
+            <th>Nombre</th>
+            <th>Sexo</th>
+            <th>Estrato</th>
+            <th>Grupo Étnico</th>
+            <th>Estado civil</th>
+            <th>Discapacidad</th>
+            <th>Admisión especial</th>
+            <th>Conflicto armado</th>
+            <th>Pais</th>
+            <th>Departamento</th>
+            <th>Municipio/Ciudad</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for egresado in datos_egresados %}
+          <tr>
+            <td>{{ egresado['egr_numero_de_identificacion'] }}</td>
+            <td>{{ egresado['egr_tipo_identificacion'] }}</td>
+            <td>{{ egresado['egr_primer_nombre'] }} {{ egresado['egr_segundo_nombre'] }} {{ egresado['egr_primer_apellido'] }} {{ egresado['egr_segundo_apellido'] }}</td>
+            <td>{{ egresado['egr_sexo'] }}</td>
+            <td>{{ egresado['egr_estrato'] }}</td>
+            <td>{{ egresado['egr_grupo_etnico'] }}</td>
+            <td>{{ egresado['egr_estado_civil'] }}</td>
+            <td>{{ egresado['egr_discapacidad'] }}</td>
+            <td>{{ egresado['egr_admision_especial'] }}</td>
+            <td>{{ egresado['egr_victima_conflicto_armado'] }}</td>
+            <td>{{ egresado['egr_pais_nacimiento'] }}</td>
+            <td>{{ egresado['egr_departamento_nacimiento'] }}</td>
+            <td>{{ egresado['egr_municipio_nacimiento'] }}</td>
+    
+            <td class="transaction-actions">
+              <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Editar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="eliminar_egresado({{ egresado['egr_numero_de_identificacion'] }})"
+                >Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
 
-{% end block %}
+
+
+{% endblock %}
