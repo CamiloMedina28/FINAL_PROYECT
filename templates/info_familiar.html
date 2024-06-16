@@ -4,6 +4,9 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+<script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
+
+
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
 {% extends 'base.html'%}
 {% block nav %}
@@ -14,7 +17,7 @@
 
 
 <div class="container">
-    <div class="flexcontainer" id="tabla_prestamos">
+    <div class="flexcontainer" id="tabla_info">
       <h1>Información de la familia del egresado</h1>
       <span id="mensaje"></span>
     
@@ -48,14 +51,55 @@
                 <a
                 class="btn btn-sm btn-danger"
                 id="delete_button"
-                onclick=""
+                onclick="eliminar_familiar({{ familia['egr_numero_de_identificacion'] }})"
                 >Eliminar</a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    
+      <button onclick="add_info_form()" class="waves-effect waves-light btn">
+        AÑADIR INFORMACIÓN FAMILIAR DEL EGRESADO
+      </button>
+    </div>
+
+    <div id="formulario_añadir" style="display:  none;" class="form-container">
+      <form>
+        <h1>Añadir información de familia</h1>
+        <div class="input-field">
+          <label for="documento">Documento</label>
+          <input type="text" id="documento" name="documento" required />
+        </div>
+        <div class="input-field">
+          <label for="docmento_hijo">Documento hijo</label>
+          <input type="number" id="docmento_hijo" name="docmento_hijo" required />
+        </div>
+        <div class="input-field">
+          <label for="nombre_hijo">Nombre hijo</label>
+          <input type="text" id="nombre_hijo" name="nombre_hijo" required />
+        </div>
+        <div class="input-field">
+          <label for="anio_nacimiento_hijo">Año de nacimiento del hijo</label>
+          <input type="number" id="anio_nacimiento_hijo" name="anio_nacimiento_hijo" required />
+        </div>
+        <div class="input-field">
+          <label for="direccion_residencia_hijo">Dirección de residencia del hijo</label>
+          <input type="text" id="direccion_residencia_hijo" name="direccion_residencia_hijo" required />
+        </div>
+  
+        <div class="form-footer">
+          <button
+            type="submit"
+            class="waves-effect waves-light btn"
+            onclick=""
+          >
+            Guardar
+          </button>
+          <a href="/informacion_familiar" class="waves-effect waves-light btn"
+            >Return</a
+          >
+        </div>
+      </form>
     </div>
 
 </div>

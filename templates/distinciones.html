@@ -4,6 +4,9 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+<script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
+
+
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
 {% extends 'base.html'%}
 {% block nav %}
@@ -46,7 +49,7 @@
                 <a
                 class="btn btn-sm btn-danger"
                 id="delete_button"
-                onclick=""
+                onclick="eliminar_distincion({{ distincion['egr_numero_de_identificacion'] }})"
                 >Eliminar</a>
             </td>
           </tr>

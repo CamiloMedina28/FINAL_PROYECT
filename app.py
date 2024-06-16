@@ -111,6 +111,15 @@ def render_info_personal_egr():
     return render_template('informacion_personal_egresados.html', datos_egresados = info)
 
 
+@app.app.route('/eliminar_egresado')
+@login_required
+def eliminar_egresado():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_egresado', id_egresado)
+        return info
+
+
 @app.app.route('/informacion_contacto_egr')
 @login_required
 def render_info_contacto():
@@ -131,6 +140,15 @@ def render_informacion_familiar():
     return render_template('info_familiar.html', datos_familia= info)
 
 
+@app.app.route('/eliminar_familiar')
+@login_required
+def eliminar_familiar():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_hijos_egresado_datos', id_egresado)
+        return info
+
+
 @app.app.route('/info_residencia')
 @login_required
 def render_info_residencia():
@@ -141,6 +159,15 @@ def render_info_residencia():
     return render_template('informacion_residencia.html', datos_residencia= info)
 
 
+@app.app.route('/eliminar_residencia')
+@login_required
+def eliminar_residencia():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_residencia_datos', id_egresado)
+        return info  
+
+
 @app.app.route('/distinciones')
 @login_required
 def render_distinciones():
@@ -149,6 +176,15 @@ def render_distinciones():
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_distinciones()
     return render_template('distinciones.html', datos_distinciones= info)
+
+
+@app.app.route('/eliminar_distincion')
+@login_required
+def eliminar_distincion():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_distincion_datos', id_egresado)
+        return info  
 
 
 @app.app.route('/egresados')

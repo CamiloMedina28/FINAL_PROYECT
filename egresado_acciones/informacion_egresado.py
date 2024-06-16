@@ -88,3 +88,19 @@ def retrieve_informacion_distinciones(id = None):
                 return distinciones
             else:
                 return cursor.fetchall()   
+
+
+def eliminar_info_egresado(proc, id):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                cursor.callproc(proc, (id,))
+                conexion.commit()
+            return "El egresado ha sido eliminado exitosamente de la base de datos."
+        except Exception as error:
+            return f"Error, el egresado no ha podido ser ingresado en la base de datos: {str(error)}"
+        

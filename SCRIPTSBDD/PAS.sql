@@ -202,9 +202,9 @@ END $$
 DELIMITER ;
 
 -- PA para egresado y administrador
-DROP PROCEDURE IF EXISTS borar_residencia_datos;
+DROP PROCEDURE IF EXISTS borrar_residencia_datos;
 DELIMITER $$
-CREATE PROCEDURE borar_residencia_datos(IN id INT)
+CREATE PROCEDURE borrar_residencia_datos(IN id INT)
 BEGIN 
 DELETE FROM informacion_residencia WHERE inf_res_egr_numero_de_identificacion = id;
 END $$
@@ -1231,6 +1231,14 @@ BEGIN
 			END IF;
 		END IF;
     COMMIT;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS borrar_egresado;
+DELIMITER $$
+CREATE PROCEDURE borrar_egresado(IN numero_identificacion INT)
+BEGIN 
+	DELETE FROM informacion_personal_egresado WHERE egr_numero_de_identificacion = numero_identificacion;
 END $$
 DELIMITER ;
 
