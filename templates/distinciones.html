@@ -44,7 +44,16 @@
               <a
                 class="btn btn-sm btn-danger"
                 id="delete_button"
-                onclick=""
+                onclick="edit_distincion_form(
+                {{ distincion['egr_numero_de_identificacion'] }},
+                '{{ distincion['egr_primer_nombre'] }}',
+                '{{ distincion['egr_segundo_nombre'] }}',
+                '{{ distincion['egr_primer_apellido'] }}',
+                '{{ distincion['egr_segundo_apellido'] }}'
+                '{{ distincion['dis_año'] }}',
+                '{{ distincion['dist_nombre_distincion'] }}',
+                '{{ distincion['dist_descripcion' ] }}'
+                )"
                 >Editar</a>
                 <a
                 class="btn btn-sm btn-danger"
@@ -61,7 +70,7 @@
 
     <div id="formulario_añadir" style="display:  none;" class="form-container">
       <form>
-        <h1>Añadir información de contacto</h1>
+        <h1>Añadir información de distincion</h1>
         <div class="input-field">
           <label for="documento">Documento</label>
           <input type="text" id="documento" name="documento" required />

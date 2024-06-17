@@ -53,7 +53,6 @@ function add_informacion_contacto() {
       // window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
       alert(data);
     });
-
 }
 
 function edit_contacto_form(
@@ -71,5 +70,32 @@ function edit_contacto_form(
   document.getElementById("correo_adicional").value = correo_adicional;
 }
 
+function add_informacion_residencia() {
+  var documento = document.getElementById("documento").value;
+  var pais = document.getElementById("pais").value;
+  var departamento = document.getElementById("departamento").value;
+  var ciudad = document.getElementById("ciudad").value;
+  var direccion = document.getElementById("direccion").value;
+  fetch(
+    `/agregar-info-residencia?documento=${documento}&pais=${pais}&departamento=${departamento}&ciudad=${ciudad}&direccion=${direccion}`
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
+}
 
-
+function edit_residencia_form(
+  documento,
+  pais,
+  departamento,
+  ciudad,
+  direccion
+) {
+  add_info_form();
+  document.getElementById("documento").value = documento;
+  document.getElementById("pais").value = pais;
+  document.getElementById("departamento").value = departamento;
+  document.getElementById("ciudad").value = ciudad;
+  document.getElementById("direccion").value = direccion;
+}

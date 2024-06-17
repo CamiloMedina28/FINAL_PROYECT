@@ -5,107 +5,118 @@
 />
 <!-- IMPORTACIONES DE MATERIALIZE -->
 <!-- Compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
-{% extends 'base.html'%}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
-
-{% block content %}
-{{super()}}
-
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}"
+  type="text/css"
+/>
+{% extends 'base.html'%} {% block nav %} {{super()}} {% endblock nav %} {% block
+content %} {{super()}}
 
 <div class="container">
-    <div class="flexcontainer" id="tabla_info">
-      <h1>Información de residencia</h1>
-      <span id="mensaje"></span>
-    
-      <table class="striped">
-        <thead>
-          <tr>
-            <th>Documento</th>
-            <th>Nombre</th>
-            <th>Pais</th>
-            <th>Departamento</th>
-            <th>Ciudad</th>
-            <th>Direccion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for residencia in datos_residencia %}
-          <tr>
-            <td>{{ residencia['egr_numero_de_identificacion'] }}</td>
-            <td>{{ residencia['egr_primer_nombre'] }} {{ residencia['egr_segundo_nombre'] }} {{ residencia['egr_primer_apellido'] }} {{ residencia['egr_segundo_apellido'] }}</td>
-            <td>{{ residencia['inf_res_pais_residencia'] }}</td>
-            <td>{{ residencia['inf_res_departamento_residencia'] }}</td>
-            <td>{{ residencia['inf_res_ciudad_residencia'] }}</td>
-            <td>{{ residencia['inf_res_direccion_residencia' ] }}</td>
-    
-            <td class="transaction-actions">
-              <a
-                class="btn btn-sm btn-danger"
-                id="delete_button"
-                onclick=""
-                >Editar</a>
-                <a
-                class="btn btn-sm btn-danger"
-                id="delete_button"
-                onclick="eliminar_residencia({{ residencia['egr_numero_de_identificacion'] }})"
-                >Eliminar</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <button onclick="add_info_form()" class="waves-effect waves-light btn">
-        AÑADIR INFORMACIÓN DE RESIDENCIA
-      </button>
-    </div>
+  <div class="flexcontainer" id="tabla_info">
+    <h1>Información de residencia</h1>
+    <span id="mensaje"></span>
 
-    <div id="formulario_añadir" style="display:  none;" class="form-container">
-      <form>
-        <h1>Añadir información de residencia</h1>
-        <div class="input-field">
-          <label for="documento">Documento</label>
-          <input type="text" id="documento" name="documento" required />
-        </div>
-        <div class="input-field">
-          <label for="pais">Pais</label>
-          <input type="text" id="pais" name="pais" required />
-        </div>
-        <div class="input-field">
-          <label for="departamento">Departamento</label>
-          <input type="text" id="departamento" name="departamento" required />
-        </div>
-        <div class="input-field">
-          <label for="ciudad">Ciudad</label>
-          <input type="text" id="ciudad" name="ciudad" required />
-        </div>
-        <div class="input-field">
-          <label for="direccion">Direccion</label>
-          <input type="text" id="direccion" name="direccion" required />
-        </div>
-  
-        <div class="form-footer">
-          <button
-            type="submit"
-            class="waves-effect waves-light btn"
-            onclick=""
-          >
-            Guardar
-          </button>
-          <a href="/info_residencia" class="waves-effect waves-light btn"
-            >Return</a
-          >
-        </div>
-      </form>
-    </div>
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>Documento</th>
+          <th>Nombre</th>
+          <th>Pais</th>
+          <th>Departamento</th>
+          <th>Ciudad</th>
+          <th>Direccion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for residencia in datos_residencia %}
+        <tr>
+          <td>{{ residencia['egr_numero_de_identificacion'] }}</td>
+          <td>
+            {{ residencia['egr_primer_nombre'] }} {{
+            residencia['egr_segundo_nombre'] }} {{
+            residencia['egr_primer_apellido'] }} {{
+            residencia['egr_segundo_apellido'] }}
+          </td>
+          <td>{{ residencia['inf_res_pais_residencia'] }}</td>
+          <td>{{ residencia['inf_res_departamento_residencia'] }}</td>
+          <td>{{ residencia['inf_res_ciudad_residencia'] }}</td>
+          <td>{{ residencia['inf_res_direccion_residencia' ] }}</td>
 
+          <td class="transaction-actions">
+            <a
+              class="btn btn-sm btn-danger"
+              id="edit_button"
+              onclick="edit_residencia_form({{ residencia['egr_numero_de_identificacion'] }},
+              '{{ residencia['inf_res_pais_residencia'] }}',
+              '{{ residencia['inf_res_departamento_residencia'] }}',
+              '{{ residencia['inf_res_ciudad_residencia'] }}',
+              '{{ residencia['inf_res_direccion_residencia' ] }}')"
+              >Editar</a
+            >
+            <a
+              class="btn btn-sm btn-danger"
+              id="delete_button"
+              onclick="eliminar_residencia({{ residencia['egr_numero_de_identificacion'] }})"
+              >Eliminar</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button onclick="add_info_form()" class="waves-effect waves-light btn">
+      AÑADIR INFORMACIÓN DE RESIDENCIA
+    </button>
+  </div>
+
+  <div id="formulario_añadir" style="display: none" class="form-container">
+    <form>
+      <h1>Añadir información de residencia</h1>
+      <div class="input-field">
+        <label for="documento">Documento</label>
+        <input type="text" id="documento" name="documento" required />
+      </div>
+      <div class="input-field">
+        <label for="pais">Pais</label>
+        <input type="text" id="pais" name="pais" required />
+      </div>
+      <div class="input-field">
+        <label for="departamento">Departamento</label>
+        <input type="text" id="departamento" name="departamento" required />
+      </div>
+      <div class="input-field">
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" name="ciudad" required />
+      </div>
+      <div class="input-field">
+        <label for="direccion">Direccion</label>
+        <input type="text" id="direccion" name="direccion" required />
+      </div>
+
+      <div class="form-footer">
+        <button
+          type="submit"
+          class="waves-effect waves-light btn"
+          onclick="add_informacion_residencia()"
+        >
+          Guardar
+        </button>
+        <a href="/info_residencia" class="waves-effect waves-light btn"
+          >Return</a
+        >
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
