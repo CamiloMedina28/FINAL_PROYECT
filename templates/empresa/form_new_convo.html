@@ -1,0 +1,61 @@
+{% block form %}
+<form id="nuevo_libro_form">
+    <h1>Añadir convocatoria</h1>
+    <div class="input-field">
+        <label for="titulo">Id</label>
+        <input type="text" id="titulo" name="titulo" required>
+    </div>
+    <div class="input-field">
+        <label for="cargo">Cargo</label>
+        <input type="text" id="cargo" name="cargo" required>
+    </div>
+    <div class="input-field">
+        <label for="habilidades">Habilidades</label>
+        <input type="text" id="habilidades" name="habilidades" required>
+    </div>
+    <div class="input-field">
+        <label for="competencias">Competencias</label>
+        <input type="text" id="competencias" name="competencias" required>
+    </div>
+    <div class="input-field">
+        <label for="experiencia">Meses Experiencia</label>
+        <input type="text" id="experiencia" name="experiencia" required>
+    </div>
+    <div class="input-field">
+        <label for="vacantes">Numero Vacantes</label>
+        <input type="text" id="vacantes" name="vacantes" required>
+    </div>
+    <div class="input-field">
+        <label for="salario">Salario</label>
+        <input type="text" id="salario" name="salario" required>
+    </div>
+    <div class="input-field">
+        <label for="jornada">Jornada</label>
+        <input type="text" id="jornada" name="jornada" required>
+    </div>
+    <div class="input-field">
+        <label for="horario">Horario</label>
+        <input type="text" id="horario" name="horario" required>
+    </div>
+    <div class="input-field">
+        <label for="teletrabajo">teletrabajo</label>
+        <input type="text" id="teletrabajo" name="teletrabajo" required>
+    </div>
+    <div class="input-field">
+        <label for="pais">Pais</label>
+        <input type="text" id="pais" name="pais" required>
+    </div>
+    <div class="input-field">
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" name="ciudad" required>
+    </div>
+    <div class="input-field">
+        <label for="fechaOUT">Fecha Finalizacion</label>
+        <input type="text" id="fechaOUT" name="fechaOUT" required>
+    </div>
+    <div class="form-footer">
+        <button type="submit" class="waves-effect waves-light btn">Guardar</button>
+        <a href="/empresa/convocatorias" class="waves-effect waves-light btn">Return</a>
+    </div>
+</form>
+{% endblock form %}

@@ -3,28 +3,42 @@
 """
 Manejo de todas las funcionalidades del programa
 """
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, jsonify
 from flask_login import login_required
 import localsettings as app
 from flask import session
-from pymongo import MongoClient
 import egresados as egr
 import biblio_acciones as biblio
 import pregra_acciones as pregrado
+import empresa_acciones as emp
 import usuarios
+from datetime import datetime
+from flask_mail import Mail, Message
 import egresado_acciones as egresado
 
 app.instanciate_app(__name__)
-client = MongoClient("mongodb://root:root@my_mongo_db:27017/")
-db = client['mongo']
 
 tabla_permisos = {
-    'Administrador': ['eliminar-libros', 'ver-libros', 'ver-pregrado', 'inicio-bibliotecario', 'ver-solicitudes-acceso'],
+    'Administrador': [
+                    'eliminar-libros', 'ver-libros', 'ver-pregrado','inicio-bibliotecario',
+                    'ver-solicitudes-acceso', 'ver-convocatorias', 'eliminar-convo',
+                    'read-apli', 'update-apli'],
     'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario', 'crear-prestamo'],
     'Egresado': ['ver-libros', 'ver-asesoria'],
-    'Pregrado': ['ver-pregrado']
+    'Pregrado': ['ver-pregrado'],
+    'Empresa': ['ver-convocatorias', 'eliminar-convo', 'update-apli']
 }
 
+# Configuración de Flask-Mail
+app.app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.app.config['MAIL_PORT'] = 587
+app.app.config['MAIL_USE_TLS'] = True
+app.app.config['MAIL_USE_SSL'] = False
+app.app.config['MAIL_USERNAME'] = 'sie.unal.bogota@gmail.com'
+app.app.config['MAIL_PASSWORD'] = 'hjlic2746'
+app.app.config['MAIL_DEFAULT_SENDER'] = 'sie.unal.bogota@gmail.com'
+
+mail = Mail(app.app)
 
 @app.app.route('/')
 def index():
@@ -339,16 +353,120 @@ def crear_prestamo():
 
 
 @app.app.route('/empresa')
+@login_required
 def render_empresa():
-    return render_template('empresaBase.html')
+    return render_template('empresaIndex.html')
+
+# ------------------------- Convocatorias
+
+# Vista rapida convocatorias
+@app.app.route('/empresa/convocatorias', methods=['POST', 'GET'])
+@login_required
+def render_convo_short():
+    if 'ver-convocatorias' in tabla_permisos[session['rol_usuario']]:
+        pas = "emp_vista_convocatorias"
+        id_empresa = session['doc_usuario']
+        info_convo = emp.convo_acciones.read_all_convo(pas,id_empresa)
+        if info_convo[0] == 1:
+            return render_template('empresaConvocatorias.html', mensaje_error=info_convo[1])
+        else:
+            return render_template('empresaConvocatorias.html', datos_convo=info_convo[1])
+    else:
+        return redirect('/logout_user')
+
+# Vista detalle convocatorias
+@app.app.route('/button', methods=['POST'])
+def button():
+    data = request.get_json()
+    button_value = data.get('button')
+    return jsonify(button=button_value)
+
+# Eliminar convocatoria
+@app.app.route('/empresa/convocatorias/eliminar')
+@login_required
+def eliminar_convo():
+    if 'eliminar-convo' in tabla_permisos[session['rol_usuario']]:
+        pas = "borrar_convocatoria_datos"
+        id_empresa = session['doc_usuario']
+        id_convo = request.args.get('id')
+        resultado = emp.convo_acciones.RD_convo(pas ,id_convo, id_empresa)
+        return resultado[1]
+    else:
+        return redirect('/logout_user')
+
+#Ver todas aplicadas
+@app.app.route('/empresa/aplicadas/<int:id_convo>', methods=['POST', 'GET'])
+@login_required
+def all_apli(id_convo):
+    if 'read-apli' in tabla_permisos[session['rol_usuario']]:
+        pas = "emp_aplicadas_convocatorias"
+        id_empresa = session['doc_usuario']
+        info_apli = emp.convo_acciones.R_convo(pas ,id_convo, id_empresa)
+        if info_apli[0] == 1:
+            return render_template('empresaAplicantes.html', mensaje_error=info_apli[1])
+        else:
+            return render_template('empresaAplicantes.html', datos_apli=info_apli[1])
+    else:
+        return redirect('/logout_user')
+    
+# Update aplicadas
+@app.app.route('/empresa/aplicadas/update')
+@login_required
+def update_apli():
+    if 'update-apli' in tabla_permisos[session['rol_usuario']]:
+        id_con = request.args.get('id_con')
+        id_emp = session['doc_usuario']
+        id_egr = request.args.get('id_egr')
+        estado = request.args.get('estado')
+        resultado = emp.convo_acciones.U_apli(id_con, id_emp ,id_egr, estado)
+        if(estado == 'ACEPTADA'): 
+            try:
+                msg = Message("Hola desde Flask",
+                            recipients=["jaredmijail32@gmail.com"])
+                msg.body = "Este es el cuerpo del mensaje."
+                msg.html = "<b>Este es el cuerpo del mensaje en HTML</b>"
+                mail.send(msg)
+                print("correo enviado")
+                return ("Correo enviado! "+ resultado[1])
+            except Exception as e:
+                return str(e)
+        return resultado[1]
+    else:
+        return redirect('/logout_user')
+    
+# Send email si aceptada
 
 
-@app.app.route('/empresa/convocatorias')
-def render_convocatorias():
-    return render_template('empresaConvocatorias.html')
+# Crear convocatori
+@app.app.route('/empresa/convocatorias/crear')
+@login_required
+def crear_convoca():
+    empresa_id = session['doc_usuario']
+    cargo = request.args.get('cargo')
+    habilidades = request.args.get('habilidades')
+    competencias = request.args.get('competencias')
+    experiencia = request.args.get('experiencia')
+    vacantes = request.args.get('vacantes')
+    salario = request.args.get('salario')
+    jornada = request.args.get('jornada')
+    horario = request.args.get('horario')
+    teletrabajo = request.args.get('teletrabajo')
+    pais = request.args.get('pais')
+    ciudad = request.args.get('ciudad')
+    fechaIN = datetime.today().date()
+    fechaOUT = request.args.get('fechaOUT')
+    resultado = emp.convo_acciones.create_convo(
+                                                empresa_id, cargo, habilidades,
+                                                competencias, experiencia, vacantes,
+                                                salario, jornada, horario,
+                                                teletrabajo, pais, ciudad,
+                                                fechaIN, fechaOUT
+                                                )
+    return resultado[1]
 
-
+# ------------------------- Aplicantes
 @app.app.route('/empresa/aplicantes')
+@login_required
 def render_aplicantes():
     return render_template('empresaAplicantes.html')
 
@@ -396,7 +514,6 @@ def render_asesoria_crear():
         return resultado[1]
     else:
         return redirect('/logout_user')
-
 
 @app.app.route('/registrarse', methods=['GET', 'POST'])
 def registrarse_en_sistema():

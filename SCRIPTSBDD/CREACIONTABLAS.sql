@@ -268,7 +268,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS egresado_db.convocatoria ;
 
 CREATE TABLE IF NOT EXISTS egresado_db.convocatoria (
-  con_id INT NOT NULL,
+  con_id INT NOT NULL AUTO_INCREMENT,
   con_empresa_idNit INT NOT NULL,
   con_nombre_cargo VARCHAR(45) NOT NULL,
   con_habilidades VARCHAR(45) NOT NULL,
@@ -300,6 +300,7 @@ CREATE TABLE IF NOT EXISTS egresado_db.convocatorias_aplicadas (
   con_apl_emp_idNit INT NOT NULL,
   conv_documento_identidad INT NOT NULL,
   conv_apl_fecha_aplicacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  con_estado ENUM('ACEPTADA', 'EN EVALUACION', 'RECHAZADA') NOT NULL DEFAULT 'EN EVALUACION',
   PRIMARY KEY (con_apl_id, con_apl_emp_idNit, conv_documento_identidad ),
     FOREIGN KEY (con_apl_id , con_apl_emp_idNit)
     REFERENCES egresado_db.convocatoria (con_id , con_empresa_idNit)

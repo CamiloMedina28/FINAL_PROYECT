@@ -82,6 +82,41 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- PA para llamar convocatorias especificando emp_idNit
+DROP PROCEDURE IF EXISTS emp_vista_convocatorias;
+DELIMITER $$ 
+CREATE PROCEDURE emp_vista_convocatorias(emp_id INT)
+BEGIN 
+	SELECT * FROM  egresado_db.convocatoria WHERE con_empresa_idNit=emp_id;
+END $$
+DELIMITER ;
+
+-- PA para llamar vista_convocatorias especificando emp_idNit
+DROP PROCEDURE IF EXISTS emp_aplicadas_convocatorias;
+DELIMITER $$ 
+CREATE PROCEDURE emp_aplicadas_convocatorias(IN convo_id INT, IN emp_id INT)
+BEGIN 
+	SELECT * FROM  egresado_db.vista_convocatorias WHERE con_empresa_idNit=emp_id AND con_id = convo_id;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS update_estado_convocatoria;
+DELIMITER $$ 
+CREATE PROCEDURE update_estado_convocatoria(
+    IN p_con_apl_id INT,
+    IN p_con_apl_emp_idNit INT,
+    IN p_conv_documento_identidad INT,
+    IN p_estado ENUM('ACEPTADA', 'EN EVALUACION', 'RECHAZADA')
+)
+BEGIN
+    UPDATE egresado_db.convocatorias_aplicadas
+    SET con_estado = p_estado
+    WHERE con_apl_id = p_con_apl_id
+    AND con_apl_emp_idNit = p_con_apl_emp_idNit
+    AND conv_documento_identidad = p_conv_documento_identidad;
+END $$
+DELIMITER ;
+
 -- 1 Insert, 2 Update, 3 Delete
 -- PA para egresado y administrador
 DROP PROCEDURE IF EXISTS insertar_egresado_datos;
@@ -775,7 +810,6 @@ DROP PROCEDURE IF EXISTS insertar_convocatoria_datos;
 DELIMITER $$
 CREATE PROCEDURE insertar_convocatoria_datos(
     IN operacion INT,
-    IN id_convocatoria INT,
     IN id_empresa INT,
     IN nombre_cargo VARCHAR(45),
     IN habilidades VARCHAR(45),
