@@ -70,7 +70,43 @@ function add_informacion_egresado() {
       alert(data);
     });
 }
+// FAMILIAR
+function edit_familiar_form(
+  documento,
+  docmento_hijo,
+  nombre_hijo,
+  pri_ape_hijo,
+  seg_ape_hijo,
+  anio_nacimiento_hijo,
+  direccion_residencia_hijo
+) {
+  add_info_form();
+  document.getElementById("documento").value = documento;
+  document.getElementById("docmento_hijo").value = docmento_hijo;
+  document.getElementById("nombre_hijo").value = nombre_hijo;
+  document.getElementById("pri_ape_hijo").value = pri_ape_hijo;
+  document.getElementById("seg_ape_hijo").value = seg_ape_hijo;
+  document.getElementById("anio_nacimiento_hijo").value = anio_nacimiento_hijo;
+  document.getElementById("direccion_residencia_hijo").value = direccion_residencia_hijo;
+}
 
+function add_info_familia() {
+  var documento = document.getElementById("documento").value;
+  var docmento_hijo = document.getElementById("docmento_hijo").value;
+  var nombre_hijo = document.getElementById("nombre_hijo").value;
+  var pri_ape_hijo = document.getElementById("pri_ape_hijo").value;
+  var seg_ape_hijo = document.getElementById("seg_ape_hijo").value;
+  var anio_nacimiento_hijo = document.getElementById("anio_nacimiento_hijo").value;
+  var direccion_residencia_hijo = document.getElementById("direccion_residencia_hijo").value;
+
+  fetch(
+    `/agregar-info-familir?documento=${documento}&docmento_hijo=${docmento_hijo}&nombre_hijo=${nombre_hijo}&pri_ape_hijo=${pri_ape_hijo}&seg_ape_hijo=${seg_ape_hijo}&anio_nacimiento_hijo=${anio_nacimiento_hijo}&direccion_residencia_hijo=${direccion_residencia_hijo}`
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
+}
 
 function eliminar_familiar(id) {
   fetch(`/eliminar_familiar?id_egresado=${id}`)
@@ -171,4 +207,33 @@ function edit_residencia_form(
   document.getElementById("municipio").value = municipio;
   document.getElementById("ciudad").value = ciudad;
   document.getElementById("direccion").value = direccion;
+}
+
+// DISTINCIONES 
+function edit_distincion_form(
+  documento,
+  anio,
+  nombre_distincion,
+  descripcion,
+) {
+  add_info_form();
+  document.getElementById("documento").value = documento;
+  document.getElementById("anio").value = anio
+  document.getElementById("nombre_distincion").value = nombre_distincion;
+  document.getElementById("descripcion").value = descripcion;
+}
+
+function add_informacion_distincion() {
+  var documento = document.getElementById("documento").value;
+  var anio = document.getElementById("anio").value;
+  var nombre_distincion = document.getElementById("nombre_distincion").value;
+  var descripcion = document.getElementById("descripcion").value;
+  
+  fetch(
+    `/agregar-info-distincion?documento=${documento}&anio=${anio}&nombre_distincion=${nombre_distincion}&descripcion=${descripcion}`
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
 }

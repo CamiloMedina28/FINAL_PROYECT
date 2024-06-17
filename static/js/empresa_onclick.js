@@ -9,7 +9,7 @@ function info_convo(id) {
 }
 
 function seeInfoToDetail(IdElement) {
-    var url = '/empresa/egresadp-info/' + IdElement;
+    var url = '/informacion_personal_egresados/' + IdElement;
     window.location.href = url;
 }
 function info_aplicantes(id_emp) {

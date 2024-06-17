@@ -114,6 +114,9 @@ def render_personal_info():
         return redirect('/logout_user')
 
 # ----------------------------- Egresados ----------------------------------------
+@app.app.route('/egresados')
+def render_inicioEgreados():
+    return render_template('egresadosIndex.html')
 
 # INFO PERSONAL -----------------------------------
 @app.app.route('/informacion_personal_egresados')
@@ -191,7 +194,7 @@ def eliminar_egresado():
             'borrar_egresado', id_egresado)
         return info
 
-
+# CONTACTO EGRESADO ------------------------------------------------
 @app.app.route('/informacion_contacto_egr')
 @login_required
 def render_info_contacto():
@@ -207,7 +210,6 @@ def render_info_contacto():
 @app.app.route('/agregar-info-contacto')
 @login_required
 def agregar_informacion_contacto_egresado():
-
     documento = request.args.get('documento')
     telefono_principal = request.args.get('telefono-principal')
     correo_principal = request.args.get('correo')
@@ -220,6 +222,7 @@ def agregar_informacion_contacto_egresado():
     print(info)
     return info
 
+# FAMILIAR -----------------------------------------------------
 @app.app.route('/informacion_familiar')
 @login_required
 def render_informacion_familiar():
@@ -243,7 +246,21 @@ def eliminar_familiar():
 @app.app.route('/agregar-informacion-familiar')
 @login_required
 def agregar_familiar():
-    pass
+    documento = request.args.get('documento')
+    docmento_hijo = request.args.get('docmento_hijo')
+    nombre_hijo = request.args.get('nombre_hijo')
+    pri_ape_hijo = request.args.get('pri_ape_hijo')
+    seg_ape_hijo = request.args.get('seg_ape_hijo')
+    anio_nacimiento_hijo = request.args.get('anio_nacimiento_hijo')
+    direccion_residencia_hijo = request.args.get('direccion_residencia_hijo')
+    existe = egresado.informacion_egresado.existe_info_familiar(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_familiar(
+        accion, docmento_hijo, nombre_hijo, 
+        pri_ape_hijo, seg_ape_hijo, anio_nacimiento_hijo,
+        direccion_residencia_hijo)
+    print(info)
+    return info
 
 # RESIDENCIA -----------------------------   
 @app.app.route('/info_residencia')
@@ -307,11 +324,19 @@ def eliminar_distincion():
             'borrar_distincion_datos', id_egresado)
         return info
 
-
-@app.app.route('/egresados')
-def render_inicioEgreados():
-    return render_template('egresadosIndex.html')
-
+@app.app.route('/agregar-info-distincion')
+@login_required
+def agregar_distincion():
+    documento = request.args.get('documento')
+    anio = request.args.get('anio')
+    nombre_distincion = request.args.get('nombre_distincion')
+    descripcion = request.args.get('descripcion')
+    existe = egresado.informacion_egresado.existe_info_distincion(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_distincion
+    (accion,documento, anio, nombre_distincion, descripcion)
+    print(info)
+    return info
 
 @app.app.route('/egresados/DatosPersonales')
 def render_PersonalEgreados():

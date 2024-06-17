@@ -15,9 +15,8 @@
 
 {% block content %}
 
-
 <div class="container">
-    <div class="flexcontainer" id="tabla_prestamos">
+    <div class="flexcontainer" id="tabla_info">
       <h1>Información de distinciones</h1>
       <span id="mensaje"></span>
     
@@ -43,13 +42,9 @@
             <td class="transaction-actions">
               <a
                 class="btn btn-sm btn-danger"
-                id="delete_button"
+                id="edit_button"
                 onclick="edit_distincion_form(
                 {{ distincion['egr_numero_de_identificacion'] }},
-                '{{ distincion['egr_primer_nombre'] }}',
-                '{{ distincion['egr_segundo_nombre'] }}',
-                '{{ distincion['egr_primer_apellido'] }}',
-                '{{ distincion['egr_segundo_apellido'] }}'
                 '{{ distincion['dis_año'] }}',
                 '{{ distincion['dist_nombre_distincion'] }}',
                 '{{ distincion['dist_descripcion' ] }}'
@@ -65,7 +60,9 @@
           {% endfor %}
         </tbody>
       </table>
-    
+      <button onclick="add_info_form()" class="waves-effect waves-light btn">
+        AÑADIR INFORMACIÓN DISTINCIONES
+      </button>
     </div>
 
     <div id="formulario_añadir" style="display:  none;" class="form-container">
@@ -92,11 +89,11 @@
           <button
             type="submit"
             class="waves-effect waves-light btn"
-            onclick=""
+            onclick="add_informacion_distincion()"
           >
             Guardar
           </button>
-          <a href="/informacion_contacto_egr" class="waves-effect waves-light btn"
+          <a href="/distinciones" class="waves-effect waves-light btn"
             >Return</a
           >
         </div>

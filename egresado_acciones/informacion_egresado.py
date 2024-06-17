@@ -171,11 +171,11 @@ def existe_info_residencia(id):
             return datos
         except Exception as error:
             return "Ha ocurrido un error: " + str(error)
-        
-def agregar_info_residencia(
-    accion, num_id, prim_nom, prim_ape, seg_ape, sexo, estrato,
-    grupo_etn, est_civil, discap, adm_esp, vict_conf, tipo_id,
-    pais_nac, depto_nac,mun_nac, seg_nom
+
+def agregar_info_familiar(
+        accion, docmento_hijo, nombre_hijo, 
+        pri_ape_hijo, seg_ape_hijo, anio_nacimiento_hijo,
+        direccion_residencia_hijo
     ):
     try:
         conexion = connect.conexion_base_de_datos()
@@ -185,20 +185,17 @@ def agregar_info_residencia(
         try:
             with conexion.cursor() as cursor:
 
-                cursor.callproc('insertar_egresado_datos', (
-                accion, num_id, prim_nom, prim_ape,
-                seg_ape, sexo, estrato, grupo_etn,
-                est_civil, discap,adm_esp, vict_conf,
-                tipo_id, pais_nac, depto_nac, mun_nac,
-                seg_nom))
+                cursor.callproc('insertar_hijos_egresado_datos', (
+                accion, docmento_hijo, nombre_hijo, 
+                pri_ape_hijo, seg_ape_hijo, anio_nacimiento_hijo,
+                direccion_residencia_hijo))
                 conexion.commit()
 
-            return "La información de residencia ha sido agregada exitosamente"
+            return "La información de familiar ha sido agregada exitosamente"
         except Exception as error:
             return f"Ha ocurrido un error: {str(error)}"
 
-
-def existe_info_residencia(id):
+def existe_info_familiar(id):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -206,15 +203,16 @@ def existe_info_residencia(id):
     else:
         try:
             with conexion.cursor() as cursor:
-                sql = "SELECT * FROM informacion_residencia WHERE inf_res_egr_numero_de_identificacion = %s"
+                sql = "SELECT * FROM familiar WHERE fam_egr_numero_documento_identidad = %s"
                 cursor.execute(sql, (id,))
                 datos = cursor.fetchone()
             return datos
         except Exception as error:
             return "Ha ocurrido un error: " + str(error)
 
-
-def agregar_info_familia():
+def agregar_info_distincion(
+        accion,documento, anio, nombre_distincion, descripcion
+    ):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -222,7 +220,26 @@ def agregar_info_familia():
     else:
         try:
             with conexion.cursor() as cursor:
-                cursor.callproc()
+
+                cursor.callproc('distincion_datos', (
+                accion, documento, anio, nombre_distincion, descripcion))
                 conexion.commit()
+
+            return "La información de familiar ha sido agregada exitosamente"
+        except Exception as error:
+            return f"Ha ocurrido un error: {str(error)}"
+
+def existe_info_distincion(id):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                sql = "SELECT * FROM distincion WHERE dis_documento_egresado = %s"
+                cursor.execute(sql, (id,))
+                datos = cursor.fetchone()
+            return datos
         except Exception as error:
             return "Ha ocurrido un error: " + str(error)
