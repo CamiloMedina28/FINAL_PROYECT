@@ -104,3 +104,31 @@ def eliminar_info_egresado(proc, id):
         except Exception as error:
             return f"Error, el egresado no ha podido ser ingresado en la base de datos: {str(error)}"
         
+
+def agregar_info_contacto(accion, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                cursor.callproc('insertar_contacto_datos', (accion, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional))
+                conexion.commit()
+            return "La información de contacto ha sido agregada exitosamente"
+        except Exception as error:
+            return f"Ha ocurrido un error: {str(error)}"
+        
+
+def agregar_info_familia():
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                cursor.callproc()
+                conexion.commit()
+        except Exception as error:
+            return "Ha ocurrido un error: " + str(error)

@@ -105,7 +105,8 @@ def render_personal_info():
 @login_required
 def render_info_personal_egr():
     if session['rol_usuario'] == "Egresado":
-        info = egresado.informacion_egresado.retrieve_informacion_personal(session['doc_usuario'])
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_personal(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_personal()
     return render_template('informacion_personal_egresados.html', datos_egresados = info)
@@ -124,17 +125,31 @@ def eliminar_egresado():
 @login_required
 def render_info_contacto():
     if session['rol_usuario'] == "Egresado":
-        info = egresado.informacion_egresado.retrieve_informacion_contacto(session['doc_usuario'])
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_contacto(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_contacto()
     return render_template('contacto.html', datos_contacto = info)
+
+
+@app.app.route('/agregar-info-contacto')
+@login_required
+def agregar_informacion_contacto_egresado():
+    documento = request.args.get('documento')
+    telefono_principal = request.args.get('telefono-principal')
+    correo_principal = request.args.get('correo')
+    telefono_adicional = request.args.get('telefono-adicional')
+    correo_adicional = request.args.get('correo-adicional')
+    info = egresado.informacion_egresado.agregar_info_contacto(1, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional)
+    return info
 
 
 @app.app.route('/informacion_familiar')
 @login_required
 def render_informacion_familiar():
     if session['rol_usuario'] == "Egresado":
-        info = egresado.informacion_egresado.retrieve_datos_familiares(session['doc_usuario'])
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_datos_familiares(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_datos_familiares()
     return render_template('info_familiar.html', datos_familia= info)
@@ -149,11 +164,18 @@ def eliminar_familiar():
         return info
 
 
+@app.app.route('/agregar-informacion-familiar')
+@login_required
+def agregar_familiar():
+    pass
+
+
 @app.app.route('/info_residencia')
 @login_required
 def render_info_residencia():
     if session['rol_usuario'] == "Egresado":
-        info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado(session['doc_usuario'])
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_residencia_egresado(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado()
     return render_template('informacion_residencia.html', datos_residencia= info)
@@ -172,7 +194,8 @@ def eliminar_residencia():
 @login_required
 def render_distinciones():
     if session['rol_usuario'] == "Egresado":
-        info = egresado.informacion_egresado.retrieve_informacion_distinciones(session['doc_usuario'])
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_distinciones(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_distinciones()
     return render_template('distinciones.html', datos_distinciones= info)
@@ -227,8 +250,7 @@ def eliminar_libro():
 @app.app.route('/bibliotecario/libros', methods=['POST', 'GET'])
 @login_required
 def render_libros():
-    if session['rol_usuario'] == 'Bibliotecario':
-
+    if session['rol_usuario'] in ('Bibliotecario', 'Administrador'):
         info_libros = biblio.acciones_libros.read_book(0)
         if info_libros[0] == 1:
             return render_template('biblioLibros.html', mensaje=info_libros[1])
