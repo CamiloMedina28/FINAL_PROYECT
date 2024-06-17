@@ -342,19 +342,28 @@ def agregar_distincion():
 def render_PersonalEgreados():
     return render_template('egresadosDatosPerso.html')
 
-
-@app.app.route('/egresados/convocatorias')
+# CONVOCATORIAS ---------------------
+@app.app.route('/egresados/convocatorias' , methods=['POST', 'GET'])
 def render_convocaEgreados():
-    return render_template('egresadosConvocatorias.html')
+    proc = 'egr_vista_convocatorias'
+    if [session['rol_usuario']] == 'Egresado':
+        user = session['doc_usuario']
+    elif [session['rol_usuario']] == 'Administrador':
+        user = 0
+    else: 
+        return redirect('/logout_user')
+    info_apli = egresado.convo_egr.read_all_convo(proc, user)
+    if info_apli[0] == 1:
+        return render_template('egresadosConvocatorias.html', mensaje_error=info_apli[1])
+    else:
+        return render_template('egresadosConvocatorias.html', datos_apli=info_apli[1])
 # ----------------------------- bibliotecario ----------------------------------------
-
 
 @app.app.route('/bibliotecario')
 @login_required
 def render_inicioBiblio():
     if 'inicio-bibliotecario' in tabla_permisos[session['rol_usuario']]:
         return render_template('biblioIndex.html')
-
 
 # ----------------bibliotecario - libros
 
@@ -602,6 +611,7 @@ def crear_convoca():
     ciudad = request.args.get('ciudad')
     fechaIN = datetime.today().date()
     fechaOUT = request.args.get('fechaOUT')
+    print('HOLAAAAAAAA')
     resultado = emp.convo_acciones.create_convo(
         empresa_id, cargo, habilidades,
         competencias, experiencia, vacantes,
