@@ -59,5 +59,38 @@
     
     </div>
 
+    <div id="formulario_añadir" style="display:  none;" class="form-container">
+      <form>
+        <h1>Añadir información de contacto</h1>
+        <div class="input-field">
+          <label for="documento">Documento</label>
+          <input type="text" id="documento" name="documento" required />
+        </div>
+        <div class="input-field">
+          <label for="anio">Año</label>
+          <input type="number" id="anio" name="anio" required />
+        </div>
+        <div class="input-field">
+          <label for="nombre_distincion">Nombre de distinción</label>
+          <input type="text" id="nombre_distincion" name="nombre_distincion" required />
+        </div>
+        <div class="input-field">
+          <label for="descripcion">Descripción</label>
+          <input type="text" id="descripcion" name="descripcion" required />
+        </div>
+  
+        <div class="form-footer">
+          <button
+            type="submit"
+            class="waves-effect waves-light btn"
+            onclick=""
+          >
+            Guardar
+          </button>
+          <a href="/informacion_contacto_egr" class="waves-effect waves-light btn"
+            >Return</a
+          >
+        </div>
+
 </div>
 {% endblock %}
