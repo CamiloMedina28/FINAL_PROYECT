@@ -9,7 +9,8 @@
 <link 
     rel="stylesheet" 
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-/>
+>
+
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
 </script>
@@ -73,11 +74,6 @@
         {% include 'empresa/form_new_convo.html' %}
         {% block form %}
         {% endblock form %}
-    </div>
-    <div id="vista_convo" style="display: none;" class="form-container">
-        {% include 'empresa/vista_convo_detail.html' %}
-        {% block view %}
-        {% endblock view %}
     </div>
 </div>
 {% endblock content %}

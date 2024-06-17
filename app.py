@@ -391,14 +391,35 @@ def render_convo_short():
     else:
         return redirect('/logout_user')
 
-# Vista detalle convocatorias
+# Ver detalles convocatoria
+@app.app.route('/empresa/convo-info/<int:id_convo>', methods=['POST', 'GET'])
+@login_required
+def detail_convo(id_convo: int):
+    if 'ver-convocatorias' in tabla_permisos[session['rol_usuario']]:
+        pas = "emp_vista_convocatorias"
+        id_empresa = session['doc_usuario']
+        info_convo = emp.convo_acciones.read_all_convo(pas,id_empresa)
+        for convo in info_convo[1]:
+            if (int(convo['con_id']) == id_convo):
+                convo_to_update = convo
+                break
+        nombres_display = [
+            "ID","ID de la Empresa","Nombre del Cargo","Habilidades",
+            "Competencias", "Meses de Experiencia", "Número de Vacantes",
+            "Salario", "Jornada de Trabajo", "Horario de Trabajo",
+            "Teletrabajo","País","Ciudad","Fecha de Convocatoria",
+            "Fecha de Expiración"]
+        convo_to_update = list(convo_to_update.values())
+        toDisplay = list(zip(nombres_display, convo_to_update))
+        for con in toDisplay:
+            print(con)
+        if info_convo[0] == 1:
+            return render_template('empresaConDetail.html', mensaje_error=info_convo[1])
+        else:
+            return render_template('empresaConDetail.html', datos_convo=toDisplay)
+    else:
+        return redirect('/logout_user')
 
-
-@app.app.route('/button', methods=['POST'])
-def button():
-    data = request.get_json()
-    button_value = data.get('button')
-    return jsonify(button=button_value)
 
 # Eliminar convocatoria
 
@@ -432,7 +453,22 @@ def all_apli(id_convo):
     else:
         return redirect('/logout_user')
 
-# Update aplicadas
+# Ver detalles aplicate
+# @app.app.route('/empresa/egresadp-info/<int:id_convo>', methods=['POST', 'GET'])
+# @login_required
+# def all_apli(id_convo):
+#     if 'read-apli' in tabla_permisos[session['rol_usuario']]:
+#         pas = "emp_aplicadas_convocatorias"
+#         id_empresa = session['doc_usuario']
+#         info_apli = emp.convo_acciones.R_convo(pas ,id_convo, id_empresa)
+#         if info_apli[0] == 1:
+#             return render_template('empresaAplicantes.html', mensaje_error=info_apli[1])
+#         else:
+#             return render_template('empresaAplicantes.html', datos_apli=info_apli[1])
+#     else:
+#         return redirect('/logout_user')
+
+
 
 
 @app.app.route('/empresa/aplicadas/update')
@@ -458,8 +494,6 @@ def update_apli():
         return resultado[1]
     else:
         return redirect('/logout_user')
-
-# Send email si aceptada
 
 
 # Crear convocatori
@@ -522,9 +556,9 @@ def render_asesoria(id):
     elif session['rol_usuario'] == 'Egresado':
         info_pregrado = pregrado.pregrado_acciones.read_student(0)
         if info_pregrado[0] == 1:
-            return render_template('egresadosAsesoria.html', mensaje=info_pregrado[1])
+            return render_template('empresaConDetail.html', mensaje=info_pregrado[1])
         else:
-            return render_template('egresadosAsesoria.html', datos_pregrados=info_pregrado[1])
+            return render_template('empresaConDetail.html', datos_pregrados=info_pregrado[1])
 
     else:
         return redirect('/logout_user')

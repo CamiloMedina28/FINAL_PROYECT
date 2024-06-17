@@ -53,6 +53,7 @@ function add_informacion_contacto() {
       // window.location.href = "http://127.0.0.1:5010/bibliotecario/libros";
       alert(data);
     });
+
 }
 
 function edit_contacto_form(
@@ -69,3 +70,6 @@ function edit_contacto_form(
   document.getElementById("telefono_adicional").value = telefono_adicional;
   document.getElementById("correo_adicional").value = correo_adicional;
 }
+
+
+
