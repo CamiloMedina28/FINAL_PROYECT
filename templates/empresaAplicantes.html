@@ -1,7 +1,87 @@
-{% extends 'empresaBase.html' %}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles/biblioLibros/biblioLibros.css') }}"
+    type="text/css"
+/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- IMPORTACIONES DE MATERIALIZE -->
+<!-- Compiled and minified CSS -->
+<link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+</script>
+<script src="{{url_for('static', filename='js/empresa_onclick.js')}}">
+</script>
+
+{% extends 'empresaBase.html' %} {% block nav %} {{super()}} {% endblock nav %}
 {% block content %}
-estos son los aplicantes
+<div class="container">   
+    <div class="flexcontainer" id="tabla_apli">
+        {% if mensaje_error %}
+        <span class="error_message"> {{ mensaje_error }} </span>
+        {% endif %} {% if mensaje_success %}
+        <span class="success_message"> {{ mensaje_success }} </span>
+        {% endif %}
+        <h1>Aplicantes</h1>
+        <table class="striped">
+        <thead>
+        <tr>
+        <th>Cedula</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for apli in datos_apli %}
+        <tr>
+            <td>{{ apli['egr_numero_de_identificacion'] }}</td>
+            <td>{{ apli['egr_primer_nombre'] }}</td>
+            <td>{{ apli['egr_primer_apellido'] }}</td>
+            <td>{{ apli['con_estado'] }}</td>
+            <td class="transaction-actions">
+            {% if apli['con_estado'] != 'ACEPTADA' %}
+            <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="update_aplicacion(
+                    {{apli['egr_numero_de_identificacion']}},{{apli['con_apl_id']}},
+                    'ACEPTADA'
+                )"
+                >Aceptar</a>
+                {% if apli['con_estado'] != 'RECHAZADA' %}
+            <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="update_aplicacion(
+                    {{apli['egr_numero_de_identificacion']}},
+                    {{apli['con_apl_id']}},
+                    'RECHAZADA'
+                )"
+                >Rechazar</a>
+                {% endif %}
+            {% endif %}
+            <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick=""
+                >Info</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <button onclick="volver_convocatorias()" class="waves-effect waves-light btn">
+            VOLVER A CONVOCATORIAS 
+        </button >
+    </div>
+
+    <div id="vista_aplicantes" style="display: none;" class="form-container">
+        {% include 'empresa/vista_aplicantes.html' %}
+        {% block vista_aplicantes %}
+        {% endblock vista_aplicantes %}
+    </div>
+</div> 
 {% endblock content %}

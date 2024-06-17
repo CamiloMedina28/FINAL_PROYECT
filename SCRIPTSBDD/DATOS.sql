@@ -183,11 +183,11 @@ INSERT INTO egresado_db.empresa (
 (102, '987654321', 'Innovate Corp', 'Calle 2 #20-30', 2345678, 'Consultoría', 200, 'Ana Martinez', 'contacto@innovatecorp.com'),
 (103, '456789123', 'Creative Minds', 'Carrera 3 #30-40', 3456789, 'Publicidad', 100, 'Luis Gomez', 'support@creativeminds.com'),
 (104, '789123456', 'Future Vision', 'Avenida 4 #40-50', 4567890, 'Finanzas', 300, 'María Rodriguez', 'info@futurevision.com'),
-(105, '321654987', 'Global Tech', 'Calle 5 #50-60', 5678901, 'Tecnología', 250, 'Juan Fernandez', 'contact@globaltech.com');
+(105, '321654987', 'Global Tech', 'Calle 5 #50-60', 5678901, 'Tecnología', 250, 'Juan Fernandez', 'contact@globaltech.com'),
+(333, '321654982', 'Global Tech', 'Calle 5 #50-60', 5678901, 'Tecnología', 250, 'Jared Ramirez', 'jared@globaltech.com');
 
 
 INSERT INTO egresado_db.convocatoria (
-  con_id, 
   con_empresa_idNit, 
   con_nombre_cargo, 
   con_habilidades, 
@@ -203,11 +203,13 @@ INSERT INTO egresado_db.convocatoria (
   con_fecha_convocatoria, 
   con_fecha_expiracion
 ) VALUES
-(1, 101, 'Desarrollador Web', 'HTML, CSS, JavaScript', 'Trabajo en equipo, Comunicación', 24, '2', 3000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Bogotá', '2024-05-01', '2024-06-01'),
-(2, 102, 'Analista de Datos', 'SQL, Python', 'Análisis crítico, Resolución de problemas', 36, '1', 4000000, 'COMPLETA', 'Lunes a Viernes, 8am - 5pm', 'No', 'Colombia', 'Medellín', '2024-05-01', '2024-06-01'),
-(3, 103, 'Diseñador Gráfico', 'Photoshop, Illustrator', 'Creatividad, Atención al detalle', 18, '3', 2500000, 'MEDIA', 'Lunes a Viernes, 1pm - 5pm', 'Si', 'Colombia', 'Cali', '2024-05-01', '2024-06-01'),
-(4, 104, 'Ingeniero de Software', 'Java, Spring Boot', 'Liderazgo, Adaptabilidad', 48, '1', 5000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Barranquilla', '2024-05-01', '2024-06-01'),
-(5, 105, 'Gerente de Proyectos', 'Gestión de proyectos, Scrum', 'Liderazgo, Organización', 60, '1', 6000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Cartagena', '2024-05-01', '2024-06-01');
+(101, 'Desarrollador Web', 'HTML, CSS, JavaScript', 'Trabajo en equipo, Comunicación', 24, '2', 3000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Bogotá', '2024-05-01', '2024-06-01'),
+(102, 'Analista de Datos', 'SQL, Python', 'Análisis crítico, Resolución de problemas', 36, '1', 4000000, 'COMPLETA', 'Lunes a Viernes, 8am - 5pm', 'No', 'Colombia', 'Medellín', '2024-05-01', '2024-06-01'),
+(103, 'Diseñador Gráfico', 'Photoshop, Illustrator', 'Creatividad, Atención al detalle', 18, '3', 2500000, 'MEDIA', 'Lunes a Viernes, 1pm - 5pm', 'Si', 'Colombia', 'Cali', '2024-05-01', '2024-06-01'),
+(104, 'Ingeniero de Software', 'Java, Spring Boot', 'Liderazgo, Adaptabilidad', 48, '1', 5000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Barranquilla', '2024-05-01', '2024-06-01'),
+(105, 'Gerente de Proyectos', 'Gestión de proyectos, Scrum', 'Liderazgo, Organización', 60, '1', 6000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Cartagena', '2024-05-01', '2024-06-01'),
+(333, 'Gerente de Proyectos', 'Gestión de proyectos, Scrum', 'Liderazgo, Organización', 60, '1', 6000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Cartagena', '2024-05-01', '2024-06-01'),
+(333, 'Ingeniero de Software', 'Java, Spring Boot', 'Liderazgo, Adaptabilidad', 48, '1', 5000000, 'COMPLETA', 'Lunes a Viernes, 9am - 6pm', 'No', 'Colombia', 'Barranquilla', '2024-05-01', '2024-06-01');
 
 INSERT INTO egresado_db.convocatorias_aplicadas (
   con_apl_id, 
@@ -224,7 +226,11 @@ INSERT INTO egresado_db.convocatorias_aplicadas (
 (2, 102, 1000000007, '2024-05-21'),
 (3, 103, 1000000008, '2024-05-22'),
 (4, 104, 1000000009, '2024-05-23'),
-(5, 105, 1000000010, '2024-05-24');
+(5, 105, 1000000010, '2024-05-24'),
+(6, 333, 1000000007, '2024-05-21'),
+(7, 333, 1000000008, '2024-05-22'),
+(6, 333, 1000000009, '2024-05-23'),
+(7, 333, 1000000010, '2024-05-24');
 
 
 
