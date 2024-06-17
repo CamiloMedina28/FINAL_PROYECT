@@ -54,7 +54,25 @@ def R_convo(proced: str, IdConvo: int, IdUser: int) -> None:
             return (1, f"Error en el procedimientoAlmacenado {str(error)}")
         else:
             return (0, info)
-        
+
+def R_info_(proced: str, IdElement: int) -> None:
+    """
+    Lectura elemento specifico
+    """
+    try:
+        conexion = conexion_db.conexion_base_de_datos()
+    except Exception as error:
+        return (1, f"Error en la conexión con la base de datos {str(error)}")
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                cursor.callproc(proced, (IdElement))
+                info = cursor.fetchall()
+        except Exception as error:
+            return (1, f"Error en el procedimientoAlmacenado {str(error)}")
+        else:
+            return (0, info)
+
 def U_apli(id_con: int,id_emp: int, id_egr: int, estado: str) -> None:
     """
     Update de convocatoria aplicadas

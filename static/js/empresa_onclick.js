@@ -4,22 +4,14 @@ function add_libro() {
 }
 
 function info_convo(id) {
-    $.ajax({
-        type: "POST",
-        url: "/button",
-        data: JSON.stringify({ button: id }),
-        contentType: "application/json",
-        success: function(response) {
-            $('#result').text('You pressed button number: ' + response.button);
-        },
-        error: function(error) {
-            console.log("Error:", error);
-        }
-    });
-    document.getElementById("vista_convo").style.display = "block"; // renderizar boton de volver
-    document.getElementById("tabla_libros").style.display = "none"; // Ocultar tabla de libros
+    var url = '/empresa/convo-info/' + id;
+    window.location.href = url;
 }
 
+function seeInfoToDetail(IdElement) {
+    var url = '/empresa/egresadp-info/' + IdElement;
+    window.location.href = url;
+}
 function info_aplicantes(id_emp) {
     var id_emp = id_emp;
     var url = '/empresa/aplicadas/' + id_emp;
