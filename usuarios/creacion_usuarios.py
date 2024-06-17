@@ -1,6 +1,6 @@
 # import conectar_db as connect
 from . import conectar_db as connect
-from werkzeug.security import generate_password_hash
+# from werkzeug.security import generate_password_hash
 
 
 def create_temporal_user(rol, documento, user_name, password):
@@ -15,7 +15,7 @@ def create_temporal_user(rol, documento, user_name, password):
         if cursor.fetchone():
             return "El usuario ya existe en la base de datos."
         # Creación del hash con la contraseña del usuario.
-        user_password = generate_password_hash(password)
+        user_password = password
         cursor.callproc('Ingresar_usuario_por_autorizar',
                         (documento, rol, user_name, user_password))
         conexion.commit()

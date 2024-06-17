@@ -2,6 +2,9 @@ services:
   mysql:
     image: mysql:latest
     container_name: egresados-db
+    command:
+      - --mysql-native-password=ON
+      - --log-error-verbosity=3
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:

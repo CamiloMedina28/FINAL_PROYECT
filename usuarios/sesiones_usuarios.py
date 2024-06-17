@@ -1,5 +1,5 @@
 from flask import session
-from werkzeug.security import check_password_hash
+# from werkzeug.security import check_password_hash
 from flask_login import UserMixin, login_user, logout_user, login_manager
 from . import conectar_db
 
@@ -32,7 +32,7 @@ def iniciar_sesion_de_usuario(username: str, contrasenia: str, role: str) -> boo
         sql = 'SELECT * FROM usuarios WHERE usr_username = %s'
         cursor.execute(sql, (username,))
         datos_usuario = cursor.fetchone()
-    if datos_usuario and check_password_hash(datos_usuario['usr_password'], contrasenia) and datos_usuario['usr_role'] == role:
+    if datos_usuario and datos_usuario['usr_password'] == contrasenia and datos_usuario['usr_role'] == role:
         user = User(datos_usuario['usr_documento'],
                     datos_usuario['usr_username'],
                     datos_usuario['usr_password'],
