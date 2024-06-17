@@ -1,8 +1,8 @@
 .container{
-    width: fit-content;
     background-color: white;
+    border-radius: 15px;
+    width: auto;
 }
-
 
 .transaction-actions{
     display: flex;
@@ -14,7 +14,6 @@ body {
     background: linear-gradient(to right, #26166e, #150026);
     color: #333;
 }
-
 
 .form-container {
     background-color: white;
@@ -38,6 +37,7 @@ nav {
 
 .flexcontainer {
     flex-direction: column;
+    padding: 20px;
 }
 
 a {
