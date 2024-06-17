@@ -1,7 +1,7 @@
 from . import connect
 
 
-def retrieve_informacion_personal(id = None):
+def retrieve_informacion_personal(id=None):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -14,10 +14,11 @@ def retrieve_informacion_personal(id = None):
                 for egresado in cursor.fetchall():
                     if egresado['egr_numero_de_identificacion'] == id:
                         return egresado
-            else: return cursor.fetchall()
+            else:
+                return cursor.fetchall()
 
 
-def retrieve_informacion_contacto(id = None):
+def retrieve_informacion_contacto(id=None):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -32,9 +33,9 @@ def retrieve_informacion_contacto(id = None):
                         return egr_info_contacto
             else:
                 return cursor.fetchall()
-            
 
-def retrieve_datos_familiares(id = None):
+
+def retrieve_datos_familiares(id=None):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -52,9 +53,9 @@ def retrieve_datos_familiares(id = None):
             else:
 
                 return cursor.fetchall()
-            
 
-def retrieve_informacion_residencia_egresado(id = None):
+
+def retrieve_informacion_residencia_egresado(id=None):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -69,9 +70,9 @@ def retrieve_informacion_residencia_egresado(id = None):
                         return residencia
             else:
                 return cursor.fetchall()
-            
 
-def retrieve_informacion_distinciones(id = None):
+
+def retrieve_informacion_distinciones(id=None):
     try:
         conexion = connect.conexion_base_de_datos()
     except:
@@ -87,7 +88,7 @@ def retrieve_informacion_distinciones(id = None):
                         distinciones.append(distincion)
                 return distinciones
             else:
-                return cursor.fetchall()   
+                return cursor.fetchall()
 
 
 def eliminar_info_egresado(proc, id):
@@ -103,7 +104,7 @@ def eliminar_info_egresado(proc, id):
             return "El egresado ha sido eliminado exitosamente de la base de datos."
         except Exception as error:
             return f"Error, el egresado no ha podido ser ingresado en la base de datos: {str(error)}"
-        
+
 
 def agregar_info_contacto(accion, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional):
     try:
@@ -113,12 +114,31 @@ def agregar_info_contacto(accion, documento, telefono_principal, correo_principa
     else:
         try:
             with conexion.cursor() as cursor:
-                cursor.callproc('insertar_contacto_datos', (accion, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional))
+
+                cursor.callproc('insertar_contacto_datos', (accion, documento,
+                                telefono_principal, correo_principal, telefono_adicional, correo_adicional))
                 conexion.commit()
+
             return "La información de contacto ha sido agregada exitosamente"
         except Exception as error:
             return f"Ha ocurrido un error: {str(error)}"
-        
+
+
+def existe_info_contacto(id):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                sql = "SELECT * FROM contacto WHERE con_egr_numero_de_identificacion = %s"
+                cursor.execute(sql, (id,))
+                datos = cursor.fetchone()
+            return datos
+        except Exception as error:
+            return "Ha ocurrido un error: " + str(error)
+
 
 def agregar_info_familia():
     try:
