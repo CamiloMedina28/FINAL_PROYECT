@@ -478,13 +478,3 @@ CREATE TABLE IF NOT EXISTS usuarios_por_autorizar(
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
--- -----------------------------------------------------
--- Información predeterminada
--- -----------------------------------------------------
-
-INSERT INTO usuarios VALUES 
-(111, 'cmedinasa', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador'), 
-(222, 'sisuarezc', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador'), 
-(333, 'jramirezes', 'scrypt:32768:8:1$BTVfdDXu77UaPD7q$a8e120f2fdebaa5c4b8f396741f2f9c3c8f230305c31b83cf588a81797e6f200aaafe6eac668553b1e84a90b533ee7914a6803a26e0749ba24fa148b3516f349', 'Administrador');
