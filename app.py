@@ -422,8 +422,6 @@ def detail_convo(id_convo: int):
 
 
 # Eliminar convocatoria
-
-
 @app.app.route('/empresa/convocatorias/eliminar')
 @login_required
 def eliminar_convo():
@@ -437,8 +435,6 @@ def eliminar_convo():
         return redirect('/logout_user')
 
 # Ver todas aplicadas
-
-
 @app.app.route('/empresa/aplicadas/<int:id_convo>', methods=['POST', 'GET'])
 @login_required
 def all_apli(id_convo):
@@ -469,8 +465,6 @@ def all_apli(id_convo):
 #         return redirect('/logout_user')
 
 
-
-
 @app.app.route('/empresa/aplicadas/update')
 @login_required
 def update_apli():
@@ -483,7 +477,7 @@ def update_apli():
         if (estado == 'ACEPTADA'):
             try:
                 msg = Message("Hola desde Flask",
-                              recipients=["jaredmijail32@gmail.com"])
+                            recipients=["jaredmijail32@gmail.com"])
                 msg.body = "Este es el cuerpo del mensaje."
                 msg.html = "<b>Este es el cuerpo del mensaje en HTML</b>"
                 mail.send(msg)
