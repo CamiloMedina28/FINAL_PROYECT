@@ -139,6 +139,80 @@ def existe_info_contacto(id):
         except Exception as error:
             return "Ha ocurrido un error: " + str(error)
 
+def agregar_info_residencia(accion, documento, pais, departamento, municipio, ciudad, direccion):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+
+                cursor.callproc('insertar_residencia_datos', (accion, documento,
+                                pais, departamento, municipio, ciudad, direccion))
+                conexion.commit()
+
+            return "La información de residencia ha sido agregada exitosamente"
+        except Exception as error:
+            return f"Ha ocurrido un error: {str(error)}"
+
+
+def existe_info_residencia(id):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                sql = "SELECT * FROM informacion_personal_egresado WHERE egr_numero_de_identificacion = %s"
+                cursor.execute(sql, (id,))
+                datos = cursor.fetchone()
+            return datos
+        except Exception as error:
+            return "Ha ocurrido un error: " + str(error)
+        
+def agregar_info_residencia(
+    accion, num_id, prim_nom, prim_ape, seg_ape, sexo, estrato,
+    grupo_etn, est_civil, discap, adm_esp, vict_conf, tipo_id,
+    pais_nac, depto_nac,mun_nac, seg_nom
+    ):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+
+                cursor.callproc('insertar_egresado_datos', (
+                accion, num_id, prim_nom, prim_ape,
+                seg_ape, sexo, estrato, grupo_etn,
+                est_civil, discap,adm_esp, vict_conf,
+                tipo_id, pais_nac, depto_nac, mun_nac,
+                seg_nom))
+                conexion.commit()
+
+            return "La información de residencia ha sido agregada exitosamente"
+        except Exception as error:
+            return f"Ha ocurrido un error: {str(error)}"
+
+
+def existe_info_residencia(id):
+    try:
+        conexion = connect.conexion_base_de_datos()
+    except:
+        pass
+    else:
+        try:
+            with conexion.cursor() as cursor:
+                sql = "SELECT * FROM informacion_residencia WHERE inf_res_egr_numero_de_identificacion = %s"
+                cursor.execute(sql, (id,))
+                datos = cursor.fetchone()
+            return datos
+        except Exception as error:
+            return "Ha ocurrido un error: " + str(error)
+
 
 def agregar_info_familia():
     try:

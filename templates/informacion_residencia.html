@@ -34,6 +34,7 @@ content %} {{super()}}
           <th>Nombre</th>
           <th>Pais</th>
           <th>Departamento</th>
+          <th>Municipio</th>
           <th>Ciudad</th>
           <th>Direccion</th>
         </tr>
@@ -50,6 +51,7 @@ content %} {{super()}}
           </td>
           <td>{{ residencia['inf_res_pais_residencia'] }}</td>
           <td>{{ residencia['inf_res_departamento_residencia'] }}</td>
+          <td>{{ residencia['inf_res_municipio_residencia'] }}</td>
           <td>{{ residencia['inf_res_ciudad_residencia'] }}</td>
           <td>{{ residencia['inf_res_direccion_residencia' ] }}</td>
 
@@ -57,9 +59,11 @@ content %} {{super()}}
             <a
               class="btn btn-sm btn-danger"
               id="edit_button"
-              onclick="edit_residencia_form({{ residencia['egr_numero_de_identificacion'] }},
+              onclick="edit_residencia_form(
+                {{ residencia['egr_numero_de_identificacion'] }},
               '{{ residencia['inf_res_pais_residencia'] }}',
               '{{ residencia['inf_res_departamento_residencia'] }}',
+              '{{ residencia['inf_res_municipio_residencia'] }}',
               '{{ residencia['inf_res_ciudad_residencia'] }}',
               '{{ residencia['inf_res_direccion_residencia' ] }}')"
               >Editar</a
@@ -94,6 +98,10 @@ content %} {{super()}}
       <div class="input-field">
         <label for="departamento">Departamento</label>
         <input type="text" id="departamento" name="departamento" required />
+      </div>
+      <div class="input-field">
+        <label for="municipio">Municipio</label>
+        <input type="text" id="municipio" name="municipio" required />
       </div>
       <div class="input-field">
         <label for="ciudad">Ciudad</label>

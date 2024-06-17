@@ -115,7 +115,7 @@ def render_personal_info():
 
 # ----------------------------- Egresados ----------------------------------------
 
-
+# INFO PERSONAL -----------------------------------
 @app.app.route('/informacion_personal_egresados')
 @login_required
 def render_info_personal_egr():
@@ -123,10 +123,64 @@ def render_info_personal_egr():
         info = []
         info.append(egresado.informacion_egresado.retrieve_informacion_personal(
             session['doc_usuario']))
-    if session['rol_usuario'] == "Administrador":
+    elif session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_personal()
     return render_template('informacion_personal_egresados.html', datos_egresados=info)
 
+# Ver detalles info personal egresado
+@app.app.route('/informacion_personal_egresados/<int:id_egre>', methods=['POST', 'GET'])
+@login_required
+def detail_info_personal_egr(id_egre: int):
+    if session['rol_usuario'] == "Egresado":
+        datos_egresados = []
+        datos_egresados.append(
+            egresado.informacion_egresado.retrieve_informacion_personal(
+            session['doc_usuario']))
+    elif session['rol_usuario'] == "Administrador":
+        datos_egresados = egresado.informacion_egresado.retrieve_informacion_personal()
+    else:
+        return redirect('/logout_user')
+    for egre in datos_egresados:
+        if (int(egre['egr_numero_de_identificacion']) == id_egre):
+            convo_to_update = egre
+            break
+    nombres_display = [
+    "Número de Identificación", "Primer Nombre", "Primer Apellido", "Segundo Apellido",
+    "Sexo", "Estrato", "Grupo Étnico", "Estado Civil", "Discapacidad", "Admisión Especial",
+    "Víctima del Conflicto Armado", "Tipo de Identificación", "País de Nacimiento",
+    "Departamento de Nacimiento", "Municipio de Nacimiento", "Segundo Nombre"]
+    convo_to_update = list(convo_to_update.values())
+    toDisplay = list(zip(nombres_display, convo_to_update))
+    return render_template('info_egre_ConDetail.html', datos_convo=toDisplay)
+
+# Update Info personal egresados
+@app.app.route('/agregar-info-personal_egresados')
+@login_required
+def agregar_informacion_personal_egresado():
+    num_id = request.args.get('num_id')
+    prim_nom = request.args.get('prim_nom')
+    prim_ape = request.args.get('prim_ape')
+    seg_ape = request.args.get('seg_ape')
+    sexo = request.args.get('sexo')
+    estrato = request.args.get('estrato')
+    grupo_etn = request.args.get('grupo_etn')
+    est_civil = request.args.get('est_civil')
+    discap = request.args.get('discap')
+    adm_esp = request.args.get('adm_esp')
+    vict_conf = request.args.get('vict_conf')
+    tipo_id = request.args.get('tipo_id')
+    pais_nac = request.args.get('pais_nac')
+    depto_nac = request.args.get('depto_nac')
+    mun_nac = request.args.get('mun_nac')
+    seg_nom = request.args.get('seg_nom')
+
+    existe = egresado.informacion_egresado.existe_info_egresado(num_id)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_egresado(
+        accion, num_id, prim_nom, prim_ape, seg_ape, sexo, estrato, grupo_etn,
+        est_civil, discap, adm_esp, vict_conf, tipo_id, pais_nac, depto_nac,
+        mun_nac, seg_nom)
+    return info
 
 @app.app.route('/eliminar_egresado')
 @login_required
@@ -166,7 +220,6 @@ def agregar_informacion_contacto_egresado():
     print(info)
     return info
 
-
 @app.app.route('/informacion_familiar')
 @login_required
 def render_informacion_familiar():
@@ -178,7 +231,6 @@ def render_informacion_familiar():
         info = egresado.informacion_egresado.retrieve_datos_familiares()
     return render_template('info_familiar.html', datos_familia=info)
 
-
 @app.app.route('/eliminar_familiar')
 @login_required
 def eliminar_familiar():
@@ -188,13 +240,12 @@ def eliminar_familiar():
             'borrar_hijos_egresado_datos', id_egresado)
         return info
 
-
 @app.app.route('/agregar-informacion-familiar')
 @login_required
 def agregar_familiar():
     pass
 
-
+# RESIDENCIA -----------------------------   
 @app.app.route('/info_residencia')
 @login_required
 def render_info_residencia():
@@ -206,7 +257,6 @@ def render_info_residencia():
         info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado()
     return render_template('informacion_residencia.html', datos_residencia=info)
 
-
 @app.app.route('/eliminar_residencia')
 @login_required
 def eliminar_residencia():
@@ -216,6 +266,25 @@ def eliminar_residencia():
             'borrar_residencia_datos', id_egresado)
         return info
 
+@app.app.route('/agregar-info-residencia')
+@login_required
+def agregar_informacion_residencia_egresado():
+
+    documento = request.args.get('documento')
+    pais = request.args.get('pais')
+    departamento = request.args.get('departamento')
+    municipio = request.args.get('municipio')
+    ciudad = request.args.get('ciudad')
+    direccion = request.args.get('direccion')
+    existe = egresado.informacion_egresado.existe_info_residencia(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_residencia
+    (accion,documento, pais, departamento, 
+    municipio, ciudad, direccion)
+    print(info)
+    return info
+
+# DISTINCIONES -----------------------------
 
 @app.app.route('/distinciones')
 @login_required

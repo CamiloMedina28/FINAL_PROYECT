@@ -7,6 +7,71 @@ function eliminar_egresado(id) {
     });
 }
 
+function edit_info_personal_form(
+  num_id,
+  prim_nom,
+  prim_ape,
+  seg_ape,
+  sexo,
+  estrato,
+  grupo_etn,
+  est_civil,
+  discap,
+  adm_esp,
+  vict_conf,
+  tipo_id,
+  pais_nac,
+  depto_nac,
+  mun_nac,
+  seg_nom
+) {
+  add_info_form();
+  document.getElementById("num_id").value = num_id;
+  document.getElementById("prim_nom").value = prim_nom;
+  document.getElementById("prim_ape").value = prim_ape;
+  document.getElementById("seg_ape").value = seg_ape;
+  document.getElementById("sexo").value = sexo;
+  document.getElementById("estrato").value = estrato;
+  document.getElementById("grupo_etn").value = grupo_etn;
+  document.getElementById("est_civil").value = est_civil;
+  document.getElementById("discap").value = discap;
+  document.getElementById("adm_esp").value = adm_esp;
+  document.getElementById("vict_conf").value = vict_conf;
+  document.getElementById("tipo_id").value = tipo_id;
+  document.getElementById("pais_nac").value = pais_nac;
+  document.getElementById("depto_nac").value = depto_nac;
+  document.getElementById("mun_nac").value = mun_nac;
+  document.getElementById("seg_nom").value = seg_nom;
+}
+
+function add_informacion_egresado() {
+  var num_id = document.getElementById("num_id").value;
+  var prim_nom = document.getElementById("prim_nom").value;
+  var prim_ape = document.getElementById("prim_ape").value;
+  var seg_ape = document.getElementById("seg_ape").value;
+  var sexo = document.getElementById("sexo").value;
+  var estrato = document.getElementById("estrato").value;
+  var grupo_etn = document.getElementById("grupo_etn").value;
+  var est_civil = document.getElementById("est_civil").value;
+  var discap = document.getElementById("discap").value;
+  var adm_esp = document.getElementById("adm_esp").value;
+  var vict_conf = document.getElementById("vict_conf").value;
+  var tipo_id = document.getElementById("tipo_id").value;
+  var pais_nac = document.getElementById("pais_nac").value;
+  var depto_nac = document.getElementById("depto_nac").value;
+  var mun_nac = document.getElementById("mun_nac").value;
+  var seg_nom = document.getElementById("seg_nom").value;
+
+  fetch(
+    `/agregar-info-egresado?num_id=${num_id}&prim_nom=${prim_nom}&prim_ape=${prim_ape}&seg_ape=${seg_ape}&sexo=${sexo}&estrato=${estrato}&grupo_etn=${grupo_etn}&est_civil=${est_civil}&discap=${discap}&adm_esp=${adm_esp}&vict_conf=${vict_conf}&tipo_id=${tipo_id}&pais_nac=${pais_nac}&depto_nac=${depto_nac}&mun_nac=${mun_nac}&seg_nom=${seg_nom}`
+  )
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
+}
+
+
 function eliminar_familiar(id) {
   fetch(`/eliminar_familiar?id_egresado=${id}`)
     .then((response) => response.text())
@@ -74,10 +139,11 @@ function add_informacion_residencia() {
   var documento = document.getElementById("documento").value;
   var pais = document.getElementById("pais").value;
   var departamento = document.getElementById("departamento").value;
+  var municipio = document.getElementById("municipio").value;
   var ciudad = document.getElementById("ciudad").value;
   var direccion = document.getElementById("direccion").value;
   fetch(
-    `/agregar-info-residencia?documento=${documento}&pais=${pais}&departamento=${departamento}&ciudad=${ciudad}&direccion=${direccion}`
+    `/agregar-info-residencia?documento=${documento}&pais=${pais}&departamento=${departamento}&municipio=${municipio}&ciudad=${ciudad}&direccion=${direccion}`
   )
     .then((response) => response.text())
     .then((data) => {
@@ -85,10 +151,16 @@ function add_informacion_residencia() {
     });
 }
 
+function seeInfoToDetail(IdElement) {
+  var url = '/informacion_personal_egresados/' + IdElement;
+  window.location.href = url;
+}
+
 function edit_residencia_form(
   documento,
   pais,
   departamento,
+  municipio,
   ciudad,
   direccion
 ) {
@@ -96,6 +168,7 @@ function edit_residencia_form(
   document.getElementById("documento").value = documento;
   document.getElementById("pais").value = pais;
   document.getElementById("departamento").value = departamento;
+  document.getElementById("municipio").value = municipio;
   document.getElementById("ciudad").value = ciudad;
   document.getElementById("direccion").value = direccion;
 }
