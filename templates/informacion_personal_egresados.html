@@ -23,7 +23,7 @@
 
 
 <div class="container">
-    <div class="flexcontainer" id="tabla_prestamos">
+    <div class="flexcontainer" id="tabla_info">
       <h1>Información de egresado</h1>
       <span id="mensaje"></span>
     
@@ -33,16 +33,10 @@
             <th>Documento</th>
             <th>Tipo de documento</th>
             <th>Nombre</th>
-            <th>Sexo</th>
             <th>Estrato</th>
-            <th>Grupo Étnico</th>
-            <th>Estado civil</th>
             <th>Discapacidad</th>
             <th>Admisión especial</th>
-            <th>Conflicto armado</th>
             <th>Pais</th>
-            <th>Departamento</th>
-            <th>Municipio/Ciudad</th>
           </tr>
         </thead>
         <tbody>
@@ -51,36 +45,138 @@
             <td>{{ egresado['egr_numero_de_identificacion'] }}</td>
             <td>{{ egresado['egr_tipo_identificacion'] }}</td>
             <td>{{ egresado['egr_primer_nombre'] }} {{ egresado['egr_segundo_nombre'] }} {{ egresado['egr_primer_apellido'] }} {{ egresado['egr_segundo_apellido'] }}</td>
-            <td>{{ egresado['egr_sexo'] }}</td>
             <td>{{ egresado['egr_estrato'] }}</td>
-            <td>{{ egresado['egr_grupo_etnico'] }}</td>
-            <td>{{ egresado['egr_estado_civil'] }}</td>
             <td>{{ egresado['egr_discapacidad'] }}</td>
             <td>{{ egresado['egr_admision_especial'] }}</td>
-            <td>{{ egresado['egr_victima_conflicto_armado'] }}</td>
             <td>{{ egresado['egr_pais_nacimiento'] }}</td>
-            <td>{{ egresado['egr_departamento_nacimiento'] }}</td>
-            <td>{{ egresado['egr_municipio_nacimiento'] }}</td>
+    
     
             <td class="transaction-actions">
               <a
                 class="btn btn-sm btn-danger"
-                id="delete_button"
-                onclick=""
+                id="edit_button"
+                onclick="edit_info_personal_form(
+                {{ egresado['egr_numero_de_identificacion'] }},
+                '{{ egresado['egr_primer_nombre'] }}',
+                '{{ egresado['egr_primer_apellido'] }}',
+                '{{ egresado['egr_segundo_apellido'] }}',
+                '{{ egresado['egr_sexo'] }}',
+                {{ egresado['egr_estrato'] }},
+                '{{ egresado['egr_grupo_etnico'] }}',
+                '{{ egresado['egr_estado_civil'] }}',
+                '{{ egresado['egr_discapacidad'] }}',
+                '{{ egresado['egr_admision_especial'] }}',
+                '{{ egresado['egr_victima_conflicto_armado'] }}',
+                '{{ egresado['egr_tipo_identificacion'] }}',
+                '{{ egresado['egr_pais_nacimiento'] }}',
+                '{{ egresado['egr_departamento_nacimiento'] }}',
+                '{{ egresado['egr_municipio_nacimiento'] }}',
+                '{{ egresado['egr_segundo_nombre'] }}'
+                )"
                 >Editar</a>
                 <a
                 class="btn btn-sm btn-danger"
                 id="delete_button"
                 onclick="eliminar_egresado({{ egresado['egr_numero_de_identificacion'] }})"
                 >Eliminar</a>
+                <a
+                class="btn btn-sm btn-danger"
+                id="delete_button"
+                onclick="seeInfoToDetail({{ egresado['egr_numero_de_identificacion'] }})"
+                >Mas Info</a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    
+      <button onclick="add_info_form()" class="waves-effect waves-light btn">
+        AÑADIR INFORMACIÓN PERSONAL
+      </button>
     </div>
 
+    <div id="formulario_añadir" style="display: none" class="form-container">
+      <form>
+        <h1>Añadir información del egresado</h1>
+        <div class="input-field">
+          <label for="num_id">Número de Identificación</label>
+          <input type="text" id="num_id" name="num_id" required />
+        </div>
+        <div class="input-field">
+          <label for="tipo_id">Tipo de Identificación</label>
+          <input type="text" id="tipo_id" name="tipo_id" required />
+        </div>
+        <div class="input-field">
+          <label for="prim_nom">Primer Nombre</label>
+          <input type="text" id="prim_nom" name="prim_nom" required />
+        </div>
+        <div class="input-field">
+          <label for="seg_nom">Segundo Nombre</label>
+          <input type="text" id="seg_nom" name="seg_nom" />
+        </div>
+        <div class="input-field">
+          <label for="prim_ape">Primer Apellido</label>
+          <input type="text" id="prim_ape" name="prim_ape" required />
+        </div>
+        <div class="input-field">
+          <label for="seg_ape">Segundo Apellido</label>
+          <input type="text" id="seg_ape" name="seg_ape" />
+        </div>
+        <div class="input-field">
+          <label for="sexo">Sexo</label>
+          <input type="text" id="sexo" name="sexo" required />
+        </div>
+        <div class="input-field">
+          <label for="estrato">Estrato</label>
+          <input type="text" id="estrato" name="estrato" />
+        </div>
+        <div class="input-field">
+          <label for="grupo_etn">Grupo Étnico</label>
+          <input type="text" id="grupo_etn" name="grupo_etn" required />
+        </div>
+        <div class="input-field">
+          <label for="est_civil">Estado Civil</label>
+          <input type="text" id="est_civil" name="est_civil" required />
+        </div>
+        <div class="input-field">
+          <label for="discap">Discapacidad</label>
+          <input type="text" id="discap" name="discap" required />
+        </div>
+        <div class="input-field">
+          <label for="adm_esp">Admisión Especial</label>
+          <input type="text" id="adm_esp" name="adm_esp" />
+        </div>
+        <div class="input-field">
+          <label for="vict_conf">Víctima del Conflicto Armado</label>
+          <input type="text" id="vict_conf" name="vict_conf" required />
+        </div>
+        <div class="input-field">
+          <label for="pais_nac">País de Nacimiento</label>
+          <input type="text" id="pais_nac" name="pais_nac" required />
+        </div>
+        <div class="input-field">
+          <label for="depto_nac">Departamento de Nacimiento</label>
+          <input type="text" id="depto_nac" name="depto_nac" />
+        </div>
+        <div class="input-field">
+          <label for="mun_nac">Municipio de Nacimiento</label>
+          <input type="text" id="mun_nac" name="mun_nac" required />
+        </div>
+  
+        <div class="form-footer">
+          <button
+            type="submit"
+            class="waves-effect waves-light btn"
+            onclick="add_informacion_egresado()"
+          >
+            Guardar
+          </button>
+          <a href="/informacion_personal_egresados" class="waves-effect waves-light btn"
+            >Return</a
+          >
+        </div>
+      </form>
+    </div>
+</div>
 
 
 {% endblock %}

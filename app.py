@@ -20,9 +20,9 @@ app.instanciate_app(__name__)
 
 tabla_permisos = {
     'Administrador': [
-                    'eliminar-libros', 'ver-libros', 'ver-pregrado','inicio-bibliotecario',
-                    'ver-solicitudes-acceso', 'ver-convocatorias', 'eliminar-convo',
-                    'read-apli', 'update-apli'],
+        'eliminar-libros', 'ver-libros', 'ver-pregrado', 'inicio-bibliotecario',
+        'ver-solicitudes-acceso', 'ver-convocatorias', 'eliminar-convo',
+        'read-apli', 'update-apli'],
     'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario', 'crear-prestamo'],
     'Egresado': ['ver-libros', 'ver-asesoria'],
     'Pregrado': ['ver-pregrado'],
@@ -39,6 +39,7 @@ app.app.config['MAIL_PASSWORD'] = 'hjlic2746'
 app.app.config['MAIL_DEFAULT_SENDER'] = 'sie.unal.bogota@gmail.com'
 
 mail = Mail(app.app)
+
 
 @app.app.route('/')
 def index():
@@ -113,37 +114,97 @@ def render_personal_info():
         return redirect('/logout_user')
 
 # ----------------------------- Egresados ----------------------------------------
+@app.app.route('/egresados')
+def render_inicioEgreados():
+    return render_template('egresadosIndex.html')
 
-
+# INFO PERSONAL -----------------------------------
 @app.app.route('/informacion_personal_egresados')
 @login_required
 def render_info_personal_egr():
     if session['rol_usuario'] == "Egresado":
         info = []
-        info.append(egresado.informacion_egresado.retrieve_informacion_personal(session['doc_usuario']))
-    if session['rol_usuario'] == "Administrador":
+        info.append(egresado.informacion_egresado.retrieve_informacion_personal(
+            session['doc_usuario']))
+    elif session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_personal()
-    return render_template('informacion_personal_egresados.html', datos_egresados = info)
+    return render_template('informacion_personal_egresados.html', datos_egresados=info)
 
+# Ver detalles info personal egresado
+@app.app.route('/informacion_personal_egresados/<int:id_egre>', methods=['POST', 'GET'])
+@login_required
+def detail_info_personal_egr(id_egre: int):
+    if session['rol_usuario'] == "Egresado":
+        datos_egresados = []
+        datos_egresados.append(
+            egresado.informacion_egresado.retrieve_informacion_personal(
+            session['doc_usuario']))
+    elif session['rol_usuario'] == "Administrador":
+        datos_egresados = egresado.informacion_egresado.retrieve_informacion_personal()
+    else:
+        return redirect('/logout_user')
+    for egre in datos_egresados:
+        if (int(egre['egr_numero_de_identificacion']) == id_egre):
+            convo_to_update = egre
+            break
+    nombres_display = [
+    "Número de Identificación", "Primer Nombre", "Primer Apellido", "Segundo Apellido",
+    "Sexo", "Estrato", "Grupo Étnico", "Estado Civil", "Discapacidad", "Admisión Especial",
+    "Víctima del Conflicto Armado", "Tipo de Identificación", "País de Nacimiento",
+    "Departamento de Nacimiento", "Municipio de Nacimiento", "Segundo Nombre"]
+    convo_to_update = list(convo_to_update.values())
+    toDisplay = list(zip(nombres_display, convo_to_update))
+    return render_template('info_egre_ConDetail.html', datos_convo=toDisplay)
+
+# Update Info personal egresados
+@app.app.route('/agregar-info-personal_egresados')
+@login_required
+def agregar_informacion_personal_egresado():
+    num_id = request.args.get('num_id')
+    prim_nom = request.args.get('prim_nom')
+    prim_ape = request.args.get('prim_ape')
+    seg_ape = request.args.get('seg_ape')
+    sexo = request.args.get('sexo')
+    estrato = request.args.get('estrato')
+    grupo_etn = request.args.get('grupo_etn')
+    est_civil = request.args.get('est_civil')
+    discap = request.args.get('discap')
+    adm_esp = request.args.get('adm_esp')
+    vict_conf = request.args.get('vict_conf')
+    tipo_id = request.args.get('tipo_id')
+    pais_nac = request.args.get('pais_nac')
+    depto_nac = request.args.get('depto_nac')
+    mun_nac = request.args.get('mun_nac')
+    seg_nom = request.args.get('seg_nom')
+
+    existe = egresado.informacion_egresado.existe_info_egresado(num_id)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_egresado(
+        accion, num_id, prim_nom, prim_ape, seg_ape, sexo, estrato, grupo_etn,
+        est_civil, discap, adm_esp, vict_conf, tipo_id, pais_nac, depto_nac,
+        mun_nac, seg_nom)
+    return info
 
 @app.app.route('/eliminar_egresado')
 @login_required
 def eliminar_egresado():
     id_egresado = request.args.get('id_egresado')
     if session['rol_usuario'] in ('Egresado', 'Administrador'):
-        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_egresado', id_egresado)
+        info = egresado.informacion_egresado.eliminar_info_egresado(
+            'borrar_egresado', id_egresado)
         return info
 
-
+# CONTACTO EGRESADO ------------------------------------------------
 @app.app.route('/informacion_contacto_egr')
 @login_required
 def render_info_contacto():
     if session['rol_usuario'] == "Egresado":
         info = []
-        info.append(egresado.informacion_egresado.retrieve_informacion_contacto(session['doc_usuario']))
+        info.append(egresado.informacion_egresado.retrieve_informacion_contacto(
+            session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_contacto()
-    return render_template('contacto.html', datos_contacto = info)
+    return render_template('contacto.html', datos_contacto=info)
 
 
 @app.app.route('/agregar-info-contacto')
@@ -154,65 +215,104 @@ def agregar_informacion_contacto_egresado():
     correo_principal = request.args.get('correo')
     telefono_adicional = request.args.get('telefono-adicional')
     correo_adicional = request.args.get('correo-adicional')
-    info = egresado.informacion_egresado.agregar_info_contacto(1, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional)
+    existe = egresado.informacion_egresado.existe_info_contacto(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_contacto(accion,
+                                                               documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional)
+    print(info)
     return info
 
-
+# FAMILIAR -----------------------------------------------------
 @app.app.route('/informacion_familiar')
 @login_required
 def render_informacion_familiar():
     if session['rol_usuario'] == "Egresado":
         info = []
-        info.append(egresado.informacion_egresado.retrieve_datos_familiares(session['doc_usuario']))
+        info.append(egresado.informacion_egresado.retrieve_datos_familiares(
+            session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_datos_familiares()
-    return render_template('info_familiar.html', datos_familia= info)
-
+    return render_template('info_familiar.html', datos_familia=info)
 
 @app.app.route('/eliminar_familiar')
 @login_required
 def eliminar_familiar():
     id_egresado = request.args.get('id_egresado')
     if session['rol_usuario'] in ('Egresado', 'Administrador'):
-        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_hijos_egresado_datos', id_egresado)
+        info = egresado.informacion_egresado.eliminar_info_egresado(
+            'borrar_hijos_egresado_datos', id_egresado)
         return info
-
 
 @app.app.route('/agregar-informacion-familiar')
 @login_required
 def agregar_familiar():
-    pass
+    documento = request.args.get('documento')
+    docmento_hijo = request.args.get('docmento_hijo')
+    nombre_hijo = request.args.get('nombre_hijo')
+    pri_ape_hijo = request.args.get('pri_ape_hijo')
+    seg_ape_hijo = request.args.get('seg_ape_hijo')
+    anio_nacimiento_hijo = request.args.get('anio_nacimiento_hijo')
+    direccion_residencia_hijo = request.args.get('direccion_residencia_hijo')
+    existe = egresado.informacion_egresado.existe_info_familiar(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_familiar(
+        accion, docmento_hijo, nombre_hijo, 
+        pri_ape_hijo, seg_ape_hijo, anio_nacimiento_hijo,
+        direccion_residencia_hijo)
+    print(info)
+    return info
 
-
+# RESIDENCIA -----------------------------   
 @app.app.route('/info_residencia')
 @login_required
 def render_info_residencia():
     if session['rol_usuario'] == "Egresado":
         info = []
-        info.append(egresado.informacion_egresado.retrieve_informacion_residencia_egresado(session['doc_usuario']))
+        info.append(egresado.informacion_egresado.retrieve_informacion_residencia_egresado(
+            session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado()
-    return render_template('informacion_residencia.html', datos_residencia= info)
-
+    return render_template('informacion_residencia.html', datos_residencia=info)
 
 @app.app.route('/eliminar_residencia')
 @login_required
 def eliminar_residencia():
     id_egresado = request.args.get('id_egresado')
     if session['rol_usuario'] in ('Egresado', 'Administrador'):
-        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_residencia_datos', id_egresado)
-        return info  
+        info = egresado.informacion_egresado.eliminar_info_egresado(
+            'borrar_residencia_datos', id_egresado)
+        return info
 
+@app.app.route('/agregar-info-residencia')
+@login_required
+def agregar_informacion_residencia_egresado():
+
+    documento = request.args.get('documento')
+    pais = request.args.get('pais')
+    departamento = request.args.get('departamento')
+    municipio = request.args.get('municipio')
+    ciudad = request.args.get('ciudad')
+    direccion = request.args.get('direccion')
+    existe = egresado.informacion_egresado.existe_info_residencia(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_residencia
+    (accion,documento, pais, departamento, 
+    municipio, ciudad, direccion)
+    print(info)
+    return info
+
+# DISTINCIONES -----------------------------
 
 @app.app.route('/distinciones')
 @login_required
 def render_distinciones():
     if session['rol_usuario'] == "Egresado":
         info = []
-        info.append(egresado.informacion_egresado.retrieve_informacion_distinciones(session['doc_usuario']))
+        info.append(egresado.informacion_egresado.retrieve_informacion_distinciones(
+            session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
         info = egresado.informacion_egresado.retrieve_informacion_distinciones()
-    return render_template('distinciones.html', datos_distinciones= info)
+    return render_template('distinciones.html', datos_distinciones=info)
 
 
 @app.app.route('/eliminar_distincion')
@@ -220,14 +320,23 @@ def render_distinciones():
 def eliminar_distincion():
     id_egresado = request.args.get('id_egresado')
     if session['rol_usuario'] in ('Egresado', 'Administrador'):
-        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_distincion_datos', id_egresado)
-        return info  
+        info = egresado.informacion_egresado.eliminar_info_egresado(
+            'borrar_distincion_datos', id_egresado)
+        return info
 
-
-@app.app.route('/egresados')
-def render_inicioEgreados():
-    return render_template('egresadosIndex.html')
-
+@app.app.route('/agregar-info-distincion')
+@login_required
+def agregar_distincion():
+    documento = request.args.get('documento')
+    anio = request.args.get('anio')
+    nombre_distincion = request.args.get('nombre_distincion')
+    descripcion = request.args.get('descripcion')
+    existe = egresado.informacion_egresado.existe_info_distincion(documento)
+    accion = 2 if existe else 1
+    info = egresado.informacion_egresado.agregar_info_distincion
+    (accion,documento, anio, nombre_distincion, descripcion)
+    print(info)
+    return info
 
 @app.app.route('/egresados/DatosPersonales')
 def render_PersonalEgreados():
@@ -360,13 +469,15 @@ def render_empresa():
 # ------------------------- Convocatorias
 
 # Vista rapida convocatorias
+
+
 @app.app.route('/empresa/convocatorias', methods=['POST', 'GET'])
 @login_required
 def render_convo_short():
     if 'ver-convocatorias' in tabla_permisos[session['rol_usuario']]:
         pas = "emp_vista_convocatorias"
         id_empresa = session['doc_usuario']
-        info_convo = emp.convo_acciones.read_all_convo(pas,id_empresa)
+        info_convo = emp.convo_acciones.read_all_convo(pas, id_empresa)
         if info_convo[0] == 1:
             return render_template('empresaConvocatorias.html', mensaje_error=info_convo[1])
         else:
@@ -403,6 +514,7 @@ def detail_convo(id_convo: int):
     else:
         return redirect('/logout_user')
 
+
 # Eliminar convocatoria
 @app.app.route('/empresa/convocatorias/eliminar')
 @login_required
@@ -411,7 +523,7 @@ def eliminar_convo():
         pas = "borrar_convocatoria_datos"
         id_empresa = session['doc_usuario']
         id_convo = request.args.get('id')
-        resultado = emp.convo_acciones.RD_convo(pas ,id_convo, id_empresa)
+        resultado = emp.convo_acciones.RD_convo(pas, id_convo, id_empresa)
         return resultado[1]
     else:
         return redirect('/logout_user')
@@ -423,7 +535,7 @@ def all_apli(id_convo):
     if 'read-apli' in tabla_permisos[session['rol_usuario']]:
         pas = "emp_aplicadas_convocatorias"
         id_empresa = session['doc_usuario']
-        info_apli = emp.convo_acciones.R_convo(pas ,id_convo, id_empresa)
+        info_apli = emp.convo_acciones.R_convo(pas, id_convo, id_empresa)
         if info_apli[0] == 1:
             return render_template('empresaAplicantes.html', mensaje_error=info_apli[1])
         else:
@@ -446,7 +558,7 @@ def all_apli(id_convo):
 #     else:
 #         return redirect('/logout_user')
 
-# Update aplicadas
+
 @app.app.route('/empresa/aplicadas/update')
 @login_required
 def update_apli():
@@ -455,8 +567,8 @@ def update_apli():
         id_emp = session['doc_usuario']
         id_egr = request.args.get('id_egr')
         estado = request.args.get('estado')
-        resultado = emp.convo_acciones.U_apli(id_con, id_emp ,id_egr, estado)
-        if(estado == 'ACEPTADA'): 
+        resultado = emp.convo_acciones.U_apli(id_con, id_emp, id_egr, estado)
+        if (estado == 'ACEPTADA'):
             try:
                 msg = Message("Hola desde Flask",
                             recipients=["jaredmijail32@gmail.com"])
@@ -464,12 +576,13 @@ def update_apli():
                 msg.html = "<b>Este es el cuerpo del mensaje en HTML</b>"
                 mail.send(msg)
                 print("correo enviado")
-                return ("Correo enviado! "+ resultado[1])
+                return ("Correo enviado! " + resultado[1])
             except Exception as e:
                 return str(e)
         return resultado[1]
     else:
         return redirect('/logout_user')
+
 
 # Crear convocatori
 @app.app.route('/empresa/convocatorias/crear')
@@ -490,15 +603,17 @@ def crear_convoca():
     fechaIN = datetime.today().date()
     fechaOUT = request.args.get('fechaOUT')
     resultado = emp.convo_acciones.create_convo(
-                                                empresa_id, cargo, habilidades,
-                                                competencias, experiencia, vacantes,
-                                                salario, jornada, horario,
-                                                teletrabajo, pais, ciudad,
-                                                fechaIN, fechaOUT
-                                                )
+        empresa_id, cargo, habilidades,
+        competencias, experiencia, vacantes,
+        salario, jornada, horario,
+        teletrabajo, pais, ciudad,
+        fechaIN, fechaOUT
+    )
     return resultado[1]
 
 # ------------------------- Aplicantes
+
+
 @app.app.route('/empresa/aplicantes')
 @login_required
 def render_aplicantes():
@@ -548,6 +663,7 @@ def render_asesoria_crear():
         return resultado[1]
     else:
         return redirect('/logout_user')
+
 
 @app.app.route('/registrarse', methods=['GET', 'POST'])
 def registrarse_en_sistema():

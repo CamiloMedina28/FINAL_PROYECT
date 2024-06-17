@@ -1,102 +1,123 @@
 <!-- IMPORTACIONES DE MATERIALIZE -->
 <!-- Compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+/>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script src="{{ url_for('static', filename='js/informacion_personal.js') }}"></script>
 
-
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}" type="text/css" />
-{% extends 'base.html'%}
-{% block nav %}
-{{super()}}
-{% endblock nav %}
-
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/egr_datos_personales/egresado_datos_personales.css') }}"
+  type="text/css"
+/>
+{% extends 'egresadosBase.html'%} {% block nav %} {{super()}} {% endblock nav %}
 {% block content %}
 
-
 <div class="container">
-    <div class="flexcontainer" id="tabla_info">
-      <h1>Información de contacto del egresado</h1>
-      <span id="mensaje"></span>
-    
-      <table class="striped">
-        <thead>
-          <tr>
-            <th>Documento</th>
-            <th>Nombre</th>
-            <th>Teléfono principal</th>
-            <th>Correo principal</th>
-            <th>Telefono adicional</th>
-            <th>Correo adicional</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for contacto in datos_contacto %}
-          <tr>
-            <td>{{ contacto['egr_numero_de_identificacion'] }}</td>
-            <td>{{ contacto['egr_primer_nombre'] }} {{ contacto['egr_primer_apellido'] }} {{ contacto['egr_segundo_apellido'] }}</td>
-            <td>{{ contacto['con_numero_telefono_principal'] }}</td>
-            <td>{{ contacto['con_correo_electronico_principal'] }}</td>
-            <td>{{ contacto['con_numero_telefono_adicional'] }}</td>
-            <td>{{ contacto['con_correo_adicional'] }}</td>
-    
-            <td class="transaction-actions">
-              <a
-                class="btn btn-sm btn-danger"
-                id="delete_button"
-                onclick=""
-                >Editar</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <button onclick="add_info_form()" class="waves-effect waves-light btn">
-        AÑADIR INFORMACIÓN DE CONTACTO
-      </button>
-    
-    </div>
+  <div class="flexcontainer" id="tabla_info">
+    <h1>Información de contacto del egresado</h1>
+    <span id="mensaje"></span>
 
-    <div id="formulario_añadir" style="display:  none;" class="form-container">
-      <form>
-        <h1>Añadir información de contacto</h1>
-        <div class="input-field">
-          <label for="documento">Documento</label>
-          <input type="text" id="documento" name="documento" required />
-        </div>
-        <div class="input-field">
-          <label for="telefono_principal">Teléfono principal</label>
-          <input type="number" id="telefono_principal" name="telefono_principal" required />
-        </div>
-        <div class="input-field">
-          <label for="correo">Correo principal</label>
-          <input type="email" id="correo" name="correo" required />
-        </div>
-        <div class="input-field">
-          <label for="telefono_adicional">Teléfono adicional</label>
-          <input type="number" id="telefono_adicional" name="telefono_adicional" required />
-        </div>
-        <div class="input-field">
-          <label for="correo_adicional">Correo adicional</label>
-          <input type="text" id="correo_adicional" name="correo_adicional" required />
-        </div>
-  
-        <div class="form-footer">
-          <button
-            type="submit"
-            class="waves-effect waves-light btn"
-            onclick="add_informacion_contacto()"
-          >
-            Guardar
-          </button>
-          <a href="/informacion_contacto_egr" class="waves-effect waves-light btn"
-            >Return</a
-          >
-        </div>
-      </form>
-    </div>
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>Documento</th>
+          <th>Nombre</th>
+          <th>Teléfono principal</th>
+          <th>Correo principal</th>
+          <th>Telefono adicional</th>
+          <th>Correo adicional</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contacto in datos_contacto %}
+        <tr>
+          <td>{{ contacto['egr_numero_de_identificacion'] }}</td>
+          <td>
+            {{ contacto['egr_primer_nombre'] }} {{
+            contacto['egr_primer_apellido'] }} {{
+            contacto['egr_segundo_apellido'] }}
+          </td>
+          <td>{{ contacto['con_numero_telefono_principal'] }}</td>
+          <td>{{ contacto['con_correo_electronico_principal'] }}</td>
+          <td>{{ contacto['con_numero_telefono_adicional'] }}</td>
+          <td>{{ contacto['con_correo_adicional'] }}</td>
 
+          <td class="transaction-actions">
+            <a
+              class="btn btn-sm btn-danger"
+              id="delete_button"
+              onclick="edit_contacto_form({{ contacto['egr_numero_de_identificacion'] }},
+            {{ contacto['con_numero_telefono_principal'] }}, '{{ contacto['con_correo_electronico_principal'] }}',
+            {{ contacto['con_numero_telefono_adicional'] }}, '{{ contacto['con_correo_adicional'] }}')"
+              >Editar</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button onclick="add_info_form()" class="waves-effect waves-light btn">
+      AÑADIR INFORMACIÓN DE CONTACTO
+    </button>
+  </div>
+
+  <div id="formulario_añadir" style="display: none" class="form-container">
+    <form>
+      <h1>Añadir información de contacto</h1>
+      <div class="input-field">
+        <label for="documento">Documento</label>
+        <input type="text" id="documento" name="documento" required />
+      </div>
+      <div class="input-field">
+        <label for="telefono_principal">Teléfono principal</label>
+        <input
+          type="number"
+          id="telefono_principal"
+          name="telefono_principal"
+          required
+        />
+      </div>
+      <div class="input-field">
+        <label for="correo">Correo principal</label>
+        <input type="email" id="correo" name="correo" required />
+      </div>
+      <div class="input-field">
+        <label for="telefono_adicional">Teléfono adicional</label>
+        <input
+          type="number"
+          id="telefono_adicional"
+          name="telefono_adicional"
+          required
+        />
+      </div>
+      <div class="input-field">
+        <label for="correo_adicional">Correo adicional</label>
+        <input
+          type="text"
+          id="correo_adicional"
+          name="correo_adicional"
+          required
+        />
+      </div>
+
+      <div class="form-footer">
+        <button
+          type="submit"
+          class="waves-effect waves-light btn"
+          onclick="add_informacion_contacto()"
+        >
+          Guardar
+        </button>
+        <a href="/informacion_contacto_egr" class="waves-effect waves-light btn"
+          >Return</a
+        >
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

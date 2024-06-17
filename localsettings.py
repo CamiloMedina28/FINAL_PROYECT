@@ -6,7 +6,6 @@ from usuarios import conectar_db
 
 app_name = ''
 
-
 def instanciate_app(name):
     global app_name
     app_name = name
