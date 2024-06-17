@@ -112,7 +112,7 @@ def create_convo(
             with conexion.cursor()as cursor:
                 cursor.callproc('insertar_convocatoria_datos',
                                 (
-                                empresa_id, cargo, habilidades,
+                                1, empresa_id, cargo, habilidades,
                                 competencias, experiencia, vacantes,
                                 salario, jornada, horario,
                                 teletrabajo, pais, ciudad,

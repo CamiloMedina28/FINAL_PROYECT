@@ -91,6 +91,19 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- PA para llamar convocatorias especificando documento egresado
+DROP PROCEDURE IF EXISTS egr_vista_convocatorias;
+DELIMITER $$ 
+CREATE PROCEDURE egr_vista_convocatorias(egr_id INT)
+BEGIN
+	IF egr_id = 0 THEN
+		SELECT * FROM  egresado_db.vista_convocatorias;
+	ELSE 
+		SELECT * FROM  egresado_db.vista_convocatorias WHERE egr_numero_de_identificacion=egr_id;
+	END IF;
+END $$
+DELIMITER ;
+
 -- PA para llamar vista_convocatorias especificando emp_idNit
 DROP PROCEDURE IF EXISTS emp_aplicadas_convocatorias;
 DELIMITER $$ 
@@ -829,14 +842,14 @@ BEGIN
 	DECLARE msg varchar(255); 
     IF operacion = 1 THEN
         INSERT INTO convocatoria (
-            con_id, con_empresa_idNit, con_nombre_cargo, con_habilidades,
+            con_empresa_idNit, con_nombre_cargo, con_habilidades,
             con_competencias, con_meses_experiencia, con_numero_vacantes,
             con_salario, con_jornada_trabajo, con_horario_trabajo,
             con_teletrabajo, con_pais_convocatoria, con_ciudad_convocatoria,
             con_fecha_convocatoria, con_fecha_expiracion
         )
         VALUES (
-            id_convocatoria, id_empresa, nombre_cargo, habilidades,
+            id_empresa, nombre_cargo, habilidades,
             competencias, meses_experiencia, numero_vacantes,
             salario, jornada_trabajo, horario_trabajo,
             teletrabajo, pais_convocatoria, ciudad_convocatoria,
