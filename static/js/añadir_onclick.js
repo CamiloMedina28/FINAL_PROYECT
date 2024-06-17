@@ -49,6 +49,13 @@ function send_info_loan() {
     });
 }
 
+function analyze_loan(id_libro) {
+  fetch(`/egresados/prestamo/crear?id_libro=${id_libro}`)
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+    });
+}
 // function eliminar_prestamo(documento, id_libro) {
 //   let confirmacion =
 //     "¿Está seguro que desea eliminar el préstamo del egresado" +

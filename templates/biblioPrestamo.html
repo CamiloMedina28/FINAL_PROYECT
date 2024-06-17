@@ -21,7 +21,7 @@
 <div class="container">
   <div class="flexcontainer" id="tabla_prestamos">
     <h1>Registros de prestamos</h1>
-  
+
     <table class="striped">
       <thead>
         <tr>
@@ -38,22 +38,13 @@
           <td>{{ prestamo['pre_lib_id'] }}</td>
           <td>{{ prestamo['pre_fecha_prestamo'] }}</td>
           <td>{{ prestamo['pre_fecha_vencimiento'] }}</td>
-  
-          <td class="transaction-actions">
-            <a
-              class="btn btn-sm btn-danger"
-              id="delete_button"
-              onclick="eliminar_prestamo({{prestamo['pre_egr_numero_documento_identidad']}},{{ prestamo['pre_lib_id']}})"
-              >Delete</a
-            >
-          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-  
+
     <button onclick="add_prestamo()" class="waves-effect waves-light btn">
-      AÑADIR REGISTRO
+      AÑADIR PRESTAMO
     </button>
   </div>
   <div id="formulario_prestamo" style="display: none" class="form-container">
@@ -67,7 +58,7 @@
         <label for="id_libro">Id Libro</label>
         <input type="text" id="id_libro" name="id_libro" required />
       </div>
-  
+
       <div class="form-footer">
         <button
           type="submit"

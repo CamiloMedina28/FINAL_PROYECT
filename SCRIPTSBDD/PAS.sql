@@ -27,19 +27,33 @@ END$$
 DELIMITER ;
 
 -- PA para Vista prestamo_Libros egresado 
-DROP PROCEDURE IF EXISTS ver_prestamo_libro_egre;
+DROP PROCEDURE IF EXISTS ver_prestamo;
 DELIMITER $$ 
-CREATE PROCEDURE ver_prestamo_libro_egre(IN egr_id INT)
+CREATE PROCEDURE ver_prestamo(IN egr_id INT)
 BEGIN
 	IF egr_id = 0 THEN
 		SELECT * FROM pre_libros;
     ELSE
-		SELECT * FROM pre_libros
-		WHERE egr_numero_de_identificacion = egr_id;
+		SELECT * FROM libro
+		WHERE lib_id_libro IN (SELECT pre_lib_id FROM prestamo WHERE pre_egr_numero_documento_identidad= egr_id);
 	END IF;
 END$$
 DELIMITER ;
--- PA para ver libros (falta por crear)
+
+-- PA para ver libros 
+DROP PROCEDURE IF EXISTS ver_libros;
+DELIMITER $$
+CREATE PROCEDURE ver_libros(IN egr_id INT)
+BEGIN
+	IF egr_id = 0 THEN
+		SELECT * FROM libro
+        WHERE lib_id_libro;
+    ELSE
+		SELECT * FROM libro
+		WHERE lib_id_libro NOT IN (SELECT pre_lib_id FROM prestamo) ;
+	END IF;
+END$$
+DELIMITER ;
 
 -- PA para Vista Asesoria Egresado
 DROP PROCEDURE IF EXISTS ver_asesoria;
@@ -223,9 +237,9 @@ END $$
 DELIMITER ;
 
 -- PA para egresado y administrador
-DROP PROCEDURE IF EXISTS borar_residencia_datos;
+DROP PROCEDURE IF EXISTS borrar_residencia_datos;
 DELIMITER $$
-CREATE PROCEDURE borar_residencia_datos(IN id INT)
+CREATE PROCEDURE borrar_residencia_datos(IN id INT)
 BEGIN 
 DELETE FROM informacion_residencia WHERE inf_res_egr_numero_de_identificacion = id;
 END $$
@@ -1218,3 +1232,47 @@ BEGIN
 	COMMIT;
 END $$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS prestar_libro;
+DELIMITER $$
+CREATE PROCEDURE prestar_libro(
+	IN numero_documento_identidad INT,
+    IN id_libro INT
+)
+BEGIN 
+	DECLARE prestados INT;
+    DECLARE fecha1 TIMESTAMP;
+    DECLARE fecha2 TIMESTAMP;
+	START TRANSACTION ;
+		SELECT count(*) INTO prestados FROM prestamo
+			WHERE  pre_egr_numero_documento_identidad= numero_documento_identidad
+			AND	pre_lib_id = id_libro;
+		IF prestados = 0 THEN 
+			CALL insertar_prestamo_datos(numero_documento_identidad,id_libro);			
+        ELSE 
+			SET fecha1 =( SELECT pre_fecha_prestamo FROM prestamo 
+            WHERE  pre_egr_numero_documento_identidad= numero_documento_identidad
+			AND	pre_lib_id = id_libro
+            ORDER BY pre_fecha_prestamo DESC LIMIT 1);
+            SET fecha2 =( SELECT pre_fecha_vencimiento FROM prestamo 
+            WHERE  pre_egr_numero_documento_identidad= numero_documento_identidad
+			AND	pre_lib_id = id_libro
+            ORDER BY  pre_fecha_vencimiento DESC LIMIT 1);
+			IF NOT(current_timestamp() BETWEEN fecha1 AND fecha2) THEN
+				CALL insertar_prestamo_datos(numero_documento_identidad,id_libro);
+			ELSE 
+				ROLLBACK;
+			END IF;
+		END IF;
+    COMMIT;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS borrar_egresado;
+DELIMITER $$
+CREATE PROCEDURE borrar_egresado(IN numero_identificacion INT)
+BEGIN 
+	DELETE FROM informacion_personal_egresado WHERE egr_numero_de_identificacion = numero_identificacion;
+END $$
+DELIMITER ;
+

@@ -150,3 +150,63 @@ AS SELECT
 FROM 
 	informacion_personal_egresado AS egr
     INNER JOIN carnet AS car ON car.car_egr_numero_de_identificacion = egr.egr_numero_de_identificacion ;
+    
+/*Datos personales egresado*/
+DROP VIEW IF EXISTS informacion_egresado;
+CREATE VIEW informacion_egresado AS
+SELECT * FROM informacion_personal_egresado;
+
+
+/*información de contacto*/
+DROP VIEW IF EXISTS informacion_egresado;
+CREATE VIEW informacion_egresado AS
+SELECT * FROM informacion_personal_egresado;
+
+DROP VIEW IF EXISTS informacion_contacto;
+CREATE VIEW informacion_contacto AS 
+SELECT 
+	egr_numero_de_identificacion,
+    egr_primer_nombre,
+    egr_segundo_nombre
+    egr_primer_apellido,
+    egr_segundo_apellido,
+    con_numero_telefono_principal,
+    con_correo_electronico_principal,
+    con_numero_telefono_adicional,
+    con_correo_adicional
+FROM
+	informacion_personal_egresado
+    INNER JOIN contacto ON contacto.con_egr_numero_de_identificacion = informacion_personal_egresado.egr_numero_de_identificacion;
+
+
+DROP VIEW IF EXISTS informacion_residencia_egr;
+CREATE VIEW informacion_residencia_egr AS 
+SELECT
+	egr_numero_de_identificacion,
+    egr_primer_nombre,
+    egr_segundo_nombre,
+    egr_primer_apellido,
+    egr_segundo_apellido,
+    inf_res_pais_residencia,
+    inf_res_departamento_residencia,
+    inf_res_municipio_residencia,
+    inf_res_ciudad_residencia,
+    inf_res_direccion_residencia 
+FROM 
+	informacion_residencia 
+    INNER JOIN informacion_personal_egresado ON inf_res_egr_numero_de_identificacion = egr_numero_de_identificacion;
+
+DROP VIEW IF EXISTS distinciones;
+CREATE VIEW distinciones AS 
+SELECT 
+	egr_numero_de_identificacion,
+    egr_primer_nombre,
+    egr_segundo_nombre,
+    egr_primer_apellido,
+    egr_segundo_apellido,
+    dis_año,
+    dist_nombre_distincion,
+    dist_descripcion
+FROM
+	distincion
+    INNER JOIN informacion_personal_egresado;

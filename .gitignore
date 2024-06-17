@@ -1,7 +1,4 @@
 __pycache__
 __pycache__/*
-Docker/Docker/mysql_data/mysql.sock
-Docker/Docker/mongo_data/mongo.sock
-Docker/Docker/mongo_data/WiredTiger.lock
-Docker/Docker/mysql_data/auto.cnf
-Docker/Docker/mysql_data/binlog.index
+.vscode
+.vscode/*

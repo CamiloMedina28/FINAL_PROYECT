@@ -1,0 +1,36 @@
+{% extends 'egresadosBase.html' %}
+{% block nav %}
+{{super()}}
+{% endblock nav %}
+
+{% include 'libros.html' %}
+{% block content %}
+{{super()}}
+<div class="container">
+    <div class="flexcontainer" id="tabla_libros">
+        <h1>Libros prestados</h1>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titulo</th>
+                    <th>Biblioteca</th>
+                    <th>Autor</th>
+                    <th>Estante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for libro in libros_prestados %}
+                <tr>
+                    <td>{{ libro['lib_id_libro'] }}</td>
+                    <td>{{ libro['lib_titulo'] }}</td>
+                    <td>{{ libro['lib_biblioteca'] }}</td>
+                    <td>{{ libro['lib_autor'] }}</td>
+                    <td>{{ libro['lib_estante'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -14,6 +14,7 @@ import empresa_acciones as emp
 import usuarios
 from datetime import datetime
 from flask_mail import Mail, Message
+import egresado_acciones as egresado
 
 app.instanciate_app(__name__)
 
@@ -22,7 +23,7 @@ tabla_permisos = {
                     'eliminar-libros', 'ver-libros', 'ver-pregrado','inicio-bibliotecario',
                     'ver-solicitudes-acceso', 'ver-convocatorias', 'eliminar-convo',
                     'read-apli', 'update-apli'],
-    'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario', 'read-apli'],
+    'Bibliotecario': ['eliminar-libros', 'ver-libros', 'inicio-bibliotecario', 'crear-prestamo'],
     'Egresado': ['ver-libros', 'ver-asesoria'],
     'Pregrado': ['ver-pregrado'],
     'Empresa': ['ver-convocatorias', 'eliminar-convo', 'update-apli']
@@ -72,7 +73,7 @@ def login_user():
             elif session['rol_usuario'] == 'Egresado':
                 return redirect(url_for('render_inicioEgreados'))
             elif session['rol_usuario'] == 'Bibliotecario':
-                return redirect(url_for('/bibliotecario'))
+                return redirect(url_for('render_inicioBiblio'))
             elif session['rol_usuario'] == 'Pregrado':
                 return redirect(url_for('render_pregrado'))
             else:
@@ -114,27 +115,113 @@ def render_personal_info():
 # ----------------------------- Egresados ----------------------------------------
 
 
-@app.app.route('/informacion_personal_egresados/<int:id>')
+@app.app.route('/informacion_personal_egresados')
 @login_required
-def render_info_personal_egr(id):
+def render_info_personal_egr():
     if session['rol_usuario'] == "Egresado":
-        lista_info = egr.egr_info.ejecutar_pass_info_egr(
-            id, 'ver_datos_personales')
-        if lista_info[0] == 0:
-            return render_template('informacion_personal_egresados.html',
-                                   info=lista_info[1])
-        else:
-            return render_template('informacion_personal_egresados.html',
-                                   mensaje="Los datos solicitados no puedieron ser encontrados.")
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_personal(session['doc_usuario']))
     if session['rol_usuario'] == "Administrador":
-        lista_info = egr.egr_info.ejecutar_pass_info_egr(
-            id=0, nombre_proc='ver_datos_personales')
-        if lista_info[0] == 0:
-            return render_template('informacion_personal_egresados.html',
-                                   info=lista_info)
-        else:
-            return render_template('informacion_personal_egresados.html',
-                                   mensaje="Los datos solicitados no puedieron ser encontrados.")
+        info = egresado.informacion_egresado.retrieve_informacion_personal()
+    return render_template('informacion_personal_egresados.html', datos_egresados = info)
+
+
+@app.app.route('/eliminar_egresado')
+@login_required
+def eliminar_egresado():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_egresado', id_egresado)
+        return info
+
+
+@app.app.route('/informacion_contacto_egr')
+@login_required
+def render_info_contacto():
+    if session['rol_usuario'] == "Egresado":
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_contacto(session['doc_usuario']))
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_contacto()
+    return render_template('contacto.html', datos_contacto = info)
+
+
+@app.app.route('/agregar-info-contacto')
+@login_required
+def agregar_informacion_contacto_egresado():
+    documento = request.args.get('documento')
+    telefono_principal = request.args.get('telefono-principal')
+    correo_principal = request.args.get('correo')
+    telefono_adicional = request.args.get('telefono-adicional')
+    correo_adicional = request.args.get('correo-adicional')
+    info = egresado.informacion_egresado.agregar_info_contacto(1, documento, telefono_principal, correo_principal, telefono_adicional, correo_adicional)
+    return info
+
+
+@app.app.route('/informacion_familiar')
+@login_required
+def render_informacion_familiar():
+    if session['rol_usuario'] == "Egresado":
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_datos_familiares(session['doc_usuario']))
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_datos_familiares()
+    return render_template('info_familiar.html', datos_familia= info)
+
+
+@app.app.route('/eliminar_familiar')
+@login_required
+def eliminar_familiar():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_hijos_egresado_datos', id_egresado)
+        return info
+
+
+@app.app.route('/agregar-informacion-familiar')
+@login_required
+def agregar_familiar():
+    pass
+
+
+@app.app.route('/info_residencia')
+@login_required
+def render_info_residencia():
+    if session['rol_usuario'] == "Egresado":
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_residencia_egresado(session['doc_usuario']))
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_residencia_egresado()
+    return render_template('informacion_residencia.html', datos_residencia= info)
+
+
+@app.app.route('/eliminar_residencia')
+@login_required
+def eliminar_residencia():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_residencia_datos', id_egresado)
+        return info  
+
+
+@app.app.route('/distinciones')
+@login_required
+def render_distinciones():
+    if session['rol_usuario'] == "Egresado":
+        info = []
+        info.append(egresado.informacion_egresado.retrieve_informacion_distinciones(session['doc_usuario']))
+    if session['rol_usuario'] == "Administrador":
+        info = egresado.informacion_egresado.retrieve_informacion_distinciones()
+    return render_template('distinciones.html', datos_distinciones= info)
+
+
+@app.app.route('/eliminar_distincion')
+@login_required
+def eliminar_distincion():
+    id_egresado = request.args.get('id_egresado')
+    if session['rol_usuario'] in ('Egresado', 'Administrador'):
+        info = egresado.informacion_egresado.eliminar_info_egresado('borrar_distincion_datos', id_egresado)
+        return info  
 
 
 @app.app.route('/egresados')
@@ -161,6 +248,7 @@ def render_inicioBiblio():
 
 
 # ----------------bibliotecario - libros
+
 @app.app.route('/bibliotecario/libros/eliminar')
 @login_required
 def eliminar_libro():
@@ -172,15 +260,23 @@ def eliminar_libro():
         return redirect('/logout_user')
 
 
+@app.app.route('/egresados/prestamo', methods=['POST', 'GET'])
 @app.app.route('/bibliotecario/libros', methods=['POST', 'GET'])
 @login_required
 def render_libros():
-    if 'ver-libros' in tabla_permisos[session['rol_usuario']]:
-        info_libros = biblio.acciones_libros.read_book()
+    if session['rol_usuario'] in ('Bibliotecario', 'Administrador'):
+        info_libros = biblio.acciones_libros.read_book(0)
         if info_libros[0] == 1:
             return render_template('biblioLibros.html', mensaje=info_libros[1])
         else:
-            return render_template('biblioLibros.html', datos_libros=info_libros[1])
+            return render_template('biblioLibros.html', datos_libros=info_libros[1],  eliminar=1)
+    elif session['rol_usuario'] == 'Egresado':
+        estudiante = session['doc_usuario']
+        info_libros = biblio.acciones_libros.read_book(estudiante)
+        if info_libros[0] == 1:
+            return render_template('egresadosLibros.html', mensaje=info_libros[1])
+        else:
+            return render_template('egresadosLibros.html', datos_libros=info_libros[1], libros_prestados=info_libros[2], solicitar=1)
     else:
         return redirect('/logout_user')
 
@@ -232,14 +328,26 @@ def render_prestamo():
         return render_template('biblioPrestamo.html', prestamos=info_prestamos[1])
 
 
+@app.app.route('/egresados/prestamo/crear')
 @app.app.route('/bibliotecario/prestamo/crear')
 @login_required
 def crear_prestamo():
-    documento = int(request.args.get('documento'))
-    id_libro = int(request.args.get('id_libro'))
-    insercion_resultado = biblio.acciones_prestamo.create_loan(
-        documento, id_libro)
-    return insercion_resultado[1]
+    if session['rol_usuario'] == 'Bibliotecario':
+        documento = int(request.args.get('documento'))
+        id_libro = int(request.args.get('id_libro'))
+        insercion_resultado = biblio.acciones_prestamo.create_loan(
+            documento, id_libro)
+        return insercion_resultado[1]
+    elif session['rol_usuario'] == 'Egresado':
+        documento = session['doc_usuario']
+        id_libro = int(request.args.get('id_libro'))
+        print(id_libro)
+        insercion_resultado = biblio.acciones_prestamo.create_loan(
+            documento, id_libro)
+        print(insercion_resultado)
+        return insercion_resultado[1]
+    else:
+        return redirect('/logout_user')
 
 # ----------------------------- empresa ----------------------------------------
 
@@ -374,7 +482,7 @@ def render_pregrado():
 @app.app.route('/egresados/asesoria/<int:id>', methods=['POST', 'GET'])
 @login_required
 def render_asesoria(id):
-    if 'ver-pregrado' in tabla_permisos[session['rol_usuario']]:
+    if session['rol_usuario'] == 'Pregrado':
         info_pregrado = pregrado.pregrado_acciones.read_student(id)
         if info_pregrado[0] == 1:
             return render_template('pregradoAsesoria.html', mensaje=info_pregrado[1])
@@ -384,7 +492,7 @@ def render_asesoria(id):
             else:
                 return render_template('pregradoAsesoria.html', datos_pregrado=info_pregrado[1])
 
-    elif 'ver-asesoria' in tabla_permisos[session['rol_usuario']]:
+    elif session['rol_usuario'] == 'Egresado':
         info_pregrado = pregrado.pregrado_acciones.read_student(0)
         if info_pregrado[0] == 1:
             return render_template('egresadosAsesoria.html', mensaje=info_pregrado[1])
@@ -393,15 +501,6 @@ def render_asesoria(id):
 
     else:
         return redirect('/logout_user')
-
-
-# @app.app.route('/bibliotecario/prestamo/eliminar')
-# @login_required
-# def eliminar_prestamo():
-#     documento = request.args.get('documento')
-#     id_libro = request.args.get('id_libro')
-#     resultado = biblio.acciones_prestamo.delete_loan(documento, id_libro)
-#     return resultado[1]
 
 
 @app.app.route('/egresados/asesoria/crear')
