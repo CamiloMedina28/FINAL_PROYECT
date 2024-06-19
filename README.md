@@ -7,8 +7,8 @@ Se pretende desarrollar un sistema de infrmación, a través del cual los estudi
 
 ## Authors
 
-- ([https://www.github.com/user_silvana](https://github.com/silvanasc804))
-- 
+- [silvanasc804](https://github.com/silvanasc804)
+- [JaredMijailRE](https://github.com/JaredMijailRE)
 - [CamiloMedina28](https://www.github.com/CamiloMedina28)
 
 
